@@ -1,0 +1,9 @@
+.navbar {
+    &.vertical {
+        background: #fbfbfb;
+        display: flex;
+        justify-content: flex-end;
+        height: 100%;
+        overflow: auto;
+    }
+}
