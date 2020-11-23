@@ -4,16 +4,19 @@
 .ant-select-multiple,
 .ant-select {
     width: 100%;
-    &.has-error .ant-select-selector {
+    .ant-select-selection__rendered {
+        width: 100%;
+    }
+    &.has-error .ant-select-selection {
         border-color: $error-color;
     }
-    &.ant-select-sm .ant-select-selector {
+    &.ant-select-sm .ant-select-selection {
         @include input-sm();
     }
-    &.ant-select-lg .ant-select-selector {
+    &.ant-select-lg .ant-select-selection {
         @include input-lg();
     }
-    .ant-select-selector {
+    .ant-select-selection {
         @include input();
         padding: 0 !important;
         .ant-select-selection-placeholder {
@@ -38,7 +41,7 @@
         }
     }
     &.ant-select-focused {
-        .ant-select-selector {
+        .ant-select-selection {
             @include input-focused();
         }
     }
@@ -49,13 +52,13 @@
 }
 
 .ant-select {
-    .ant-select-clear {
+    .ant-select-selection[aria-expanded="true"] {
         background-color: #ebebeb !important;
         color: rgba(#000, 0.35);
         transition: background-color 0.2s ease-in-out;
     }
     &-open {
-        .ant-select-clear {
+        .ant-select-selection[aria-expanded="true"] {
             background-color: #fff !important;
             color: rgba(#000, 0.35);
         }

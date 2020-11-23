@@ -26,7 +26,7 @@ export default {
 
     plugins: ['@/plugins/antd-ui'],
 
-    components: true,
+    components: false,
 
     buildModules: [
         '@nuxtjs/eslint-module',

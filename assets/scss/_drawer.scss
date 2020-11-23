@@ -1,0 +1,30 @@
+@import '../_variables';
+.ant-drawer {
+    .ant-drawer-header,
+    .ant-drawer-footer {
+        border: none;
+    }
+    .ant-drawer-header {
+        padding: ($module-rem * 2) ($module-rem * 2) 0;
+        .title {
+            margin: $module-rem / 2;
+            line-height: 1;
+        }
+    }
+    .ant-drawer-body {
+        padding: ($module-rem * 2);
+    }
+    .ant-drawer-footer {
+        padding: $module-rem * 2;
+    }
+    .drawer-footer {
+        border-radius: 0 0 $shape $shape;
+        margin: -$module-rem * 2;
+        padding: $module-rem * 2;
+        background-color: rgba(#000, 0.05);
+    }
+}
+
+.ant-drawer-mask {
+    background-color: rgba(#000, 0.15);
+}

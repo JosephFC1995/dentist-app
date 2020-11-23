@@ -1,0 +1,31 @@
+@import '../_variables';
+@import '_input';
+$_list-bg: #fff;
+$_list-border-color: #fff;
+$_list-shadow: $shadow;
+.ant-time-picker {
+    width: 100%;
+    @include input();
+    padding: 0 !important;
+    &.has-error .ant-select-selection {
+        border-color: $error-color;
+    }
+    &::focus {
+        @include input-focused();
+    }
+    input {
+        border: none;
+    }
+    &::active {
+        background-color: #fff !important;
+        color: rgba(#000, 0.35);
+    }
+}
+
+.ant-time-picker-panel-inner {
+    background: $_list-bg;
+    border: 1px solid $_list-border-color;
+    box-shadow: $_list-shadow;
+    border-radius: $_shape;
+    padding: ($_module-rem) 0;
+}

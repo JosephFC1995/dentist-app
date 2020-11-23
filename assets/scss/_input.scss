@@ -196,8 +196,9 @@ html {
     }
     .ant-input-affix-wrapper {
         @include input-box;
+        padding: 0!important;
         input.ant-input {
-            @include default-input;
+            @include input();
         }
     }
     .ant-select-selector,
@@ -220,13 +221,23 @@ html {
         font-weight: 600;
     }
     .ant-input-affix-wrapper .ant-input:not(:first-child) {
-        padding-left: $module-rem * 4 !important;
+        @include input-padding();
     }
-    .ant-input-affix-wrapper .ant-input:not(textarea):first-child {
-        padding-left: 2px !important;
+    // .ant-input-affix-wrapper .ant-input:not(textarea):first-child {
+    //     padding-left: 2px !important;
+    // }
+    .ant-input-affix-wrapper {
+        input.ant-input {
+            @include input-padding();
+        }
     }
     .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
         border-color: map-get($_border, default);
+    }
+    .ant-input-affix-wrapper {
+        &:focus {
+            outline: none;
+        }
     }
     .ant-input-affix-wrapper .ant-input:not(:last-child) {
         padding-right: $module-rem * 4 !important;

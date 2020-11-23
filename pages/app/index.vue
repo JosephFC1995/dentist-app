@@ -7,7 +7,7 @@
 <script>
 export default {
   asyncData({ redirect }) {
-    return redirect('/singin')
+    return redirect('/app/dashboard')
   },
 }
 </script>

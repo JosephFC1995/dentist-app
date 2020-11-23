@@ -103,3 +103,27 @@ html {
         margin: 0 0 ($module-rem * 2);
     }
 }
+
+.ant-row {
+    &.with-button {
+        .ant-form-item-children {
+            display: flex;
+            button {
+                margin-left: 1rem;
+            }
+        }
+    }
+}
+
+.ant-calendar-picker {
+    width: 100%;
+}
+
+.block-color {
+    display: inline-block;
+    background-color: #ccc;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
