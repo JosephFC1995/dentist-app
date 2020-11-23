@@ -26,7 +26,11 @@
 </template>
 
 <script>
-export default {}
+export default {
+  asyncData({ redirect }) {
+    return redirect('/singin')
+  },
+}
 </script>
 
 <style>
