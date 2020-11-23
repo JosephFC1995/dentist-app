@@ -14,18 +14,18 @@
               :allowClear="true"
             >
             </a-select>
-            <a-button type="primary">
+            <a-button type="primary" @click="() => (openDrawerNewUser = true)">
               <i class="uil uil-plus-circle"></i>
               Agregar nuevo paciente
             </a-button>
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Correo">
             <a-input v-model="form.email" placeholder="Correo" />
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Teléfono">
             <a-input v-model="form.phone" placeholder="Teléfono" />
           </a-form-model-item>
@@ -35,7 +35,7 @@
             Datos generales
           </h6>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Sucursal">
             <a-select
               placeholder="Seleccione una sucursal"
@@ -46,7 +46,7 @@
             </a-select>
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Doctor">
             <a-select
               placeholder="Seleccione un doctor"
@@ -57,7 +57,7 @@
             </a-select>
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Motivo">
             <a-select
               placeholder="Seleccione un motivo"
@@ -68,7 +68,7 @@
             </a-select>
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Canal">
             <a-select
               placeholder="Seleccione un canal"
@@ -82,7 +82,7 @@
         <a-col :span="24">
           <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Fecha y hora</h6>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Fecha">
             <a-date-picker
               v-model="form.date"
@@ -91,7 +91,7 @@
             />
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Hora">
             <a-time-picker
               use12-hours
@@ -102,7 +102,7 @@
           </a-form-model-item>
         </a-col>
 
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Estado">
             <a-select
               placeholder="Seleccione un estado"
@@ -129,7 +129,7 @@
             </a-select>
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item label="Duración (minuto)">
             <a-input v-model="form.duration" suffix="minutos" />
           </a-form-model-item>
@@ -139,13 +139,13 @@
             <a-textarea v-model="form.observation" :rows="4" />
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item>
             <a-switch v-model="form.sendMail" size="small" />
             <span class="ml-2">Informar por correo electrónico</span>
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24" :md="12">
           <a-form-model-item>
             <a-switch v-model="form.sendWhatsapp" size="small" />
             <span class="ml-2">Informar por whatsapp</span>
@@ -156,6 +156,23 @@
         </a-col>
       </a-row>
     </a-form-model>
+    <a-drawer
+      title="Two-level Drawer"
+      :width="widthDrawerResponsive"
+      :closable="false"
+      :visible="openDrawerNewUser"
+    >
+      <template slot="title">
+        <div class="title-block p-0 m-0">
+          <h4 class="modal-title m-0" style="color: #336cfb">
+            Crear nuevo paciente
+          </h4>
+        </div>
+      </template>
+      <a-button type="primary" @click="() => (openDrawerNewUser = false)">
+        Cerrar
+      </a-button>
+    </a-drawer>
   </div>
 </template>
 
@@ -164,6 +181,9 @@ export default {
   name: 'FormNewEventCalendar',
   data() {
     return {
+      openDrawerNewUser: false,
+      widthDrawerResponsive:
+        window.innerWidth > 900 ? 450 : window.innerWidth - 100,
       form: {
         estado: 1,
         duration: 15,
@@ -206,6 +226,12 @@ export default {
     disabledDate(current) {
       return current && current <= this.$moment().startOf('day')
     },
+  },
+  mounted() {
+    window.onresize = () => {
+      let width = window.innerWidth
+      this.widthDrawerResponsive = width > 900 ? 700 : width - 100
+    }
   },
 }
 </script>
