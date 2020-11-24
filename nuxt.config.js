@@ -24,9 +24,12 @@ export default {
         '~/assets/_all.scss',
     ],
 
-    plugins: ['@/plugins/antd-ui'],
+    plugins: [
+        '@/plugins/antd-ui',
+        { src: '@/plugins/vue-json-excel', ssr: false },
+    ],
 
-    components: false,
+    components: true,
 
     buildModules: [
         '@nuxtjs/eslint-module',

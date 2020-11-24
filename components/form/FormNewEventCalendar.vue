@@ -157,10 +157,10 @@
       </a-row>
     </a-form-model>
     <a-drawer
-      title="Two-level Drawer"
       :width="widthDrawerResponsive"
       :closable="false"
       :visible="openDrawerNewUser"
+      :body-style="{ paddingBottom: '80px' }"
     >
       <template slot="title">
         <div class="title-block p-0 m-0">
@@ -169,16 +169,20 @@
           </h4>
         </div>
       </template>
-      <a-button type="primary" @click="() => (openDrawerNewUser = false)">
-        Cerrar
-      </a-button>
+      <FormFastNewPacient @close="() => (openDrawerNewUser = false)" />
     </a-drawer>
   </div>
 </template>
 
 <script>
+// components
+import FormFastNewPacient from '~/components/form/FormFastNewPacient'
+
 export default {
   name: 'FormNewEventCalendar',
+  components: {
+    FormFastNewPacient,
+  },
   data() {
     return {
       openDrawerNewUser: false,
