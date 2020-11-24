@@ -7,7 +7,7 @@ $_fw: 500;
     &.desing {
         .ant-tabs {
             &-tabpane {
-                padding: 1rem 0 3rem;
+                padding: 0rem 0rem 3rem;
             }
             &-bar {
                 border: none;
@@ -50,6 +50,67 @@ $_fw: 500;
                     &:hover {
                         background: map-get($accent-palette, 800);
                     }
+                }
+                &-disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+            }
+            &-ink-bar {
+                display: none!important;
+            }
+        }
+    }
+    &.basic {
+        .ant-tabs {
+            &-tabpane {
+                padding: 0rem 0 3rem;
+            }
+            &-bar {
+                border: none;
+                margin: 0 0 16px 0;
+            }
+            &-nav-scroll {
+                padding-bottom: 6px;
+            }
+            &-nav {}
+            &-tab {
+                position: relative;
+                display: inline-block;
+                box-sizing: border-box;
+                height: 100%;
+                text-decoration: none;
+                cursor: pointer;
+                transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+                background: map-get($palette, 500);
+                color: #fff;
+                border-radius: 10px;
+                padding: $_padding;
+                margin: 0 16px 0 0;
+                transition: all .3s;
+                font-family: $_ff;
+                font-size: $_fs;
+                font-weight: $_fw;
+                border-radius: 999px;
+                &:hover {
+                    background: main-palette(800);
+                    border-color: main-palette(800);
+                    color: main-contrast(800);
+                }
+                i {
+                    font-size: $_fw;
+                }
+                &-active {
+                    color: #fff;
+                    font-weight: $_fw;
+                    background: $success-color;
+                    &:hover {
+                        background: $warning-color;
+                    }
+                }
+                &-disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
                 }
             }
             &-ink-bar {

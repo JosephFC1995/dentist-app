@@ -13,35 +13,41 @@
           <TabPacientInformation />
         </a-tab-pane>
         <!-- Analmesis general -->
-        <a-tab-pane key="2">
+        <a-tab-pane key="2" disabled>
           <span slot="tab">
             <i class="uil uil-syringe mr-2"></i>Analmesis general
           </span>
-          Content of tab 2
         </a-tab-pane>
         <!-- Examen odontológico -->
-        <a-tab-pane key="3">
+        <a-tab-pane key="3" disabled>
           <span slot="tab">
             <i class="uil uil-microscope mr-2"></i>Examen odontológico
           </span>
           Content of tab 3
         </a-tab-pane>
         <!-- Tratamiento -->
-        <a-tab-pane key="4">
+        <a-tab-pane key="4" disabled>
           <span slot="tab">
             <i class="uil uil-band-aid mr-2"></i>Tratamiento
           </span>
           Content of tab 3
         </a-tab-pane>
         <!-- Imágenes -->
-        <a-tab-pane key="5">
+        <a-tab-pane key="5" disabled>
           <span slot="tab"> <i class="uil uil-image mr-2"></i>Imágenes </span>
           Content of tab 3
         </a-tab-pane>
         <!-- Informes -->
-        <a-tab-pane key="6">
+        <a-tab-pane key="6" disabled>
           <span slot="tab">
             <i class="uil uil-file-alt mr-2"></i>Informes
+          </span>
+          Content of tab 3
+        </a-tab-pane>
+        <!-- Documentos -->
+        <a-tab-pane key="6" disabled>
+          <span slot="tab">
+            <i class="uil uil-file-landscape-alt mr-2"></i>Documentos
           </span>
           Content of tab 3
         </a-tab-pane>
