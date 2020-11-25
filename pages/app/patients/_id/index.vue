@@ -94,7 +94,7 @@ export default {
   },
   data() {
     return {
-      title: 'Paciente - ' + this.id,
+      title: 'Paciente',
       openDrawerInfoPacient: false,
       widthDrawerResponsive:
         window.innerWidth > 900 ? 500 : window.innerWidth - 100,
