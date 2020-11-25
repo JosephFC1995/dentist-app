@@ -137,3 +137,9 @@ html {
 .ant-tabs-nav .ant-tabs-tab {
     padding: 16px;
 }
+
+.ant-upload.ant-upload-drag p.ant-upload-drag-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: rgba(accent-palette(800), 1);
+}

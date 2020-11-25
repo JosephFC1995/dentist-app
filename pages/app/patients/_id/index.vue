@@ -1,7 +1,14 @@
 <template>
   <div class="page--app-patients page--default">
     <header class="page-header">
-      <h1 class="page-title">Paciente - {{ id }}</h1>
+      <h1 class="page-title">
+        Paciente - {{ id }}
+        <i
+          class="uil uil-info-circle"
+          :style="{ color: '#2E64FA', cursor: 'pointer' }"
+          @click="() => (openDrawerInfoPacient = true)"
+        ></i>
+      </h1>
     </header>
     <div class="tab-content style">
       <a-tabs class="desing">
@@ -47,6 +54,22 @@
         </a-tab-pane>
       </a-tabs>
     </div>
+    <!-- !Drawer información usuario -->
+    <a-drawer
+      :width="widthDrawerResponsive"
+      :visible="openDrawerInfoPacient"
+      :body-style="{ paddingBottom: '80px' }"
+      @close="closeDrawerInfoPacient"
+    >
+      <template slot="title">
+        <div class="title-block p-0 m-0">
+          <h4 class="modal-title m-0" style="color: #336cfb">
+            Usuario: {{ this.id }}
+          </h4>
+        </div>
+        <CardInfoPacient />
+      </template>
+    </a-drawer>
   </div>
 </template>
 
@@ -54,6 +77,7 @@
 // components
 import TabPacientInformation from '~/components/tab/TabPacientInformation'
 import TabPacientAnamesisGeneral from '~/components/tab/TabPacientAnamesisGeneral'
+import CardInfoPacient from '~/components/card/CardInfoPacient'
 
 export default {
   asyncData({ params }) {
@@ -66,10 +90,14 @@ export default {
   components: {
     TabPacientInformation,
     TabPacientAnamesisGeneral,
+    CardInfoPacient,
   },
   data() {
     return {
-      title: 'Paciente - A',
+      title: 'Paciente - ' + this.id,
+      openDrawerInfoPacient: false,
+      widthDrawerResponsive:
+        window.innerWidth > 900 ? 500 : window.innerWidth - 100,
     }
   },
   head() {
@@ -79,7 +107,11 @@ export default {
     }
   },
   watch: {},
-  methods: {},
+  methods: {
+    closeDrawerInfoPacient() {
+      this.openDrawerInfoPacient = false
+    },
+  },
 }
 </script>
 

@@ -9,13 +9,6 @@
           <span slot="tab">
             <i class="uil uil-history mr-2"></i>Historia médica
           </span>
-          <header class="page-header justify-content-end pb-3">
-            <a-button type="primary">
-              <span>
-                <i class="uil uil-plus-circle mr-1"></i> Nueva historía medica
-              </span>
-            </a-button>
-          </header>
           <TabPacientAnamesisHistory />
         </a-tab-pane>
         <!-- Enfermedades -->
@@ -23,18 +16,19 @@
           <span slot="tab">
             <i class="uil uil-head-side-cough mr-2"></i>Enfermedades
           </span>
+          <CardDisease />
         </a-tab-pane>
         <!-- Otros -->
         <a-tab-pane key="c">
           <span slot="tab"> <i class="uil uil-ellipsis-h mr-2"></i>Otros </span>
-          Content of tab 3
+          <CardOthers />
         </a-tab-pane>
         <!-- Diagnosticos -->
         <a-tab-pane key="d">
           <span slot="tab">
             <i class="uil uil-stethoscope-alt mr-2"></i>Diagnosticos
           </span>
-          Content of tab 3
+          <CardDiagnosis />
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -43,11 +37,16 @@
 
 <script>
 import TabPacientAnamesisHistory from '~/components/tab/TabPacientAnamesisHistory'
+import CardDisease from '~/components/card/CardDisease'
+import CardOthers from '~/components/card/CardOthers'
+import CardDiagnosis from '~/components/card/CardDiagnosis'
 
 export default {
   components: {
     components: {
       TabPacientAnamesisHistory,
+      CardDisease,
+      CardDiagnosis,
     },
   },
 }

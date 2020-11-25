@@ -144,9 +144,9 @@
         </a-col>
         <!-- Ocupación -->
         <a-col :span="24" :md="6">
-          <a-form-model-item label="Estado civil" class="with-button">
+          <a-form-model-item label="Ocupación" class="with-button">
             <a-select
-              placeholder="Seleccione un estado civil"
+              placeholder="Seleccione una ocupación"
               :options="ocupacionesArray"
               v-model="form.ocupation"
               :disabled="loading"
