@@ -31,7 +31,7 @@
           <span slot="tab">
             <i class="uil uil-microscope mr-2"></i>Examen odontológico
           </span>
-          Content of tab 3
+          <TabPacientDentalExam />
         </a-tab-pane>
         <!-- Tratamiento -->
         <a-tab-pane key="4">
@@ -77,6 +77,7 @@
 // components
 import TabPacientInformation from '~/components/tab/TabPacientInformation'
 import TabPacientAnamesisGeneral from '~/components/tab/TabPacientAnamesisGeneral'
+import TabPacientDentalExam from '~/components/tab/TabPacientDentalExam'
 import CardInfoPacient from '~/components/card/CardInfoPacient'
 
 export default {
@@ -90,6 +91,7 @@ export default {
   components: {
     TabPacientInformation,
     TabPacientAnamesisGeneral,
+    TabPacientDentalExam,
     CardInfoPacient,
   },
   data() {

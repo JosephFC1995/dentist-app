@@ -81,18 +81,4 @@
 export default {}
 </script>
 
-<style lang="scss">
-.custom--data {
-  .label {
-    display: block;
-    line-height: 39.9999px;
-    font-weight: 600;
-  }
-  .data {
-    color: #777777;
-    line-height: 20px;
-    margin-bottom: 1rem;
-    display: block;
-  }
-}
-</style>
+<style lang="scss"></style>
