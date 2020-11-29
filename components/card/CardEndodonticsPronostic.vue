@@ -3,33 +3,27 @@
     <a-card :title="false" :bordered="false">
       <a-row :gutter="16" type="flex" justify="space-between">
         <a-col :span="24" :md="6" class="with-button">
-          <a-form-model-item class="with-button">
+          <!-- <a-form-model-item class="with-button">
             <a-date-picker
               v-model="odontogram.date"
               :disabled-date="disabledDate"
               placeholder="Seleccione una fecha"
               :showToday="false"
             />
-          </a-form-model-item>
-        </a-col>
-        <a-col :span="24" :md="6" class="d-flex justify-content-end">
-          <a-button type="primary">
-            <span> <i class="uil uil-save mr-1"></i> Guardar </span>
-          </a-button>
+          </a-form-model-item> -->
         </a-col>
       </a-row>
-      <!-- Formulario Endodoncia historia -->
-      <FormEndodonticsHistoryPacient />
+      <!-- Formulario Endodoncia -->
+      <FormEndodonticsPronostic />
     </a-card>
   </div>
 </template>
 
 <script>
-import FormEndodonticsHistoryPacient from '~/components/form/FormEndodonticsHistoryPacient'
-
+import FormEndodonticsPronostic from '~/components/form/FormEndodonticsPronostic'
 export default {
   components: {
-    FormEndodonticsHistoryPacient,
+    FormEndodonticsPronostic,
   },
   data() {
     return {

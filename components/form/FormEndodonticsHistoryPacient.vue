@@ -3,19 +3,10 @@
     <a-form-model :model="form" ref="newPacient">
       <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Preguntas</h6>
       <a-row :gutter="16">
-        <a-col
-          :span="24"
-          :md="24"
-          v-for="(question, index_q) in questions"
-          :key="index_q"
-        >
+        <a-col :span="24" :md="24" v-for="(question, index_q) in questions" :key="index_q">
           <a-form-model-item :label="question.question">
             <a-radio-group v-model="form[question.key]">
-              <a-radio
-                :value="alternative.id"
-                v-for="alternative in question.alternatives"
-                :key="alternative.id"
-              >
+              <a-radio :value="alternative.id" v-for="alternative in question.alternatives" :key="alternative.id">
                 {{ alternative.label }}
               </a-radio>
             </a-radio-group>
@@ -27,17 +18,9 @@
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="24">
-          <a-form-model-item
-            label="Ha padecido alguna de las sigueintes enfermedades"
-          >
+          <a-form-model-item label="Ha padecido alguna de las sigueintes enfermedades">
             <a-checkbox-group v-model="form.disease">
-              <a-checkbox
-                :value="disease.value"
-                :name="disease.value"
-                :style="vertical"
-                v-for="disease in diseases"
-                :key="disease.value"
-              >
+              <a-checkbox :value="disease.value" :name="disease.value" :style="vertical" v-for="disease in diseases" :key="disease.value">
                 {{ disease.label }}
               </a-checkbox>
             </a-checkbox-group>
@@ -67,11 +50,7 @@
           </a-form-model-item>
         </a-col>
         <a-col :span="24" class="d-flex justify-content-end">
-          <a-button
-            type="primary"
-            html-type="submit"
-            @click="() => $emit('close')"
-          >
+          <a-button type="primary" html-type="submit" @click="() => $emit('close')">
             <span> <i class="uil uil-save mr-1"></i> Guardar </span>
           </a-button>
         </a-col>
@@ -116,8 +95,7 @@ export default {
           ],
         },
         {
-          question:
-            '¿Ha notado algún cambio en su salud general en el último mes?',
+          question: '¿Ha notado algún cambio en su salud general en el último mes?',
           key: 'question_3',
           alternatives: [
             {
@@ -159,8 +137,7 @@ export default {
           ],
         },
         {
-          question:
-            '¿Conoce udted algún problema relacionado con su presión alterial?',
+          question: '¿Conoce udted algún problema relacionado con su presión alterial?',
           key: 'question_6',
           alternatives: [
             {
@@ -174,8 +151,7 @@ export default {
           ],
         },
         {
-          question:
-            '¿Padece udted problemas del corazón, problemas respiratorios o digestivos?',
+          question: '¿Padece udted problemas del corazón, problemas respiratorios o digestivos?',
           key: 'question_7',
           alternatives: [
             {

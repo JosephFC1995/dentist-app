@@ -6,31 +6,42 @@
         <!-- Historia médica -->
         <a-tab-pane key="endodontics_1">
           <span slot="tab"> Historia médica </span>
-          <CardEndodonticsHistory />
+          <CardEndodonticsHistoryMedic />
         </a-tab-pane>
         <!-- Historia dental -->
         <a-tab-pane key="endodontics_2">
           <span slot="tab"> Historia dental </span>
+          <CardEndodonticsHistoryDent />
         </a-tab-pane>
         <!-- Examen clínico -->
         <a-tab-pane key="endodontics_3">
           <span slot="tab"> Examen clínico </span>
+          <CardEndodonticsMedicalExam />
         </a-tab-pane>
         <!-- Examen radiográfico -->
         <a-tab-pane key="endodontics_4">
           <span slot="tab"> Examen radiográfico </span>
+          <CardEndodonticsRadiographicExam />
         </a-tab-pane>
         <!-- Diagnóstico pulpar de persunción -->
         <a-tab-pane key="endodontics_5">
           <span slot="tab"> Diagnóstico pulpar de persunción </span>
+          <!-- A la espera -->
         </a-tab-pane>
         <!-- Tratamientos y datos clínicos -->
         <a-tab-pane key="endodontics_6">
           <span slot="tab"> Tratamientos y datos clínicos </span>
+          <CardEndodonticsTreatments />
+        </a-tab-pane>
+        <!-- Accidentes operatorios -->
+        <a-tab-pane key="endodontics_7">
+          <span slot="tab"> Accidentes operatorios </span>
+          <CardEndodonticsOperationsAccidents />
         </a-tab-pane>
         <!-- Pronóstico -->
-        <a-tab-pane key="endodontics_7">
+        <a-tab-pane key="endodontics_8">
           <span slot="tab"> Pronóstico </span>
+          <CardEndodonticsPronostic />
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -38,11 +49,24 @@
 </template>
 
 <script>
-import CardEndodonticsHistory from '~/components/card/CardEndodonticsHistory'
+import CardEndodonticsHistoryMedic from '~/components/card/CardEndodonticsHistoryMedic'
+import CardEndodonticsHistoryDent from '~/components/card/CardEndodonticsHistoryDent'
+import CardEndodonticsMedicalExam from '~/components/card/CardEndodonticsMedicalExam'
+import CardEndodonticsRadiographicExam from '~/components/card/CardEndodonticsRadiographicExam'
+import CardEndodonticsTreatments from '~/components/card/CardEndodonticsTreatments'
+import CardEndodonticsOperationsAccidents from '~/components/card/CardEndodonticsOperationsAccidents'
+import CardEndodonticsPronostic from '~/components/card/CardEndodonticsPronostic'
 
 export default {
   components: {
-    components: { CardEndodonticsHistory },
+    components: {
+      CardEndodonticsHistoryMedic,
+      CardEndodonticsHistoryDent,
+      CardEndodonticsMedicalExam,
+      CardEndodonticsRadiographicExam,
+      CardEndodonticsTreatments,
+      CardEndodonticsPronostic,
+    },
   },
 }
 </script>
