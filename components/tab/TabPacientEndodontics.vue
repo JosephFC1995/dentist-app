@@ -27,6 +27,11 @@
         <a-tab-pane key="endodontics_5">
           <span slot="tab"> Diagnóstico pulpar de persunción </span>
           <!-- A la espera -->
+          <div class="section-odontogram px-5 mt-4">
+            <a-card :title="false" :bordered="false" class="ant-card-bordered with-shadow">
+              <h6 class="my-3 mx-3 text-center">Aqui ya se el Diagnóstico pulpar de persunción.</h6>
+            </a-card>
+          </div>
         </a-tab-pane>
         <!-- Tratamientos y datos clínicos -->
         <a-tab-pane key="endodontics_6">
