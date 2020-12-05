@@ -8,6 +8,15 @@ $_fw: 500;
         .ant-tabs {
             &-tabpane {
                 padding: 0rem 0rem 3rem;
+                .ant-tabs-tabpane {
+                    padding-bottom: 0;
+                }
+                .ant-card {
+                    margin-bottom: 0;
+                }
+                .ant-card-body {
+                    padding-top: 0;
+                }
             }
             &-bar {
                 border: none;

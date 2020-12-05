@@ -12,8 +12,9 @@
               :allowClear="true"
               :disabled="loading"
             >
-            </a-select> </a-form-model-item
-        ></a-col>
+            </a-select>
+          </a-form-model-item>
+        </a-col>
         <a-col :span="24" :md="24" v-for="(question, index_q) in questions" :key="index_q">
           <a-form-model-item :label="question.question">
             <a-radio-group v-model="form[question.key]">
@@ -56,9 +57,7 @@
         <a-col :span="24" :md="24">
           <a-form-model-item>
             <a-radio-group v-model="form.time">
-              <a-radio :value="1" :disabled="loading || !form.dent || form.painHistory == 2 || !form.painHistory">
-                Días
-              </a-radio>
+              <a-radio :value="1" :disabled="loading || !form.dent || form.painHistory == 2 || !form.painHistory"> Días </a-radio>
               <a-radio :value="2" :disabled="loading || !form.dent || form.painHistory == 2 || !form.painHistory">
                 Semanas
               </a-radio>
