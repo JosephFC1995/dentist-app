@@ -168,3 +168,18 @@
         opacity: 0;
         transform: translate3d(15px, 0, 0);
     }
+    
+    .has-error {
+        .ant-form-explain {
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 16px;
+            transform: translateY(5px);
+        }
+    }
+    
+    .loading-circle {
+        animation-duration: .7s!important;
+        border-left-color: #2e64fa!important;
+        border-top-color: #2e64fa!important;
+    }

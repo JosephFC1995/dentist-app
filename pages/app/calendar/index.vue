@@ -5,20 +5,10 @@
     </header>
     <a-row class="mb-3" :gutter="16">
       <a-col :span="12" :md="6">
-        <a-select
-          placeholder="Seleccione una sucursal"
-          :options="sucursalesArray"
-          :allowClear="true"
-        >
-        </a-select>
+        <a-select placeholder="Seleccione una sucursal" :options="sucursalesArray" :allowClear="true"> </a-select>
       </a-col>
       <a-col :span="12" :md="6">
-        <a-select
-          placeholder="Seleccione un doctor"
-          :options="doctoresArray"
-          :allowClear="true"
-        >
-        </a-select>
+        <a-select placeholder="Seleccione un doctor" :options="doctoresArray" :allowClear="true"> </a-select>
       </a-col>
     </a-row>
     <FullCalendar :options="calendarOptions" />
@@ -26,9 +16,7 @@
     <a-modal v-model="openModal" @ok="okModal" :forceRender="true">
       <template slot="title">
         <div class="title-block p-0 m-0">
-          <h3 class="modal-title m-0" style="color: rgb(237, 85, 100)">
-            Cita: {{ eventSelect.title }}
-          </h3>
+          <h3 class="modal-title m-0" style="color: rgb(237, 85, 100)">Cita: {{ eventSelect.title }}</h3>
         </div>
       </template>
       <div class="d-flex flex-column">
@@ -53,18 +41,10 @@
       </div>
       <template slot="footer">
         <div class="d-flex justify-content-between modal-footer">
-          <button
-            type="button"
-            class="ant-btn ant-btn-dangerous"
-            @click="() => (openModal = false)"
-          >
+          <button type="button" class="ant-btn ant-btn-dangerous" @click="() => (openModal = false)">
             <span>Cancelar</span>
           </button>
-          <button
-            type="button"
-            class="ant-btn ant-btn-primary"
-            @click="okModal"
-          >
+          <button type="button" class="ant-btn ant-btn-primary" @click="okModal">
             <span>Aceptar</span>
           </button>
         </div>
@@ -80,9 +60,7 @@
     >
       <template slot="title">
         <div class="title-block p-0 m-0">
-          <h4 class="modal-title m-0" style="color: #336cfb">
-            Crear nueva cita
-          </h4>
+          <h4 class="modal-title m-0" style="color: #336cfb">Crear nueva cita</h4>
         </div>
       </template>
       <FormNewEventCalendar />
@@ -102,6 +80,7 @@ import FormNewEventCalendar from '~/components/form/FormNewEventCalendar'
 
 export default {
   layout: 'user',
+  middleware: 'auth',
   components: {
     FullCalendar,
     FormNewEventCalendar,
@@ -111,8 +90,7 @@ export default {
       openDrawerNewEvent: false,
       openModal: false,
       openModalCreate: false,
-      widthDrawerResponsive:
-        window.innerWidth > 900 ? 700 : window.innerWidth - 100,
+      widthDrawerResponsive: window.innerWidth > 900 ? 700 : window.innerWidth - 100,
       title: 'Agenda de citas',
       sucursalesArray: [
         { value: 1, label: 'Los Olivos' },
@@ -208,27 +186,19 @@ export default {
       //   this.calendarOptions.events.push(newEvent)
     },
     dragEvent(e) {
-      let newDateEvent = this.$moment(e.event.start).format(
-        'YYYY-MM-DD HH:mm:ss'
-      )
+      let newDateEvent = this.$moment(e.event.start).format('YYYY-MM-DD HH:mm:ss')
       console.log(newDateEvent)
     },
     resizeEvent(e) {
-      let newStartDateEvent = this.$moment(e.event.start).format(
-        'YYYY-MM-DD HH:mm:ss'
-      )
-      let newEndDateEvent = this.$moment(e.event.end).format(
-        'YYYY-MM-DD HH:mm:ss'
-      )
+      let newStartDateEvent = this.$moment(e.event.start).format('YYYY-MM-DD HH:mm:ss')
+      let newEndDateEvent = this.$moment(e.event.end).format('YYYY-MM-DD HH:mm:ss')
       console.log(newStartDateEvent, newEndDateEvent)
     },
     showModalEvent(info) {
       console.log(this.$moment(info.event.start).format('YYYY-MM-DD'))
       this.eventSelect.title = info.event.title
       this.eventSelect.description = info.event.extendedProps.description
-      this.eventSelect.start = this.$moment(info.event.start).format(
-        'ddd DD [de] MM [del] YYYY [a las] hh:mm a'
-      )
+      this.eventSelect.start = this.$moment(info.event.start).format('ddd DD [de] MM [del] YYYY [a las] hh:mm a')
       this.openModal = true
     },
     okModal(e) {

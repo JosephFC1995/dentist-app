@@ -1,17 +1,8 @@
 <template>
   <div class="page--app-dashboard page--default">
     <a-row :gutter="{ xs: 8, sm: 16, md: 16, lg: 16 }">
-      <a-col
-        class="gutter-row"
-        :span="24"
-        :md="6"
-        v-for="(res, index) in resume"
-        :key="index"
-      >
-        <a-card
-          class="ant-card-bordered with-shadow"
-          :style="{ background: 'rgb(251, 251, 251)' }"
-        >
+      <a-col class="gutter-row" :span="24" :md="6" v-for="(res, index) in resume" :key="index">
+        <a-card class="ant-card-bordered with-shadow" :style="{ background: 'rgb(251, 251, 251)' }">
           <div class="ant-card-body">
             <a-row>
               <a-col span="7">
@@ -48,6 +39,7 @@
 <script>
 export default {
   layout: 'user',
+  middleware: 'auth',
   data() {
     return {
       title: 'Dashboard',
@@ -58,7 +50,7 @@ export default {
           ico: 'user-nurse',
         },
         {
-          title: 'Nuevos pacientes del mes',
+          title: 'Nuevos pacientes',
           total: 213,
           ico: 'user-plus',
         },

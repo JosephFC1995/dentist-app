@@ -85,6 +85,7 @@ export default {
     }
   },
   layout: 'user',
+  middleware: 'auth',
   components: {
     TabPacientInformation,
     TabPacientAnamesisGeneral,

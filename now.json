@@ -17,5 +17,8 @@
             "src": "/(.*)",
             "dest": "/"
         }
-    ]
+    ],
+    "env": {
+        "AXIOS_URL": "https://app-dent.josephfc.space/api"
+    }
 }

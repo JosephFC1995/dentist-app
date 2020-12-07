@@ -22,12 +22,7 @@
         </div>
         <div class="main-menu false">
           <nav class="main-menu-wrap">
-            <a-menu
-              theme="light"
-              mode="inline"
-              :default-selected-keys="['1']"
-              class="menu-ul"
-            >
+            <a-menu theme="light" mode="inline" :default-selected-keys="['1']" class="menu-ul">
               <a-menu-item
                 class="menu-item"
                 v-for="(route, index) in routes"
@@ -52,17 +47,47 @@
       </a-layout-sider>
       <a-layout>
         <a-layout-header style="background: #f0f2f5; padding: 0">
-          <div
-            class="trigger-collapse trigger"
-            @click="() => (collapsed = !collapsed)"
-          >
+          <div class="trigger-collapse trigger" @click="() => (collapsed = !collapsed)">
             <i class="uil uil-bars"></i>
           </div>
+          <div class="container">
+            <div class="content-navbar d-flex justify-content-between">
+              <div class="left-navtop">a</div>
+              <div class="right-navtop">
+                <a-dropdown :trigger="['click']" placement="topRight">
+                  <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+                    <a-avatar
+                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                      :style="{ width: '40px', height: '40px', lineHeight: '40px', fontSize: '18px' }"
+                    />
+                    <i class="uil uil-angle-down"></i>
+                  </a>
+                  <a-menu slot="overlay" :style="{ top: '10px' }">
+                    <a-menu-item class="action-item">
+                      <a class="d-flex w-100" href="#" :style="{ margin: 0, padding: '0px 0px' }">
+                        <i class="uil uil-user"></i>
+                        <span class="text">Editar perfil</span>
+                      </a>
+                    </a-menu-item>
+                    <a-menu-item class="action-item">
+                      <a class="d-flex w-100" href="#" :style="{ margin: 0, padding: '0px 0px' }">
+                        <i class="uil uil-calender"></i>
+                        <span class="text">Calendario</span>
+                      </a>
+                    </a-menu-item>
+                    <a-menu-item class="action-item">
+                      <a class="d-flex w-100" @click="logout()" :style="{ margin: 0, padding: '0px 0px' }">
+                        <i class="uil uil-sign-out-alt"></i>
+                        <span class="text">Cerrar sesión</span>
+                      </a>
+                    </a-menu-item>
+                  </a-menu>
+                </a-dropdown>
+              </div>
+            </div>
+          </div>
         </a-layout-header>
-        <a-layout-content
-          class="layout-content"
-          :style="{ background: '#fff' }"
-        >
+        <a-layout-content class="layout-content" :style="{ background: '#fff' }">
           <div class="container">
             <Nuxt />
           </div>
@@ -221,6 +246,15 @@ export default {
       },
     }
   },
+  methods: {
+    async logout() {
+      this.$loading(true)
+      await this.$auth.logout().then(() => {
+        this.$loading(false)
+      })
+    },
+  },
+  mounted() {},
 }
 </script>
 
