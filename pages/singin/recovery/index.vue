@@ -1,9 +1,7 @@
 <template>
   <div
     class="content--page--picture public-layout login background--cover"
-    style="
-      background-image: url(https://source.unsplash.com/OOE4xAnBhKo/1600x900);
-    "
+    style="background-image: url(https://source.unsplash.com/OOE4xAnBhKo/1600x900)"
   >
     <div class="content--box">
       <div class="content--header">
@@ -29,9 +27,7 @@
             </a-col>
 
             <a-col :span="24">
-              <a-button type="primary" html-type="submit">
-                Recuperar mi contraseña
-              </a-button>
+              <a-button type="primary" html-type="submit"> Recuperar mi contraseña </a-button>
             </a-col>
           </a-row>
         </a-form-model>
@@ -46,6 +42,8 @@
 
 <script>
 export default {
+  // middleware: ['auth'],
+  auth: 'guest',
   data() {
     return {
       title: 'Recuperar contraseña',

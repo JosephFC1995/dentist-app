@@ -37,6 +37,13 @@ export default {
 
     axios: {
         baseURL: process.env.AXIOS_URL,
+        headers: {
+            common: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+        },
     },
 
     auth: {

@@ -269,8 +269,6 @@ export default {
     @media (min-width: 768px) {
       display: none;
     }
-    &:hover {
-    }
   }
   .logo {
     height: 32px;

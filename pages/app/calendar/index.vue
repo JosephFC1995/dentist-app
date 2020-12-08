@@ -80,7 +80,7 @@ import FormNewEventCalendar from '~/components/form/FormNewEventCalendar'
 
 export default {
   layout: 'user',
-  middleware: 'auth',
+  // middleware: 'auth',
   components: {
     FullCalendar,
     FormNewEventCalendar,
