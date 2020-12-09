@@ -33,7 +33,7 @@ export default {
     googleFonts: {
         families: { Lato: [100, 300, 400, 600, 800] },
     },
-    modules: ['@nuxtjs/axios', '@nuxtjs/axios', '@nuxtjs/auth-next'],
+    modules: ['@nuxtjs/axios', '@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/proxy'],
 
     axios: {
         baseURL: process.env.AXIOS_URL,
@@ -45,8 +45,15 @@ export default {
                 'Access-Control-Allow-Headers': '*',
             },
         },
+        proxy: true,
     },
-
+    proxy: {
+        '/api': 'https://app-dent.josephfc.space',
+        '/laravel': {
+            target: 'https://app-dent.josephfc.vercel.app',
+            pathRewrite: { '^/laravel': '/' },
+        },
+    },
     auth: {
         resetOnError: true,
         redirect: {

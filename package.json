@@ -19,6 +19,7 @@
     "@nuxtjs/auth-next": "^5.0.0-1607335658.590bfae",
     "@nuxtjs/axios": "^5.12.3",
     "@nuxtjs/moment": "^1.6.1",
+    "@nuxtjs/proxy": "^2.0.1",
     "ant-design-vue": "^1.6.5",
     "bootstrap-4-grid": "^3.4.0",
     "core-js": "^3.6.5",
