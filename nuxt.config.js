@@ -20,7 +20,12 @@ export default {
 
     css: ['bootstrap-4-grid/css/grid.min.css', '~/assets/less/_ant.less', '~/assets/_all.scss'],
 
-    plugins: ['@/plugins/antd-ui', { src: '@/plugins/vue-json-excel', ssr: false }, { src: '@/plugins/vue-loading', ssr: false }],
+    plugins: [
+        '@/plugins/antd-ui',
+        { src: '@/plugins/vue-json-excel', ssr: false },
+        { src: '@/plugins/vue-loading', ssr: false },
+        { src: '@/plugins/vue-mask', ssr: false },
+    ],
 
     components: true,
 
@@ -37,13 +42,13 @@ export default {
 
     axios: {
         proxy: true,
+        prefix: '/api/',
+    },
+    env: {
+        apiHost: process.env.AXIOS_URL,
     },
     proxy: {
-        '/api': process.env.AXIOS_URL,
-        '/laravel': {
-            target: 'https://app-dent.josephfc.vercel.app',
-            pathRewrite: { '^/laravel': '/' },
-        },
+        '/api/': { target: process.env.AXIOS_URL, pathRewrite: { '^/api/': '' } },
     },
     auth: {
         resetOnError: true,

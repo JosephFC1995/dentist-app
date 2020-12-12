@@ -39,7 +39,7 @@
 <script>
 export default {
   layout: 'user',
-  // middleware: 'auth',
+  middleware: 'auth',
   data() {
     return {
       title: 'Dashboard',

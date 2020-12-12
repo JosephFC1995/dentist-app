@@ -16,7 +16,7 @@ import TablePacients from '~/components/table/TablePacients'
 
 export default {
   layout: 'user',
-  // middleware: 'auth',
+  middleware: 'auth',
   components: {
     TablePacients,
   },

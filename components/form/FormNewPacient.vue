@@ -1,18 +1,16 @@
 <template>
   <div class="form-general">
     <a-form-model :model="form" ref="newPacient">
-      <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">
-        Datos del nuevo paciente
-      </h6>
+      <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Datos del nuevo paciente</h6>
       <a-row :gutter="16">
         <a-col :span="24" :md="6">
           <a-form-model-item label="Foto">
             <a-upload
-              name="avatar"
+              name="file"
               list-type="picture-card"
               class="avatar-uploader"
               :show-upload-list="false"
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              :action="apiHost + '/file/upload'"
               :before-upload="beforeUpload"
               @change="handleChange"
               :disabled="loading"
@@ -39,71 +37,43 @@
         </a-col>
         <a-col :span="24" :md="9">
           <a-form-model-item label="Número de documento">
-            <a-input
-              v-model="form.numberDocumento"
-              placeholder="Número de documento"
-              :disabled="loading"
-            />
+            <a-input v-model="form.numberDocumento" placeholder="Número de documento" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <!-- Nombres -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Nombres">
-            <a-input
-              v-model="form.names"
-              placeholder="Nombres"
-              :disabled="loading"
-            />
+            <a-input v-model="form.names" placeholder="Nombres" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <!-- Apellido paterno -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Apellido paterno">
-            <a-input
-              v-model="form.lastNameFather"
-              placeholder="Apellido paterno"
-              :disabled="loading"
-            />
+            <a-input v-model="form.lastNameFather" placeholder="Apellido paterno" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <!-- Apellido materno -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Apellido materno">
-            <a-input
-              v-model="form.lastNameMother"
-              placeholder="Apellido materno"
-              :disabled="loading"
-            />
+            <a-input v-model="form.lastNameMother" placeholder="Apellido materno" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <!-- Dirección -->
         <a-col :span="24" :md="12">
           <a-form-model-item label="Dirección">
-            <a-input
-              v-model="form.direction"
-              placeholder="Dirección"
-              :disabled="loading"
-            />
+            <a-input v-model="form.direction" placeholder="Dirección" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <!-- Telefono -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Teléfono">
-            <a-input
-              v-model="form.phone"
-              placeholder="Teléfono"
-              :disabled="loading"
-            />
+            <a-input v-model="form.phone" placeholder="Teléfono" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <!-- Correo -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Correo electrónico">
-            <a-input
-              v-model="form.email"
-              placeholder="Correo electrónico"
-              :disabled="loading"
-            />
+            <a-input v-model="form.email" placeholder="Correo electrónico" :disabled="loading" />
           </a-form-model-item>
         </a-col>
 
@@ -121,12 +91,7 @@
         <!-- Genero -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Género">
-            <a-select
-              placeholder="Seleccione un género"
-              :options="generoArray"
-              v-model="form.genere"
-              :disabled="loading"
-            >
+            <a-select placeholder="Seleccione un género" :options="generoArray" v-model="form.genere" :disabled="loading">
             </a-select>
           </a-form-model-item>
         </a-col>
@@ -160,24 +125,14 @@
         <!-- Seguro -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Seguro">
-            <a-select
-              placeholder="Seleccione un seguro"
-              :options="seguroArray"
-              v-model="form.segure"
-              :disabled="loading"
-            >
+            <a-select placeholder="Seleccione un seguro" :options="seguroArray" v-model="form.segure" :disabled="loading">
             </a-select>
           </a-form-model-item>
         </a-col>
         <!-- Referido -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Referido" class="with-button">
-            <a-select
-              placeholder="Seleccione un referido"
-              :options="referidosArray"
-              v-model="form.referred"
-              :disabled="loading"
-            >
+            <a-select placeholder="Seleccione un referido" :options="referidosArray" v-model="form.referred" :disabled="loading">
             </a-select>
             <a-button type="primary" :disabled="loading">
               <i class="uil uil-plus-circle"></i>
@@ -210,58 +165,35 @@
         </a-col>
         <!-- Titulo -->
         <a-col :span="24" :md="24">
-          <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">
-            Campos de emergencia
-          </h6>
+          <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Campos de emergencia</h6>
         </a-col>
         <!-- Nombres -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Nombre de la persona">
-            <a-input
-              v-model="form.namesEmergency"
-              placeholder="Nombres"
-              :disabled="loading"
-            />
+            <a-input v-model="form.namesEmergency" placeholder="Nombres" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <!-- Apellido paterno -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Apellido paterno de la persona">
-            <a-input
-              v-model="form.lastNameFatherEmergency"
-              placeholder="Apellido paterno"
-              :disabled="loading"
-            />
+            <a-input v-model="form.lastNameFatherEmergency" placeholder="Apellido paterno" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <!-- Apellido materno -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Apellido materno de la persona">
-            <a-input
-              v-model="form.lastNameMotherEmergency"
-              placeholder="Apellido materno"
-              :disabled="loading"
-            />
+            <a-input v-model="form.lastNameMotherEmergency" placeholder="Apellido materno" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <!-- Parentezco -->
         <a-col :span="24" :md="6">
           <a-form-model-item label="Parentesco">
-            <a-input
-              v-model="form.relationship"
-              placeholder="Parentesco"
-              :disabled="loading"
-            />
+            <a-input v-model="form.relationship" placeholder="Parentesco" :disabled="loading" />
           </a-form-model-item>
         </a-col>
 
         <a-col :span="24" :md="24" class="d-flex justify-content-between">
-          <a-button
-            type="primary"
-            html-type="submit"
-            @click="saveNewPacient"
-            :loading="loading"
-          >
+          <a-button type="primary" html-type="submit" @click="saveNewPacient" :loading="loading">
             {{ loading ? 'Creando usuario' : 'Crear usuario' }}
           </a-button>
         </a-col>
@@ -283,6 +215,7 @@ export default {
       imageUrl: '',
       loadingAvatar: false,
       form: {},
+      apiHost: process.env.apiHost,
       tiposDocumentosArray: [
         { value: 1, label: 'DNI' },
         { value: 2, label: 'Pasaporte' },
@@ -364,6 +297,7 @@ export default {
       return isJpgOrPng && isLt2M
     },
   },
+  mounted() {},
 }
 </script>
 
