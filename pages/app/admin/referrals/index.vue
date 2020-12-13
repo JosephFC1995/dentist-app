@@ -1,12 +1,12 @@
 <template>
   <div class="page--app-users page--default">
     <header class="page-header">
-      <h1 class="page-title">Usuarios</h1>
+      <h1 class="page-title">Referidos</h1>
       <a-button class="ant-btn ant-btn-primary p-0 px-3" @click="() => (openDrawerNewUser = true)">
-        <span> <i class="uil uil-plus-circle mr-1"></i> Nuevo Usuarios </span>
+        <span> <i class="uil uil-plus-circle mr-1"></i> Nuevo referido </span>
       </a-button>
     </header>
-    <TableUsers />
+    <TableReferrals />
     <a-drawer
       :width="widthDrawerResponsive"
       :closable="true"
@@ -17,18 +17,18 @@
     >
       <template slot="title">
         <div class="title-block p-0 m-0">
-          <h4 class="modal-title m-0" style="color: #336cfb">Agregar usuario</h4>
+          <h4 class="modal-title m-0" style="color: #336cfb">Nuevo referido</h4>
         </div>
       </template>
-      <FormUser @close="closeDrawerHistory" :form="userForm" :newData="true" />
+      <FormReferrals @close="closeDrawerHistory" :form="referralsForm" :newData="true" />
     </a-drawer>
   </div>
 </template>
 
 <script>
 // components
-import TableUsers from '~/components/table/TableUsers'
-import FormUser from '~/components/form/FormUser'
+import TableReferrals from '~/components/table/TableReferrals'
+import FormReferrals from '~/components/form/FormReferrals'
 
 import { mapState } from 'vuex'
 
@@ -37,21 +37,17 @@ export default {
   middleware: 'auth',
   asyncData({ redirect, $axios }) {},
   async fetch({ store }) {
-    await store.dispatch('tables/users/GET_USERS_TABLE')
-    store.dispatch('data/general/GET_ROLES')
-    store.dispatch('data/general/GET_TYPE_DOCUMENTS')
-    store.dispatch('data/general/GET_SUBSIDIARIES')
-    store.dispatch('data/general/GET_ESPECIALITIES')
+    // await store.dispatch('tables/users/GET_USERS_TABLE')
     this.loading = false
   },
   components: {},
   data() {
     return {
-      title: 'Usuarios',
+      title: 'Referidos',
       loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       openDrawerNewUser: false,
-      userForm: {
+      referralsForm: {
         firm: null,
         avatar: null,
       },
@@ -67,7 +63,7 @@ export default {
   methods: {
     closeDrawerHistory() {
       setTimeout(() => {
-        this.userForm = {
+        this.referralsForm = {
           firm: null,
           avatar: null,
         }

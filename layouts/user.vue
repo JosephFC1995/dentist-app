@@ -141,7 +141,7 @@ export default {
         },
         {
           type: 'route',
-          name: 'app-admin-motives',
+          name: 'app-admin-reasons',
           title: 'Motivos',
           ico: 'comment-lines',
         },
@@ -189,15 +189,33 @@ export default {
         },
         {
           type: 'route',
-          name: 'app-admin-expenses',
-          title: 'Egresos',
-          ico: 'money-withdraw',
+          name: 'app-admin-subsidiaries',
+          title: 'Sucursales',
+          ico: 'building',
         },
         {
           type: 'route',
           name: 'app-admin-supplies',
           title: 'Insumos',
           ico: 'tablets',
+        },
+        {
+          type: 'route',
+          name: 'app-admin-income',
+          title: 'Ingresos',
+          ico: 'money-withdraw',
+        },
+        {
+          type: 'route',
+          name: 'app-admin-expenses',
+          title: 'Salidas',
+          ico: 'money-insert',
+        },
+        {
+          type: 'route',
+          name: 'app-admin-stock',
+          title: 'Stock de insumos',
+          ico: 'box',
         },
         {
           type: 'title',
@@ -207,9 +225,9 @@ export default {
         },
         {
           type: 'route',
-          name: 'app-settings-branch-offices',
-          title: 'Sucursales',
-          ico: 'building',
+          name: 'app-settings-company',
+          title: 'Empresa',
+          ico: 'compact-disc',
         },
         {
           type: 'route',
@@ -226,7 +244,7 @@ export default {
         {
           type: 'route',
           name: 'app-settings-facturation',
-          title: 'Facturaión',
+          title: 'Facturación',
           ico: 'bill',
         },
         {

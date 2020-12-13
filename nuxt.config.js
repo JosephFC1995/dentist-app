@@ -25,6 +25,7 @@ export default {
         { src: '@/plugins/vue-json-excel', ssr: false },
         { src: '@/plugins/vue-loading', ssr: false },
         { src: '@/plugins/vue-mask', ssr: false },
+        { src: '@/plugins/vue-google-maps', ssr: false },
     ],
 
     components: true,
@@ -73,13 +74,14 @@ export default {
                     maxAge: 60 * 60,
                 },
                 refreshToken: {
-                    maxAge: 20160 * 60,
+                    maxAge: 60 * 60,
                 },
             },
         },
     },
 
     build: {
+        transpile: [/^vue2-google-maps($|\/)/],
         loaders: {
             less: {
                 lessOptions: {

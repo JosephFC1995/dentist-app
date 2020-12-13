@@ -2,7 +2,12 @@
   <div class="table-general">
     <a-space class="mb-3 mt-2 d-flex justify-content-between">
       <div>
-        <downloadExcel class="ant-btn ant-btn-sm rounded-full pr-2" :data="users" :fields="json_fields_excel" name="reporte.xls">
+        <downloadExcel
+          class="ant-btn ant-btn-sm rounded-full pr-2"
+          :data="reasons"
+          :fields="json_fields_excel"
+          name="reporte.xls"
+        >
           <i class="uil uil-cloud-download mr-2"></i> Archivo excel
         </downloadExcel>
         <a-button shape="round" class="rounded-full" size="small">
@@ -17,7 +22,7 @@
       <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
       <a-table
         :columns="columns"
-        :data-source="users"
+        :data-source="reasons"
         rowKey="id"
         :pagination="{
           defaultPageSize: 10,
@@ -25,14 +30,6 @@
         }"
       >
         <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="avatar" slot-scope="avatar">
-          <template v-if="!avatar">
-            <a-avatar size="small" icon="user" />
-          </template>
-          <template v-else>
-            <a-avatar size="small" icon="user" :src="avatar.path" />
-          </template>
-        </span>
         <span slot="action" slot-scope="text, record">
           <a-button class="ant-btn ant-btn-sm" @click="openEditUser(record)">
             <span class="ico">
@@ -57,28 +54,29 @@
     >
       <template slot="title">
         <div class="title-block p-0 m-0">
-          <h4 class="modal-title m-0" style="color: #336cfb">Detalles del usuario</h4>
+          <h4 class="modal-title m-0" style="color: #336cfb">Detalles de la razón</h4>
         </div>
       </template>
-      <FormUser @close="closeDrawerHistory" :form="userForm" />
+      <FormReferrals @close="closeDrawerHistory" :form="referralsForm" />
     </a-drawer>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import FormUser from '~/components/form/FormUser'
+import FormReferrals from '~/components/form/FormReferrals'
 
 export default {
   components: {
-    FormUser,
+    FormReferrals,
   },
   data() {
     return {
       loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       openDrawerDetail: false,
-      userForm: null,
+      referralsForm: null,
+      reasons: null,
       json_fields_excel: {
         ID: 'id',
         Nombre: 'name',
@@ -93,35 +91,9 @@ export default {
           title: 'ID',
         },
         {
-          title: 'Foto',
-          dataIndex: 'avatar',
-          key: 'avatar',
-          scopedSlots: { customRender: 'avatar' },
-        },
-        {
           title: 'Nombre',
           dataIndex: 'name',
           key: 'name',
-        },
-        {
-          title: 'Apellido',
-          dataIndex: 'last_name',
-          key: 'last_name',
-        },
-        {
-          title: 'Teléfono',
-          dataIndex: 'phone',
-          key: 'phone',
-        },
-        {
-          title: 'Rol',
-          dataIndex: 'role.name',
-          key: 'role.name',
-        },
-        {
-          title: 'Correo',
-          dataIndex: 'email',
-          key: 'email',
         },
         {
           title: 'Acciones',
@@ -134,18 +106,18 @@ export default {
   methods: {
     async openEditUser(record) {
       this.openDrawerDetail = true
-      this.userForm = await this.$store.dispatch('tables/users/GET_USER_SELECTED', record.id)
+      // this.referralsForm = await this.$store.dispatch('tables/users/GET_USER_SELECTED', record.id)
     },
     async deleteUser(record) {
       this.loading = true
-      let deleteResponse = await this.$store.dispatch('tables/users/DELETE_USER_SELECTED', record.id)
-      if (deleteResponse) this.$message.success(deleteResponse.message)
-      this.$store.dispatch('tables/users/GET_USERS_TABLE')
+      //   let deleteResponse = await this.$store.dispatch('tables/users/DELETE_USER_SELECTED', record.id)
+      //   if (deleteResponse) this.$message.success(deleteResponse.message)
+      //   this.$store.dispatch('tables/users/GET_USERS_TABLE')
       this.loading = false
     },
     closeDrawerHistory() {
       setTimeout(() => {
-        this.userForm = null
+        this.referralsForm = null
       }, 500)
       this.openDrawerDetail = false
     },
@@ -153,11 +125,7 @@ export default {
       clearUser: 'tables/users/CLEAR_USER',
     }),
   },
-  computed: {
-    ...mapState({
-      users: (state) => state.tables.users.users,
-    }),
-  },
+  computed: {},
   mounted() {
     window.onresize = () => {
       let width = window.innerWidth

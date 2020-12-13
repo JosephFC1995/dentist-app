@@ -18,10 +18,6 @@ export const mutations = {
     CLEAR_USER(state) {
         state.user = null
     },
-    SET_NEW_AVATAR_USER(state, file) {
-        state.user.avatar = file
-        state.user.id_avatar_file = file.id
-    },
 }
 
 export const actions = {
@@ -33,5 +29,9 @@ export const actions = {
         const { data } = await this.$axios.$get(`/users/${userID}`)
             // commit('SET_USER', data)
         return data
+    },
+    async DELETE_USER_SELECTED({ commit, state }, userID) {
+        return await this.$axios.$delete(`/users/${userID}`)
+            // commit('SET_USER', data)
     },
 }

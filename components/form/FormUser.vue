@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="form-general" v-if="form">
+    <div class="form-general" v-if="form || newData">
       <a-form-model :model="form" ref="user" :rules="rules">
         <a-row :gutter="16">
           <!-- Avatar -->
@@ -39,12 +39,7 @@
           <!-- Tipo de documento -->
           <a-col :span="24" :md="12">
             <a-form-model-item label="Tipo de documento">
-              <a-select
-                placeholder="Seleccione una opción"
-                v-model="form.id_type_document"
-                :allowClear="true"
-                :disabled="loading"
-              >
+              <a-select placeholder="Seleccione una opción" v-model="form.id_type_document" :disabled="loading">
                 <a-select-option v-for="item in documentsArray" :key="item.id" :value="item.id">
                   {{ item.name }}
                 </a-select-option>
@@ -61,7 +56,7 @@
             <a-row :gutter="16">
               <!-- Nombres -->
               <a-col :span="24" :md="8">
-                <a-form-model-item label="Nombres">
+                <a-form-model-item label="Nombres" prop="name">
                   <a-input v-model="form.name" :disabled="loading" />
                 </a-form-model-item>
               </a-col>
@@ -76,15 +71,15 @@
 
           <!-- Correo -->
           <a-col :span="24" :md="12">
-            <a-form-model-item label="Correo">
+            <a-form-model-item label="Correo" prop="email">
               <a-input v-model="form.email" :disabled="loading" />
             </a-form-model-item>
           </a-col>
 
           <!-- Password -->
           <a-col :span="24" :md="12">
-            <a-form-model-item label="Password">
-              <a-input type="password" v-model="form.password_field" :disabled="true" />
+            <a-form-model-item label="Password" prop="password_field">
+              <a-input type="password" v-model="form.password_field" :disabled="!newData" />
             </a-form-model-item>
           </a-col>
 
@@ -113,7 +108,7 @@
           <!-- Especialidad -->
           <a-col :span="24" :md="24" v-show="form.id_role != 1">
             <a-form-model-item label="Especialidad">
-              <a-select placeholder="Seleccione una opción" v-model="form.id_specialty" :allowClear="true" :disabled="loading">
+              <a-select placeholder="Seleccione una opción" v-model="form.id_specialty" :disabled="loading">
                 <a-select-option v-for="item in specialitys" :key="item.id" :value="item.id">
                   {{ item.name }}
                 </a-select-option>
@@ -180,7 +175,7 @@
 
           <a-col :span="24">
             <a-button type="primary" html-type="submit" @click="submitLogin" class="w-100" :loading="loading">
-              Editar usuario
+              {{ newData ? 'Agregar usuario' : 'Editar usuario' }}
             </a-button>
           </a-col>
         </a-row>
@@ -205,23 +200,48 @@ export default {
       type: Object,
       default: null,
     },
+    newData: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
+    var rulePassword = {
+      required: this.newData ? true : false,
+      message: 'Por favor agregue una contraseña',
+      trigger: 'blur',
+    }
     return {
       loading: false,
+      loadingAvatar: false,
       apiHost: process.env.apiHost,
       headers: {
         Authorization: this.$auth.strategy.token.get(),
       },
       imageUrl: '',
       rules: {
+        name: [
+          {
+            required: true,
+            message: 'Por favor seleccione un rol para el usuario',
+            trigger: 'blur',
+          },
+        ],
         id_role: [
+          {
+            required: true,
+            message: 'Por favor seleccione un rol para el usuario',
+            trigger: 'blur',
+          },
+        ],
+        email: [
           {
             required: true,
             message: 'Por favor agregue su correo electrónico',
             trigger: 'blur',
           },
         ],
+        password_field: [rulePassword],
       },
     }
   },
@@ -231,10 +251,16 @@ export default {
         if (valid) {
           let _self = this
           _self.loading = true
-          console.log(_self.form)
-          let response = await _self.$axios.$put(`/users/${this.form.id}`, _self.form).catch((errors) => {
-            _self.loading = false
-          })
+          let response = false
+          if (!this.newData) {
+            response = await _self.$axios.$put(`/users/${this.form.id}`, _self.form).catch((errors) => {
+              _self.loading = false
+            })
+          } else {
+            response = await _self.$axios.$post(`/users`, _self.form).catch((errors) => {
+              _self.loading = false
+            })
+          }
           if (response.success) this.$message.success(response.message)
           _self.loading = false
           this.$store.dispatch('tables/users/GET_USERS_TABLE')
