@@ -47,6 +47,7 @@ export default {
     },
     env: {
         apiHost: process.env.AXIOS_URL,
+        keyGoogleMaps: process.env.KEY_GOOGLE_MAPS,
     },
     proxy: {
         '/api/': { target: process.env.AXIOS_URL, pathRewrite: { '^/api/': '' } },
