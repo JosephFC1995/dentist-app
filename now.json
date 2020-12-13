@@ -19,6 +19,7 @@
         }
     ],
     "env": {
-        "AXIOS_URL": "https://app-dent.josephfc.space/api"
+        "AXIOS_URL": "https://app-dent.josephfc.space/api",
+        "KEY_GOOGLE_MAPS": "AIzaSyDSqlR9aIRbDbp_FleXuIq8lw7ssjT-hpE"
     }
 }
