@@ -1,16 +1,5 @@
 <template>
   <div class="form-general">
-    <a-alert type="info" class="mb-3" :closable="true" v-show="idAddPacient != 0">
-      <span slot="message" :style="{ color: '#fff', fontWeight: 600 }">
-        El usuario {{ nameAddPacient }} ha sido agregado, puede ir ver el perfil del nuevo paciente
-        <nuxt-link
-          :to="{ name: 'app-patients-id', params: { id: idAddPacient } }"
-          :style="{ color: '#fff', fontWeight: 600, textDecoration: 'underline' }"
-        >
-          aqui
-        </nuxt-link>
-      </span>
-    </a-alert>
     <a-form-model :model="form" ref="newPacient" :rules="rules">
       <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Datos del nuevo paciente</h6>
       <a-row :gutter="16">
@@ -224,7 +213,7 @@
 
         <a-col :span="24" :md="24" class="d-flex justify-content-end">
           <a-button type="primary" html-type="submit" @click="saveNewPacient" :loading="loading">
-            {{ loading ? 'Creando nuevo paciente' : 'Crear nuevo paciente' }}
+            {{ loading ? 'Actualizando paciente' : 'Actualizar paciente' }}
           </a-button>
         </a-col>
       </a-row>
@@ -239,7 +228,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
+import _ from 'lodash'
 
 function getBase64(img, callback) {
   const reader = new FileReader()
@@ -247,8 +237,15 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img)
 }
 export default {
+  props: {
+    // form: {
+    //   type: Object,
+    //   default: null,
+    // },
+  },
   data() {
     return {
+      form: _.cloneDeep(this.$store.state.tables.patients.patient),
       loading: false,
       openModalAddOcupation: false,
       openModalAddReferred: false,
@@ -259,9 +256,6 @@ export default {
       apiHost: process.env.apiHost,
       headers: {
         Authorization: this.$auth.strategy.token.get(),
-      },
-      form: {
-        avatar: null,
       },
       rules: {
         id_type_document: [
@@ -384,19 +378,17 @@ export default {
         if (valid) {
           let _self = this
           _self.loading = true
+          this.$store.commit('tables/patients/SET_PATIENT', _self.form)
           let response = false
           this.idAddPacient = null
           this.nameAddPacient = null
-          response = await _self.$axios.$post(`/pacients`, _self.form).catch((errors) => {
+          response = await _self.$axios.$put(`/pacients/${_self.form.id}`, _self.form).catch((errors) => {
             _self.loading = false
           })
           if (response.success) this.$message.success({ content: response.message, duration: 5 })
           this.idAddPacient = response.data.id
           this.nameAddPacient = response.data.name
           _self.loading = false
-          this.form = {
-            avatar: null,
-          }
         } else {
           console.log('error submit!!')
           return false
@@ -434,6 +426,11 @@ export default {
   },
   mounted() {},
   computed: {
+    // form: {
+    //   get() {
+    //     return this.$store.state.tables.patients.patient
+    //   },
+    // },
     ...mapState({
       tiposDocumentosArray: (state) => state.data.general.typeDocuments,
       generoArray: (state) => state.data.general.genders,

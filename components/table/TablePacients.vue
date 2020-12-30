@@ -4,7 +4,7 @@
       <div>
         <downloadExcel
           class="ant-btn ant-btn-sm rounded-full pr-2"
-          :data="data"
+          :data="patients"
           :fields="json_fields_excel"
           name="reporte.xls"
         >
@@ -20,40 +20,66 @@
     </a-space>
     <a-table
       :columns="columns"
-      :data-source="data"
+      :data-source="patients"
       :pagination="{
         defaultPageSize: 5,
         hideOnSinglePage: true,
       }"
     >
       <a slot="name" slot-scope="text">{{ text }}</a>
-      <span slot="photo">
-        <a-avatar size="small" icon="user" />
+      <span slot="avatar" slot-scope="avatar">
+        <template v-if="!avatar">
+          <a-avatar size="small" icon="user" />
+        </template>
+        <template v-else>
+          <a-avatar size="small" icon="user" :src="avatar.path" />
+        </template>
       </span>
       <span slot="action" slot-scope="record">
-        <nuxt-link
-          :to="{ name: 'app-patients-id', params: { id: record.id } }"
-          class="ant-btn ant-btn-sm"
-        >
+        <nuxt-link :to="{ name: 'app-patients-id', params: { id: record.id } }" class="ant-btn ant-btn-sm">
           <span class="ico">
             <i class="uil uil-eye"></i>
           </span>
         </nuxt-link>
 
-        <a-button type="danger" size="small">
+        <a-button type="danger" size="small" @click="deleteUser(record.id)">
           <span class="ico">
             <i class="uil uil-trash-alt"></i>
           </span>
         </a-button>
       </span>
     </a-table>
+    <!-- Modal -->
+    <a-modal v-model="openModalDelete" @ok="okModalDelete" :forceRender="true" centered>
+      <template slot="title">
+        <div class="title-block p-0 m-0">
+          <h4 class="modal-title m-0" style="color: rgb(237, 85, 100)">Eliminar al usuario</h4>
+        </div>
+      </template>
+      <span> Esta seguro que desea eliminar al usuario </span>
+      <template slot="footer">
+        <div class="d-flex justify-content-between modal-footer">
+          <a-button type="button" class="ant-btn ant-btn-dangerous" @click="() => (openModalDelete = false)" :loading="loading">
+            <span>Cancelar</span>
+          </a-button>
+          <a-button type="primary" class="ant-btn ant-btn-primary" @click="okModalDelete" :loading="loading">
+            <span>Aceptar</span>
+          </a-button>
+        </div>
+      </template>
+    </a-modal>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   data() {
     return {
+      openModalDelete: false,
+      loading: false,
+      idUserDelete: 0,
       json_fields_excel: {
         ID: 'id',
         Nombre: 'name',
@@ -69,9 +95,9 @@ export default {
         },
         {
           title: 'Foto',
-          dataIndex: 'photo',
-          key: 'photo',
-          scopedSlots: { customRender: 'photo' },
+          dataIndex: 'avatar',
+          key: 'avatar',
+          scopedSlots: { customRender: 'avatar' },
         },
         {
           title: 'Nombre',
@@ -80,8 +106,8 @@ export default {
         },
         {
           title: 'Apellido paterno',
-          dataIndex: 'lastNameFather',
-          key: 'lastNameFather',
+          dataIndex: 'last_name_father',
+          key: 'last_name_father',
         },
         {
           title: 'Teléfono',
@@ -99,51 +125,27 @@ export default {
           scopedSlots: { customRender: 'action' },
         },
       ],
-      data: [
-        {
-          id: '1',
-          name: 'John',
-          lastNameFather: 'Brown',
-          phone: '987 654 321',
-          email: 'user@company.org',
-        },
-        {
-          id: '2',
-          name: 'Jim',
-          lastNameFather: 'Green',
-          phone: '987 654 321',
-          email: 'user@company.org',
-        },
-        {
-          id: '3',
-          name: 'Joe',
-          lastNameFather: 'Black',
-          phone: '987 654 321',
-          email: 'user@company.org',
-        },
-        {
-          id: '4',
-          name: 'John',
-          lastNameFather: 'Brown',
-          phone: '987 654 321',
-          email: 'user@company.org',
-        },
-        {
-          id: '5',
-          name: 'Jim',
-          lastNameFather: 'Green',
-          phone: '987 654 321',
-          email: 'user@company.org',
-        },
-        {
-          id: '6',
-          name: 'Joe',
-          lastNameFather: 'Black',
-          phone: '987 654 321',
-          email: 'user@company.org',
-        },
-      ],
     }
+  },
+  methods: {
+    deleteUser(id) {
+      this.openModalDelete = true
+      this.idUserDelete = id
+    },
+    async okModalDelete() {
+      this.loading = true
+      let deleteResponse = await this.$store.dispatch('tables/patients/DELETE_PATIENTS_SELECTED', this.idUserDelete)
+      if (deleteResponse) this.$message.success(deleteResponse.message)
+      this.$store.dispatch('tables/patients/GET_PATIENTS_TABLE')
+      this.openModalDelete = false
+      this.idUserDelete = 0
+      this.loading = false
+    },
+  },
+  computed: {
+    ...mapState({
+      patients: (state) => state.tables.patients.patients,
+    }),
   },
 }
 </script>

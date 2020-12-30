@@ -17,12 +17,17 @@ import TablePacients from '~/components/table/TablePacients'
 export default {
   layout: 'user',
   middleware: 'auth',
+  async fetch({ store }) {
+    await store.dispatch('tables/patients/GET_PATIENTS_TABLE')
+    this.loading = false
+  },
   components: {
     TablePacients,
   },
   data() {
     return {
       title: 'Pacientes',
+      loading: false,
     }
   },
   head() {

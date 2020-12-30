@@ -1,15 +1,21 @@
 <template>
   <div class="component-pacient-information">
-    <FormNewPacient />
+    <FormPacientInformation :form="patient" />
   </div>
 </template>
 
 <script>
-import FormNewPacient from '~/components/form/FormNewPacient'
+import FormPacientInformation from '~/components/form/FormPacientInformation'
 
 export default {
+  props: {
+    patient: {
+      type: Object,
+      default: null,
+    },
+  },
   components: {
-    FormNewPacient,
+    FormPacientInformation,
   },
 }
 </script>

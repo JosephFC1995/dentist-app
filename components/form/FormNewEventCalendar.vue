@@ -1,18 +1,19 @@
 <template>
   <div class="form-general">
     <a-form-model :model="form">
-      <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">
-        Datos del paciente
-      </h6>
+      <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Datos del paciente</h6>
       <a-row :gutter="16">
         <a-col :span="24">
           <a-form-model-item label="Paciente" class="with-button">
             <a-select
               placeholder="Seleccione un paciente"
-              :options="pacientesArray"
               v-model="form.patient"
               :allowClear="true"
+              @change="changeSelectPacient"
             >
+              <a-select-option v-for="item in patientsArray" :key="item.id" :value="item.id">
+                {{ item.last_name_father + ' ' + item.last_name_mother + ' ' + item.name + ' (' + item.number_documento + ')' }}
+              </a-select-option>
             </a-select>
             <a-button type="primary" @click="() => (openDrawerNewUser = true)">
               <i class="uil uil-plus-circle"></i>
@@ -31,51 +32,42 @@
           </a-form-model-item>
         </a-col>
         <a-col :span="24">
-          <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">
-            Datos generales
-          </h6>
+          <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Datos generales</h6>
         </a-col>
+
         <a-col :span="24" :md="12">
-          <a-form-model-item label="Sucursal">
-            <a-select
-              placeholder="Seleccione una sucursal"
-              v-model="form.branchOffice"
-              :options="sucursalesArray"
-              :allowClear="true"
-            >
+          <a-form-model-item label="Doctor">
+            <a-select placeholder="Seleccione un doctor" v-model="form.doctor" :allowClear="true">
+              <a-select-option v-for="item in doctorsArray" :key="item.id" :value="item.id">
+                {{ (item.last_name ? item.last_name : '') + ' ' + item.name }}
+              </a-select-option>
             </a-select>
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="12">
-          <a-form-model-item label="Doctor">
-            <a-select
-              placeholder="Seleccione un doctor"
-              v-model="form.doctor"
-              :options="doctoresArray"
-              :allowClear="true"
-            >
+          <a-form-model-item label="Sucursal">
+            <a-select placeholder="Seleccione una sucursal" v-model="form.subsidiary" :allowClear="true">
+              <a-select-option v-for="item in subsidiariesArray" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </a-select-option>
             </a-select>
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="12">
           <a-form-model-item label="Motivo">
-            <a-select
-              placeholder="Seleccione un motivo"
-              v-model="form.motive"
-              :options="motivosArray"
-              :allowClear="true"
-            >
+            <a-select placeholder="Seleccione un motivo" v-model="form.reason" :allowClear="true" @change="changeSelectReason">
+              <a-select-option v-for="item in reasonsArray" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </a-select-option>
             </a-select>
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="12">
           <a-form-model-item label="Canal">
-            <a-select
-              placeholder="Seleccione un canal"
-              v-model="form.canale"
-              :options="canalesArray"
-              :allowClear="true"
-            >
+            <a-select placeholder="Seleccione un canal" v-model="form.referred" :allowClear="true">
+              <a-select-option v-for="item in referredsArray" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </a-select-option>
             </a-select>
           </a-form-model-item>
         </a-col>
@@ -84,37 +76,19 @@
         </a-col>
         <a-col :span="24" :md="12">
           <a-form-model-item label="Fecha">
-            <a-date-picker
-              v-model="form.date"
-              :disabled-date="disabledDate"
-              placeholder="Seleccione una fecha"
-            />
+            <a-date-picker v-model="form.date" :disabled-date="disabledDate" placeholder="Seleccione una fecha" />
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="12">
           <a-form-model-item label="Hora">
-            <a-time-picker
-              use12-hours
-              format="hh:mm a"
-              v-model="form.time"
-              placeholder="Seleccione una hora"
-            />
+            <a-time-picker use12-hours format="hh:mm a" v-model="form.time" placeholder="Seleccione una hora" />
           </a-form-model-item>
         </a-col>
 
         <a-col :span="24" :md="12">
           <a-form-model-item label="Estado">
-            <a-select
-              placeholder="Seleccione un estado"
-              v-model="form.estado"
-              :allowClear="true"
-            >
-              <a-select-option
-                :value="estado.value"
-                :label="estado.label"
-                v-for="estado in estadosArray"
-                :key="estado.value"
-              >
+            <a-select placeholder="Seleccione un estado" v-model="form.estado" :allowClear="true">
+              <a-select-option :value="estado.value" :label="estado.label" v-for="estado in estadosArray" :key="estado.value">
                 <span
                   role="color"
                   :aria-label="estado.label"
@@ -135,8 +109,8 @@
           </a-form-model-item>
         </a-col>
         <a-col :span="24">
-          <a-form-model-item label="Observaciones">
-            <a-textarea v-model="form.observation" :rows="4" />
+          <a-form-model-item label="Descripción">
+            <a-textarea v-model="form.description" :rows="4" />
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="12">
@@ -151,11 +125,14 @@
             <span class="ml-2">Informar por whatsapp</span>
           </a-form-model-item>
         </a-col>
-        <a-col :span="24">
+        <a-col :span="24" class="d-flex justify-content-end">
           <a-button type="primary" html-type="submit"> Guardar cita </a-button>
         </a-col>
       </a-row>
     </a-form-model>
+    <pre>
+      {{ form }}
+    </pre>
     <a-drawer
       :width="widthDrawerResponsive"
       :closable="false"
@@ -164,9 +141,7 @@
     >
       <template slot="title">
         <div class="title-block p-0 m-0">
-          <h4 class="modal-title m-0" style="color: #336cfb">
-            Crear nuevo paciente
-          </h4>
+          <h4 class="modal-title m-0" style="color: #336cfb">Crear nuevo paciente</h4>
         </div>
       </template>
       <FormFastNewPacient @close="() => (openDrawerNewUser = false)" />
@@ -177,6 +152,8 @@
 <script>
 // components
 import FormFastNewPacient from '~/components/form/FormFastNewPacient'
+import { mapGetters } from 'vuex'
+import _ from 'lodash'
 
 export default {
   name: 'FormNewEventCalendar',
@@ -186,38 +163,11 @@ export default {
   data() {
     return {
       openDrawerNewUser: false,
-      widthDrawerResponsive:
-        window.innerWidth > 900 ? 450 : window.innerWidth - 100,
+      widthDrawerResponsive: window.innerWidth > 900 ? 450 : window.innerWidth - 100,
       form: {
         estado: 1,
         duration: 15,
       },
-      pacientesArray: [
-        { value: 1, label: 'Pepe' },
-        { value: 2, label: 'Martin' },
-      ],
-      sucursalesArray: [
-        { value: 1, label: 'Los Olivos' },
-        { value: 2, label: 'Jesus María' },
-      ],
-      doctoresArray: [
-        { value: 1, label: 'Popeye' },
-        { value: 2, label: 'Sonic' },
-      ],
-      motivosArray: [
-        { value: 1, label: 'Motivo a' },
-        { value: 2, label: 'Motivo b' },
-      ],
-      canalesArray: [
-        { value: 1, label: 'Redes sociales' },
-        { value: 2, label: 'Televisión' },
-      ],
-      estadosArray: [
-        { value: 1, label: 'Por confirmado', color: '#F29D39' },
-        { value: 2, label: 'Confirmada', color: '#469B30' },
-        { value: 3, label: 'Atendida', color: '#3F79DD' },
-        { value: 4, label: 'Cancelada', color: '#BB271B' },
-      ],
       estadosArray: [
         { value: 1, label: 'Por confirmado', color: '#F29D39' },
         { value: 2, label: 'Confirmada', color: '#469B30' },
@@ -230,12 +180,33 @@ export default {
     disabledDate(current) {
       return current && current <= this.$moment().startOf('day')
     },
+    changeSelectPacient($event) {
+      var objectPacient = _.find(this.patientsArray, { id: $event })
+      if (!objectPacient) return
+      this.form.email = objectPacient.email
+      this.form.phone = objectPacient.phone
+    },
+    changeSelectReason($event) {
+      var objectReason = _.find(this.reasonsArray, { id: $event })
+      if (!objectReason) return
+      this.form.duration = objectReason.time
+    },
   },
   mounted() {
     window.onresize = () => {
       let width = window.innerWidth
       this.widthDrawerResponsive = width > 900 ? 700 : width - 100
     }
+  },
+  computed: {
+    ...mapGetters({
+      patientsArray: 'tables/patients/getPatients',
+      insurancesArray: 'data/general/getInsurances',
+      subsidiariesArray: 'data/general/getSubsidiaries',
+      reasonsArray: 'data/general/getReasons',
+      referredsArray: 'data/general/getReferreds',
+      doctorsArray: 'tables/users/getDoctors',
+    }),
   },
 }
 </script>

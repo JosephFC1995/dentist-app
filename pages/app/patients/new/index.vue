@@ -8,7 +8,7 @@
         <!-- Datos -->
         <a-tab-pane key="1">
           <span slot="tab"> <i class="uil uil-user-exclamation mr-2"></i>Datos </span>
-          <TabPacientInformation />
+          <TabNewPacientInform />
         </a-tab-pane>
         <!-- Analmesis general -->
         <a-tab-pane key="2" disabled>
@@ -17,27 +17,22 @@
         <!-- Examen odontológico -->
         <a-tab-pane key="3" disabled>
           <span slot="tab"> <i class="uil uil-microscope mr-2"></i>Examen odontológico </span>
-          Content of tab 3
         </a-tab-pane>
         <!-- Tratamiento -->
         <a-tab-pane key="4" disabled>
           <span slot="tab"> <i class="uil uil-band-aid mr-2"></i>Tratamiento </span>
-          Content of tab 3
         </a-tab-pane>
         <!-- Imágenes -->
         <a-tab-pane key="5" disabled>
           <span slot="tab"> <i class="uil uil-image mr-2"></i>Imágenes </span>
-          Content of tab 3
         </a-tab-pane>
         <!-- Informes -->
         <a-tab-pane key="6" disabled>
           <span slot="tab"> <i class="uil uil-file-alt mr-2"></i>Informes </span>
-          Content of tab 3
         </a-tab-pane>
         <!-- Documentos -->
         <a-tab-pane key="6" disabled>
           <span slot="tab"> <i class="uil uil-file-landscape-alt mr-2"></i>Documentos </span>
-          Content of tab 3
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -46,13 +41,24 @@
 
 <script>
 // components
-import TabPacientInformation from '~/components/tab/TabPacientInformation'
+import TabNewPacientInform from '~/components/tab/TabNewPacientInform'
 
 export default {
   layout: 'user',
   middleware: 'auth',
   components: {
-    TabPacientInformation,
+    TabNewPacientInform,
+  },
+  async fetch({ store }) {
+    store.dispatch('data/general/GET_GENDERS')
+    store.dispatch('data/general/GET_CIVIL_STATUS')
+    store.dispatch('data/general/GET_OCUPATIONS')
+    store.dispatch('data/general/GET_INSURANCES')
+    store.dispatch('data/general/GET_REFERREDS')
+    store.dispatch('data/general/GET_NACIONALITIES')
+    store.dispatch('data/general/GET_LANGUAJES')
+    store.dispatch('data/general/GET_TYPE_DOCUMENTS')
+    this.loading = false
   },
   data() {
     return {

@@ -2,7 +2,7 @@
   <div class="page--app-patients page--default">
     <header class="page-header">
       <h1 class="page-title">
-        Paciente - {{ id }}
+        Paciente - {{ patient.name + ' ' + patient.last_name_father }}
         <i
           class="uil uil-info-circle"
           :style="{ color: '#2E64FA', cursor: 'pointer' }"
@@ -15,7 +15,7 @@
         <!-- Datos -->
         <a-tab-pane key="1">
           <span slot="tab"> <i class="uil uil-user-exclamation mr-2"></i>Datos </span>
-          <TabPacientInformation />
+          <TabPacientInformation :patient="patient" />
         </a-tab-pane>
         <!-- Analmesis general -->
         <a-tab-pane key="2">
@@ -60,9 +60,12 @@
         <div class="title-block p-0 m-0">
           <h4 class="modal-title m-0" style="color: #336cfb">Usuario: {{ this.id }}</h4>
         </div>
-        <CardInfoPacient />
+        <CardInfoPacient :patient="patient" />
       </template>
     </a-drawer>
+    <!-- <pre>
+      {{ patient }}
+    </pre> -->
   </div>
 </template>
 
@@ -76,13 +79,27 @@ import TabPacientTreatment from '~/components/tab/TabPacientTreatment'
 import TabPacientPictures from '~/components/tab/TabPacientPictures'
 import TabPacientInform from '~/components/tab/TabPacientInform'
 import TabPacientDocument from '~/components/tab/TabPacientDocument'
+import { mapState, mapGetters } from 'vuex'
+import _ from 'lodash'
 
 export default {
-  asyncData({ params }) {
+  async asyncData({ params, store }) {
     let { id } = params
+    await store.dispatch('tables/patients/GET_PATIENTS_SELECTED', id)
     return {
       id: id,
     }
+  },
+  async fetch({ store }) {
+    store.dispatch('data/general/GET_GENDERS')
+    store.dispatch('data/general/GET_CIVIL_STATUS')
+    store.dispatch('data/general/GET_OCUPATIONS')
+    store.dispatch('data/general/GET_INSURANCES')
+    store.dispatch('data/general/GET_REFERREDS')
+    store.dispatch('data/general/GET_NACIONALITIES')
+    store.dispatch('data/general/GET_LANGUAJES')
+    store.dispatch('data/general/GET_TYPE_DOCUMENTS')
+    this.loading = false
   },
   layout: 'user',
   middleware: 'auth',
@@ -101,18 +118,29 @@ export default {
       title: 'Paciente',
       openDrawerInfoPacient: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 500 : window.innerWidth - 100,
+      loading: false,
+      patient: _.cloneDeep(this.$store.state.tables.patients.patient),
     }
   },
   head() {
     return {
-      title: this.title,
+      title: this.title + ' ' + this.patient.name + ' ' + this.patient.last_name_father,
       meta: [],
     }
   },
-  watch: {},
   methods: {
     closeDrawerInfoPacient() {
       this.openDrawerInfoPacient = false
+    },
+  },
+  computed: {
+    storePatient() {
+      return _.cloneDeep(this.$store.state.tables.patients.patient)
+    },
+  },
+  watch: {
+    storePatient(newValue) {
+      this.patient = newValue
     },
   },
 }

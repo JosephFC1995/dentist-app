@@ -12,6 +12,9 @@
       </a-col>
     </a-row>
     <FullCalendar :options="calendarOptions" />
+    <pre>
+      {{ calendarOptions }}
+    </pre>
     <!-- Modal vista de las citas -->
     <a-modal v-model="openModal" @ok="okModal" :forceRender="true">
       <template slot="title">
@@ -81,6 +84,21 @@ import FormNewEventCalendar from '~/components/form/FormNewEventCalendar'
 export default {
   layout: 'user',
   middleware: 'auth',
+  async fetch({ store }) {
+    store.dispatch('tables/patients/GET_PATIENTS_TABLE')
+    store.dispatch('tables/users/GET_USERS_BY_ROLE_DOCTOR')
+    store.dispatch('data/general/GET_GENDERS')
+    store.dispatch('data/general/GET_CIVIL_STATUS')
+    store.dispatch('data/general/GET_OCUPATIONS')
+    store.dispatch('data/general/GET_SUBSIDIARIES')
+    store.dispatch('data/general/GET_INSURANCES')
+    store.dispatch('data/general/GET_REFERREDS')
+    store.dispatch('data/general/GET_NACIONALITIES')
+    store.dispatch('data/general/GET_LANGUAJES')
+    store.dispatch('data/general/GET_TYPE_DOCUMENTS')
+    store.dispatch('data/general/GET_REASONS')
+    this.loading = false
+  },
   components: {
     FullCalendar,
     FormNewEventCalendar,
