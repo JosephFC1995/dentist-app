@@ -12,13 +12,7 @@
         collapsed-width="0"
       >
         <div class="logo">
-          <img
-            src="http://medic-app-react.next-item.com/static/media/logo.5e5f1d31.svg"
-            alt=""
-            width="auto"
-            height="auto"
-            class="logo-img"
-          />
+          <img src="/assets/logo.svg" alt="" width="auto" height="auto" class="logo-img" />
         </div>
         <div class="main-menu false">
           <nav class="main-menu-wrap">

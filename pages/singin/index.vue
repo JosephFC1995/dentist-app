@@ -6,13 +6,7 @@
     <div class="content--box">
       <div class="content--header">
         <div class="logo">
-          <img
-            src="http://medic-app-react.next-item.com/static/media/logo.5e5f1d31.svg"
-            alt=""
-            width="auto"
-            height="auto"
-            class="logo-img"
-          />
+          <img src="/assets/logo.svg" alt="" width="auto" height="auto" class="logo-img" />
         </div>
       </div>
       <div class="content--body">
