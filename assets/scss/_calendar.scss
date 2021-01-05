@@ -12,10 +12,8 @@ $_list-shadow: $shadow;
     &-picker {
         display: block;
         &:hover {
-            input {
-                &.ant-input {
-                    border-color: transparent!important;
-                }
+            .ant-calendar-picker-input:not(.ant-input-disabled) {
+                border-color: $error-color!important;
             }
         }
     }

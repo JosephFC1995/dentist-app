@@ -131,7 +131,7 @@ $_padding-v-lg: $_module-rem * 1.5;
         height: 100%;
     }
     &.has-error {
-        border-color: $error-color;
+        border-color: $error-color!important;
     }
     &:hover:not(.ant-input-disabled) {
         cursor: text;

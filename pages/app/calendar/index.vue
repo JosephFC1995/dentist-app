@@ -11,12 +11,13 @@
         <a-select placeholder="Seleccione un doctor" :options="doctoresArray" :allowClear="true"> </a-select>
       </a-col>
     </a-row>
-    <FullCalendar :options="calendarOptions" />
-    <pre>
-      {{ calendarOptions }}
-    </pre>
+    <a-spin tip="Cargando citas..." :spinning="loadingAppoinments">
+      <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
+      <FullCalendar :options="calendarOptions" />
+    </a-spin>
+
     <!-- Modal vista de las citas -->
-    <a-modal v-model="openModal" @ok="okModal" :forceRender="true">
+    <a-modal v-model="openModal" @ok="okModal" :forceRender="true" :destroyOnClose="true">
       <template slot="title">
         <div class="title-block p-0 m-0">
           <h3 class="modal-title m-0" style="color: rgb(237, 85, 100)">Cita: {{ eventSelect.title }}</h3>
@@ -35,18 +36,35 @@
             {{ eventSelect.start }}
           </span>
         </div>
-        <div class="event-desc flex-column">
+        <div class="event-reason flex-column mb-4" v-if="eventSelect.appointment">
+          <h5 class="event-title m-0">Razón de la cita</h5>
+          <span>
+            {{ eventSelect.appointment.reason.name }}
+          </span>
+        </div>
+        <div class="event-desc flex-column mb-4">
           <h5 class="event-title m-0">Descripción de la cita</h5>
           <span>
             {{ eventSelect.description }}
           </span>
         </div>
+        <div class="event-desc flex-column mb-4" v-if="eventSelect.appointment">
+          <h5 class="event-title m-0">Doctor</h5>
+          <span>
+            {{ eventSelect.appointment.doctor.last_name + ' ' + eventSelect.appointment.doctor.name }}
+          </span>
+        </div>
+        <div class="event-accept">
+          <a-button type="dashed" class="w-100">
+            <span>Atender cita</span>
+          </a-button>
+        </div>
       </div>
       <template slot="footer">
         <div class="d-flex justify-content-between modal-footer">
-          <button type="button" class="ant-btn ant-btn-dangerous" @click="() => (openModal = false)">
+          <a-button type="danger" @click="() => (openModal = false)">
             <span>Cancelar</span>
-          </button>
+          </a-button>
           <button type="button" class="ant-btn ant-btn-primary" @click="okModal">
             <span>Aceptar</span>
           </button>
@@ -60,13 +78,14 @@
       :visible="openDrawerNewEvent"
       :body-style="{ paddingBottom: '80px' }"
       @close="closeDrawerCreate"
+      :destroyOnClose="true"
     >
       <template slot="title">
         <div class="title-block p-0 m-0">
           <h4 class="modal-title m-0" style="color: #336cfb">Crear nueva cita</h4>
         </div>
       </template>
-      <FormNewEventCalendar />
+      <FormNewEventCalendar @close-refresh="closeDrawerCreateRefresh" :selectDate="dateSelectFromCalendar" />
     </a-drawer>
   </div>
 </template>
@@ -77,6 +96,8 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timegridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import esLocale from '@fullcalendar/core/locales/es'
+import { mapGetters, mapActions } from 'vuex'
+import _ from 'lodash'
 
 // components
 import FormNewEventCalendar from '~/components/form/FormNewEventCalendar'
@@ -84,7 +105,7 @@ import FormNewEventCalendar from '~/components/form/FormNewEventCalendar'
 export default {
   layout: 'user',
   middleware: 'auth',
-  async fetch({ store }) {
+  async fetch({ store, app }) {
     store.dispatch('tables/patients/GET_PATIENTS_TABLE')
     store.dispatch('tables/users/GET_USERS_BY_ROLE_DOCTOR')
     store.dispatch('data/general/GET_GENDERS')
@@ -97,6 +118,7 @@ export default {
     store.dispatch('data/general/GET_LANGUAJES')
     store.dispatch('data/general/GET_TYPE_DOCUMENTS')
     store.dispatch('data/general/GET_REASONS')
+    store.dispatch('data/appointment/GET_APPOINTMENT_STATUS')
     this.loading = false
   },
   components: {
@@ -105,6 +127,10 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      date_start: null,
+      date_end: null,
+      dateSelectFromCalendar: null,
       openDrawerNewEvent: false,
       openModal: false,
       openModalCreate: false,
@@ -119,6 +145,7 @@ export default {
         { value: 2, label: 'Sonic' },
       ],
       calendarOptions: {
+        timeZone: 'UTC',
         plugins: [dayGridPlugin, interactionPlugin, timegridPlugin],
         headerToolbar: {
           center: 'title',
@@ -129,6 +156,7 @@ export default {
         eventDrop: this.dragEvent,
         eventResize: this.resizeEvent,
         dateClick: this.dateClick,
+        datesSet: this.handleMonthChange,
         views: {
           timeGridWeek: {
             type: 'timeGrid',
@@ -156,20 +184,9 @@ export default {
           minute: '2-digit',
           meridiem: 'narrow',
         },
-        events: [
-          {
-            title: 'Gabriel Lozada',
-            date: '2020-12-01T14:30:00',
-            start: '2020-12-01T14:30:00',
-            end: '2020-12-01T16:30:00',
-            backgroundColor: '#ED5564',
-            classNames: 'event-orange',
-            description:
-              'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero iusto, illum, ea dolores veritatis numquam, deserunt eveniet ducimus quod ad vero at natus.',
-          },
-        ],
+        events: [],
       },
-      eventSelect: { title: '', description: '', start: '' },
+      eventSelect: { title: '', description: '', start: '', appointment: null },
     }
   },
   head() {
@@ -182,56 +199,115 @@ export default {
     dateClick: function (arg) {
       let today = this.$moment().format('YYYY-MM-DD HH:mm:ss')
       let date = this.$moment(arg.dateStr).format('YYYY-MM-DD HH:mm:ss')
-      console.log(date, today)
       if (today > date) return
+      this.dateSelectFromCalendar = date
       this.openDrawerNewEvent = true
-      console.log(date)
     },
     createCite() {
-      console.log('hola')
       this.openDrawerNewEvent = true
-      //alert('clicked the custom button!')
-      //   let newEvent = {
-      //     title: 'Gabriel Lozada',
-      //     date: '2020-12-02T14:30:00',
-      //     start: '2020-12-02T14:30:00',
-      //     end: '2020-12-02T16:30:00',
-      //     backgroundColor: '#ED5564',
-      //     classNames: 'event-orange',
-      //     description:
-      //       'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero iusto, illum, ea dolores veritatis numquam, deserunt eveniet ducimus quod ad vero at natus.',
-      //   }
-      //   this.calendarOptions.events.push(newEvent)
+      this.dateSelectFromCalendar = null
     },
-    dragEvent(e) {
-      let newDateEvent = this.$moment(e.event.start).format('YYYY-MM-DD HH:mm:ss')
-      console.log(newDateEvent)
+    handleMonthChange(e) {
+      let date_s = this.$moment(e.startStr).format('YYYY-MM-DD')
+      let date_e = this.$moment(e.endStr).format('YYYY-MM-DD')
+      if (this.date_start != date_s && this.date_end != date_e) {
+        this.changeLoading(true)
+        var params = {
+          date_start: date_s,
+          date_end: date_e,
+        }
+        this.getAppointmens(params)
+        this.date_start = date_s
+        this.date_end = date_e
+      }
+
+      // this.changeLoading(true)
     },
-    resizeEvent(e) {
-      let newStartDateEvent = this.$moment(e.event.start).format('YYYY-MM-DD HH:mm:ss')
-      let newEndDateEvent = this.$moment(e.event.end).format('YYYY-MM-DD HH:mm:ss')
-      console.log(newStartDateEvent, newEndDateEvent)
+    async dragEvent(e) {
+      this.changeLoading(true)
+      let newDateEvent = this.$moment.utc(e.event.start).format('YYYY-MM-DD')
+      let newtimeEvent = this.$moment.utc(e.event.start).format('HH:mm:ss')
+      let appointment = e.event.extendedProps.appointment
+      appointment.date_start = newDateEvent
+      appointment.time_start = newtimeEvent
+      let _self = this
+      _self.loading = true
+      var response = await _self.$axios.$put(`/appointment/${appointment.id}`, appointment).catch((errors) => {
+        _self.loading = false
+      })
+      if (response) {
+        this.calendarRefresh()
+      }
+    },
+    async resizeEvent(e) {
+      this.changeLoading(true)
+      let newStartDateEventMoment = this.$moment.utc(e.event.start)
+      let newEndDateEventMoment = this.$moment.utc(e.event.end)
+      let duration = newEndDateEventMoment.diff(newStartDateEventMoment, 'minutes')
+      let newDateEvent = newStartDateEventMoment.format('YYYY-MM-DD')
+      let newtimeEvent = newStartDateEventMoment.format('HH:mm:ss')
+      let appointment = e.event.extendedProps.appointment
+      appointment.date_start = newDateEvent
+      appointment.time_start = newtimeEvent
+      appointment.duration = duration
+      let _self = this
+      _self.loading = true
+      var response = await _self.$axios.$put(`/appointment/${appointment.id}`, appointment).catch((errors) => {
+        _self.loading = false
+      })
+      if (response) {
+        this.calendarRefresh()
+      }
     },
     showModalEvent(info) {
-      console.log(this.$moment(info.event.start).format('YYYY-MM-DD'))
       this.eventSelect.title = info.event.title
       this.eventSelect.description = info.event.extendedProps.description
-      this.eventSelect.start = this.$moment(info.event.start).format('ddd DD [de] MM [del] YYYY [a las] hh:mm a')
+      this.eventSelect.appointment = info.event.extendedProps.appointment
+      this.eventSelect.start = this.$moment.utc(info.event.start).format('ddd DD [de] MMM [del] YYYY [a las] hh:mm a')
       this.openModal = true
     },
     okModal(e) {
-      console.log(e)
       this.openModal = false
+    },
+    calendarRefresh() {
+      this.changeLoading(true)
+      var params = {
+        date_start: this.date_start,
+        date_end: this.date_end,
+      }
+      this.getAppointmens(params)
+    },
+    closeDrawerCreateRefresh(e) {
+      this.changeLoading(true)
+      var params = {
+        date_start: this.date_start,
+        date_end: this.date_end,
+      }
+      this.getAppointmens(params)
+      this.openDrawerNewEvent = false
     },
     closeDrawerCreate(e) {
       this.openDrawerNewEvent = false
     },
     okDrawerCreate(e) {
-      console.log(e)
       this.openDrawerNewEvent = false
     },
+    ...mapActions({
+      changeLoading: 'data/appointment/CHANGE_LOADING',
+      getAppointmens: 'data/appointment/GET_APPOINTMENTS',
+    }),
   },
-  computed: {},
+  watch: {
+    appoinments(newValue, oldValue) {
+      this.calendarOptions.events = _.cloneDeep(newValue)
+    },
+  },
+  computed: {
+    ...mapGetters({
+      appoinments: 'data/appointment/getAppointments',
+      loadingAppoinments: 'data/appointment/getLoading',
+    }),
+  },
   mounted() {
     window.onresize = () => {
       let width = window.innerWidth
