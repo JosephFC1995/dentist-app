@@ -30,14 +30,15 @@
         }"
       >
         <a slot="name" slot-scope="text">{{ text }}</a>
+        <a slot="time" slot-scope="text">{{ text + ' minutos' }}</a>
         <span slot="action" slot-scope="text, record">
-          <a-button class="ant-btn ant-btn-sm" @click="openEditUser(record)">
+          <a-button class="ant-btn ant-btn-sm" @click="openEditReason(record)">
             <span class="ico">
               <i class="uil uil-eye"></i>
             </span>
           </a-button>
 
-          <a-button type="danger" size="small" @click="deleteUser(record)">
+          <a-button type="danger" size="small" @click="deleteReason(record)">
             <span class="ico">
               <i class="uil uil-trash-alt"></i>
             </span>
@@ -63,7 +64,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import FormReasons from '~/components/form/FormReasons'
 
 export default {
@@ -72,11 +73,9 @@ export default {
   },
   data() {
     return {
-      loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       openDrawerDetail: false,
       reasonForm: null,
-      reasons: null,
       json_fields_excel: {
         ID: 'id',
         Nombre: 'name',
@@ -99,6 +98,7 @@ export default {
           title: 'Tiempo',
           dataIndex: 'time',
           key: 'time',
+          scopedSlots: { customRender: 'time' },
         },
         {
           title: 'Acciones',
@@ -109,16 +109,17 @@ export default {
     }
   },
   methods: {
-    async openEditUser(record) {
+    async openEditReason(record) {
       this.openDrawerDetail = true
-      // this.reasonForm = await this.$store.dispatch('tables/users/GET_USER_SELECTED', record.id)
+      this.reasonForm = await this.$store.dispatch('tables/reasons/GET_REASON_SELECT', record.id)
     },
-    async deleteUser(record) {
-      this.loading = true
-      //   let deleteResponse = await this.$store.dispatch('tables/users/DELETE_USER_SELECTED', record.id)
-      //   if (deleteResponse) this.$message.success(deleteResponse.message)
-      //   this.$store.dispatch('tables/users/GET_USERS_TABLE')
-      this.loading = false
+    async deleteReason(record) {
+      this.changeLoading(true)
+      let deleteResponse = await this.$store.dispatch('tables/reasons/DELETE_REASON_SELECTED', record.id)
+      if (deleteResponse) this.$message.success(deleteResponse.message)
+      this.$store.dispatch('tables/reasons/GET_REASONS_TABLE')
+
+      this.changeLoading(false)
     },
     closeDrawerHistory() {
       setTimeout(() => {
@@ -126,11 +127,16 @@ export default {
       }, 500)
       this.openDrawerDetail = false
     },
-    ...mapMutations({
-      clearUser: 'tables/users/CLEAR_USER',
+    ...mapActions({
+      changeLoading: 'tables/reasons/CHANGE_LOADING',
     }),
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      loading: 'tables/reasons/getLoading',
+      reasons: 'tables/reasons/getReasons',
+    }),
+  },
   mounted() {
     window.onresize = () => {
       let width = window.innerWidth

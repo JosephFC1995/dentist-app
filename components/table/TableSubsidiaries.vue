@@ -4,7 +4,7 @@
       <div>
         <downloadExcel
           class="ant-btn ant-btn-sm rounded-full pr-2"
-          :data="reasons"
+          :data="subsidiaries"
           :fields="json_fields_excel"
           name="reporte.xls"
         >
@@ -22,7 +22,7 @@
       <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
       <a-table
         :columns="columns"
-        :data-source="reasons"
+        :data-source="subsidiaries"
         rowKey="id"
         :pagination="{
           defaultPageSize: 10,
@@ -30,6 +30,8 @@
         }"
       >
         <a slot="name" slot-scope="text">{{ text }}</a>
+        <a slot="direction" slot-scope="text">{{ text ? text : '-' }}</a>
+        <a slot="email" slot-scope="text">{{ text ? text : '-' }}</a>
         <span slot="action" slot-scope="text, record">
           <a-button class="ant-btn ant-btn-sm" @click="openEditUser(record)">
             <span class="ico">
@@ -63,7 +65,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 import FormSubsidiaries from '~/components/form/FormSubsidiaries'
 
 export default {
@@ -72,11 +74,9 @@ export default {
   },
   data() {
     return {
-      loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       openDrawerDetail: false,
       subsidiariesForm: null,
-      reasons: null,
       json_fields_excel: {
         ID: 'id',
         Nombre: 'name',
@@ -96,6 +96,18 @@ export default {
           key: 'name',
         },
         {
+          title: 'Dirección',
+          dataIndex: 'direction',
+          key: 'direction',
+          scopedSlots: { customRender: 'direction' },
+        },
+        {
+          title: 'Correo',
+          dataIndex: 'email',
+          key: 'email',
+          scopedSlots: { customRender: 'email' },
+        },
+        {
           title: 'Acciones',
           key: 'action',
           scopedSlots: { customRender: 'action' },
@@ -106,14 +118,14 @@ export default {
   methods: {
     async openEditUser(record) {
       this.openDrawerDetail = true
-      // this.subsidiariesForm = await this.$store.dispatch('tables/users/GET_USER_SELECTED', record.id)
+      this.subsidiariesForm = await this.$store.dispatch('tables/subsidiaries/GET_SUBSIDIARY_SELECT', record.id)
     },
     async deleteUser(record) {
-      this.loading = true
-      //   let deleteResponse = await this.$store.dispatch('tables/users/DELETE_USER_SELECTED', record.id)
-      //   if (deleteResponse) this.$message.success(deleteResponse.message)
-      //   this.$store.dispatch('tables/users/GET_USERS_TABLE')
-      this.loading = false
+      this.changeLoading(true)
+      let deleteResponse = await this.$store.dispatch('tables/subsidiaries/DELETE_SUBSIDIARY_SELECTED', record.id)
+      if (deleteResponse) this.$message.success(deleteResponse.message)
+      this.$store.dispatch('tables/subsidiaries/GET_SUBSIDIARIES_TABLE')
+      this.changeLoading(false)
     },
     closeDrawerHistory() {
       setTimeout(() => {
@@ -121,11 +133,16 @@ export default {
       }, 500)
       this.openDrawerDetail = false
     },
-    ...mapMutations({
-      clearUser: 'tables/users/CLEAR_USER',
+    ...mapActions({
+      changeLoading: 'tables/subsidiaries/CHANGE_LOADING',
     }),
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      loading: 'tables/subsidiaries/getLoading',
+      subsidiaries: 'tables/subsidiaries/getSubsidiaries',
+    }),
+  },
   mounted() {
     window.onresize = () => {
       let width = window.innerWidth

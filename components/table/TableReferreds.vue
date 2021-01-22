@@ -4,7 +4,7 @@
       <div>
         <downloadExcel
           class="ant-btn ant-btn-sm rounded-full pr-2"
-          :data="reasons"
+          :data="referreds"
           :fields="json_fields_excel"
           name="reporte.xls"
         >
@@ -22,7 +22,7 @@
       <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
       <a-table
         :columns="columns"
-        :data-source="reasons"
+        :data-source="referreds"
         rowKey="id"
         :pagination="{
           defaultPageSize: 10,
@@ -57,26 +57,21 @@
           <h4 class="modal-title m-0" style="color: #336cfb">Detalles de la razón</h4>
         </div>
       </template>
-      <FormReferrals @close="closeDrawerHistory" :form="referralsForm" />
+      <FormReferreds @close="closeDrawerHistory" :form="referredsForm" />
     </a-drawer>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-import FormReferrals from '~/components/form/FormReferrals'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
-  components: {
-    FormReferrals,
-  },
+  components: {},
   data() {
     return {
-      loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       openDrawerDetail: false,
-      referralsForm: null,
-      reasons: null,
+      referredsForm: null,
       json_fields_excel: {
         ID: 'id',
         Nombre: 'name',
@@ -106,26 +101,31 @@ export default {
   methods: {
     async openEditUser(record) {
       this.openDrawerDetail = true
-      // this.referralsForm = await this.$store.dispatch('tables/users/GET_USER_SELECTED', record.id)
+      this.referredsForm = await this.$store.dispatch('tables/referreds/GET_REFERRED_SELECT', record.id)
     },
     async deleteUser(record) {
-      this.loading = true
-      //   let deleteResponse = await this.$store.dispatch('tables/users/DELETE_USER_SELECTED', record.id)
-      //   if (deleteResponse) this.$message.success(deleteResponse.message)
-      //   this.$store.dispatch('tables/users/GET_USERS_TABLE')
-      this.loading = false
+      this.changeLoading(true)
+      let deleteResponse = await this.$store.dispatch('tables/referreds/DELETE_REFERRED_SELECTED', record.id)
+      if (deleteResponse) this.$message.success(deleteResponse.message)
+      this.$store.dispatch('tables/referreds/GET_REFERREDS_TABLE')
+      this.changeLoading(false)
     },
     closeDrawerHistory() {
       setTimeout(() => {
-        this.referralsForm = null
+        this.referredsForm = null
       }, 500)
       this.openDrawerDetail = false
     },
-    ...mapMutations({
-      clearUser: 'tables/users/CLEAR_USER',
+    ...mapActions({
+      changeLoading: 'tables/referreds/CHANGE_LOADING',
     }),
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      loading: 'tables/referreds/getLoading',
+      referreds: 'tables/referreds/getReferreds',
+    }),
+  },
   mounted() {
     window.onresize = () => {
       let width = window.innerWidth

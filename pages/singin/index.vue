@@ -1,12 +1,12 @@
 <template>
   <div
     class="content--page--picture public-layout login background--cover"
-    style="background-image: url(https://source.unsplash.com/OOE4xAnBhKo/1600x900)"
+    style="background-image: url(/assets/images/wallpaper.jpeg)"
   >
     <div class="content--box">
       <div class="content--header">
         <div class="logo">
-          <img src="/assets/logo.svg" alt="" width="auto" height="auto" class="logo-img" />
+          <img src="/assets/images/logo.jpeg" alt="" width="auto" height="auto" class="logo-img" />
         </div>
       </div>
       <div class="content--body">

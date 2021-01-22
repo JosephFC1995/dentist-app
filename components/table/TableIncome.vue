@@ -4,7 +4,7 @@
       <div>
         <downloadExcel
           class="ant-btn ant-btn-sm rounded-full pr-2"
-          :data="reasons"
+          :data="incomes"
           :fields="json_fields_excel"
           name="reporte.xls"
         >
@@ -22,7 +22,7 @@
       <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
       <a-table
         :columns="columns"
-        :data-source="reasons"
+        :data-source="incomes"
         rowKey="id"
         :pagination="{
           defaultPageSize: 10,
@@ -57,13 +57,13 @@
           <h4 class="modal-title m-0" style="color: #336cfb">Detalles de la razón</h4>
         </div>
       </template>
-      <FormIncome @close="closeDrawerHistory" :form="supplyForm" />
+      <FormIncome @close="closeDrawerHistory" :form="incomeForm" />
     </a-drawer>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 import FormIncome from '~/components/form/FormIncome'
 
 export default {
@@ -72,10 +72,9 @@ export default {
   },
   data() {
     return {
-      loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       openDrawerDetail: false,
-      supplyForm: null,
+      incomeForm: null,
       reasons: null,
       json_fields_excel: {
         ID: 'id',
@@ -92,13 +91,8 @@ export default {
           width: '10%',
         },
         {
-          title: 'Número',
-          dataIndex: 'number',
-          key: 'number',
-        },
-        {
           title: 'Sucursal',
-          dataIndex: 'subsidiary',
+          dataIndex: 'subsidiary.name',
           key: 'subsidiary',
         },
         {
@@ -118,26 +112,31 @@ export default {
   methods: {
     async openEditUser(record) {
       this.openDrawerDetail = true
-      // this.supplyForm = await this.$store.dispatch('tables/users/GET_USER_SELECTED', record.id)
+      this.incomeForm = await this.$store.dispatch('tables/incomes/GET_INCOME_SELECT', record.id)
     },
     async deleteUser(record) {
-      this.loading = true
-      //   let deleteResponse = await this.$store.dispatch('tables/users/DELETE_USER_SELECTED', record.id)
-      //   if (deleteResponse) this.$message.success(deleteResponse.message)
-      //   this.$store.dispatch('tables/users/GET_USERS_TABLE')
-      this.loading = false
+      this.changeLoading(true)
+      let deleteResponse = await this.$store.dispatch('tables/incomes/DELETE_INCOME_SELECTED', record.id)
+      if (deleteResponse) this.$message.success(deleteResponse.message)
+      this.$store.dispatch('tables/incomes/GET_INCOMES_TABLE')
+      this.changeLoading(false)
     },
     closeDrawerHistory() {
       setTimeout(() => {
-        this.supplyForm = null
+        this.incomeForm = null
       }, 500)
       this.openDrawerDetail = false
     },
-    ...mapMutations({
-      clearUser: 'tables/users/CLEAR_USER',
+    ...mapActions({
+      changeLoading: 'tables/incomes/CHANGE_LOADING',
     }),
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      loading: 'tables/incomes/getLoading',
+      incomes: 'tables/incomes/getIncomes',
+    }),
+  },
   mounted() {
     window.onresize = () => {
       let width = window.innerWidth

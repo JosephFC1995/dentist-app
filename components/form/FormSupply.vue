@@ -58,13 +58,6 @@ export default {
             trigger: 'blur',
           },
         ],
-        time: [
-          {
-            required: true,
-            message: 'Por favor ingresar los minutos para el motivo',
-            trigger: 'blur',
-          },
-        ],
       },
     }
   },
@@ -73,26 +66,29 @@ export default {
       this.$refs.reason.validate(async (valid) => {
         if (valid) {
           let _self = this
-          //   _self.loading = true
-          //   let response = false
-          //   if (!this.newData) {
-          //     response = await _self.$axios.$put(`/users/${this.form.id}`, _self.form).catch((errors) => {
-          //       _self.loading = false
-          //     })
-          //   } else {
-          //     response = await _self.$axios.$post(`/users`, _self.form).catch((errors) => {
-          //       _self.loading = false
-          //     })
-          //   }
-          //   if (response.success) this.$message.success(response.message)
-          //   _self.loading = false
-          //   this.$store.dispatch('tables/users/GET_USERS_TABLE')
+          _self.loading = true
+          let response = false
+          if (!this.newData) {
+            response = await _self.$axios.$put(`/supplies/${this.form.id}`, _self.form).catch((errors) => {
+              _self.loading = false
+            })
+          } else {
+            response = await _self.$axios.$post(`/supplies`, _self.form).catch((errors) => {
+              _self.loading = false
+            })
+          }
+          if (response.success) this.$message.success(response.message)
+          _self.loading = false
+          this.$store.dispatch('tables/supplies/GET_SUPPLIES_TABLE')
           this.closeDrawer()
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    },
+    closeDrawer() {
+      this.$emit('close')
     },
   },
   computed: {},

@@ -2,7 +2,7 @@
   <div class="page--app-users page--default">
     <header class="page-header">
       <h1 class="page-title">Sucursales</h1>
-      <a-button class="ant-btn ant-btn-primary p-0 px-3" @click="() => (openDrawerNewUser = true)">
+      <a-button class="ant-btn ant-btn-primary p-0 px-3" @click="() => (openDrawerSubsidiary = true)">
         <span> <i class="uil uil-plus-circle mr-1"></i> Agregar nuevo sucursal </span>
       </a-button>
     </header>
@@ -10,7 +10,7 @@
     <a-drawer
       :width="widthDrawerResponsive"
       :closable="true"
-      :visible="openDrawerNewUser"
+      :visible="openDrawerSubsidiary"
       :body-style="{ paddingBottom: '80px' }"
       @close="closeDrawerHistory"
       :destroyOnClose="true"
@@ -37,7 +37,8 @@ export default {
   middleware: 'auth',
   asyncData({ redirect, $axios }) {},
   async fetch({ store }) {
-    // await store.dispatch('tables/users/GET_USERS_TABLE')
+    store.dispatch('tables/subsidiaries/CHANGE_LOADING', true)
+    store.dispatch('tables/subsidiaries/GET_SUBSIDIARIES_TABLE')
     this.loading = false
   },
   components: {},
@@ -46,8 +47,12 @@ export default {
       title: 'Referidos',
       loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
-      openDrawerNewUser: false,
-      subsidiariesForm: {},
+      openDrawerSubsidiary: false,
+      subsidiariesForm: {
+        logo: null,
+        lat: -12.0526008,
+        lng: -77.0449321,
+      },
     }
   },
   head() {
@@ -61,11 +66,12 @@ export default {
     closeDrawerHistory() {
       setTimeout(() => {
         this.subsidiariesForm = {
-          firm: null,
-          avatar: null,
+          logo: null,
+          lat: -12.0526008,
+          lng: -77.0449321,
         }
       }, 500)
-      this.openDrawerNewUser = false
+      this.openDrawerSubsidiary = false
     },
   },
   mounted() {

@@ -2,7 +2,7 @@
   <div class="page--app-users page--default">
     <header class="page-header">
       <h1 class="page-title">Motivos</h1>
-      <a-button class="ant-btn ant-btn-primary p-0 px-3" @click="() => (openDrawerNewUser = true)">
+      <a-button class="ant-btn ant-btn-primary p-0 px-3" @click="() => (openDrawerReason = true)">
         <span> <i class="uil uil-plus-circle mr-1"></i> Nuevo motivo </span>
       </a-button>
     </header>
@@ -10,7 +10,7 @@
     <a-drawer
       :width="widthDrawerResponsive"
       :closable="true"
-      :visible="openDrawerNewUser"
+      :visible="openDrawerReason"
       :body-style="{ paddingBottom: '80px' }"
       @close="closeDrawerHistory"
       :destroyOnClose="true"
@@ -35,10 +35,9 @@ import { mapState } from 'vuex'
 export default {
   layout: 'user',
   middleware: 'auth',
-  asyncData({ redirect, $axios }) {},
   async fetch({ store }) {
-    // await store.dispatch('tables/users/GET_USERS_TABLE')
-    this.loading = false
+    store.dispatch('tables/reasons/CHANGE_LOADING', true)
+    store.dispatch('tables/reasons/GET_REASONS_TABLE')
   },
   components: {},
   data() {
@@ -46,11 +45,8 @@ export default {
       title: 'Motivos',
       loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
-      openDrawerNewUser: false,
-      reasonForm: {
-        firm: null,
-        avatar: null,
-      },
+      openDrawerReason: false,
+      reasonForm: {},
     }
   },
   head() {
@@ -63,12 +59,9 @@ export default {
   methods: {
     closeDrawerHistory() {
       setTimeout(() => {
-        this.reasonForm = {
-          firm: null,
-          avatar: null,
-        }
+        this.reasonForm = {}
       }, 500)
-      this.openDrawerNewUser = false
+      this.openDrawerReason = false
     },
   },
   mounted() {

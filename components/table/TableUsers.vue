@@ -13,7 +13,7 @@
         <a-input placeholder="Buscar" />
       </div>
     </a-space>
-    <a-spin :spinning="loading">
+    <a-spin :spinning="loading" tip="Cargando usuarios...">
       <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
       <a-table
         :columns="columns"
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 import FormUser from '~/components/form/FormUser'
 
 export default {
@@ -75,7 +75,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       openDrawerDetail: false,
       userForm: null,
@@ -137,11 +136,13 @@ export default {
       this.userForm = await this.$store.dispatch('tables/users/GET_USER_SELECTED', record.id)
     },
     async deleteUser(record) {
-      this.loading = true
+      // this.loading = true
+      this.changeLoading(true)
       let deleteResponse = await this.$store.dispatch('tables/users/DELETE_USER_SELECTED', record.id)
       if (deleteResponse) this.$message.success(deleteResponse.message)
       this.$store.dispatch('tables/users/GET_USERS_TABLE')
-      this.loading = false
+      // this.loading = false
+      this.changeLoading(false)
     },
     closeDrawerHistory() {
       setTimeout(() => {
@@ -149,11 +150,17 @@ export default {
       }, 500)
       this.openDrawerDetail = false
     },
+    ...mapActions({
+      changeLoading: 'tables/users/CHANGE_LOADING',
+    }),
     ...mapMutations({
       clearUser: 'tables/users/CLEAR_USER',
     }),
   },
   computed: {
+    ...mapGetters({
+      loading: 'tables/users/getLoading',
+    }),
     ...mapState({
       users: (state) => state.tables.users.users,
     }),

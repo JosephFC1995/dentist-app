@@ -8,15 +8,13 @@
     </header>
     <a-form-model-item label="Sucursales">
       <a-select placeholder="Seleccione una sucursal" :allowClear="true" :disabled="loading" @change="changeSelect">
-        <a-select-option v-for="item in subsidiarysArray" :key="item.id" :value="item.id">
+        <a-select-option v-for="item in subsidiariesArray" :key="item.id" :value="item.id">
           {{ item.name }}
         </a-select-option>
       </a-select>
     </a-form-model-item>
-    <a-spin :spinning="loading">
-      <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
-      <TableExpense />
-    </a-spin>
+
+    <TableExpense />
     <a-drawer
       :width="widthDrawerResponsive"
       :closable="true"
@@ -48,7 +46,9 @@ export default {
   asyncData({ redirect, $axios }) {},
   async fetch({ store }) {
     store.dispatch('data/general/GET_SUBSIDIARIES')
-    this.loading = false
+    store.dispatch('data/general/GET_SUPPLIES')
+    store.dispatch('tables/expenses/CHANGE_LOADING', true)
+    store.dispatch('tables/expenses/GET_EXPENSES_TABLE')
   },
   components: {},
   data() {
@@ -57,7 +57,9 @@ export default {
       loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 750 : window.innerWidth - 100,
       openDrawerNewIncome: false,
-      expenseForm: {},
+      expenseForm: {
+        expense_details: [],
+      },
     }
   },
   head() {
@@ -70,16 +72,18 @@ export default {
   methods: {
     closeDrawerHistory() {
       setTimeout(() => {
-        this.expenseForm = {}
+        this.expenseForm = {
+          expense_details: [],
+        }
       }, 500)
       this.openDrawerNewIncome = false
     },
     changeSelect($event) {
-      this.loading = true
-      setTimeout(() => {
-        this.expenseForm = {}
-        this.loading = false
-      }, 1500)
+      let options = {
+        id_subsidiary: $event,
+      }
+      this.$store.dispatch('tables/expenses/CHANGE_LOADING', true)
+      this.$store.dispatch('tables/expenses/GET_EXPENSES_TABLE', options)
     },
   },
   mounted() {
@@ -90,7 +94,7 @@ export default {
   },
   computed: {
     ...mapState({
-      subsidiarysArray: (state) => state.data.general.subsidiarys,
+      subsidiariesArray: (state) => state.data.general.subsidiaries,
     }),
   },
 }

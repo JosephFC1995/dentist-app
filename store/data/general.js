@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export const state = () => ({
     roles: [],
     typeDocuments: [],
-    subsidiarys: [],
+    subsidiaries: [],
     specialitys: [],
     genders: [],
     civilStatus: [],
@@ -16,6 +16,7 @@ export const state = () => ({
     nacionalities: [],
     languajes: [],
     reasons: [],
+    supplies: [],
 })
 
 export const mutations = {
@@ -25,8 +26,8 @@ export const mutations = {
     SET_TYPE_DOCUMENT(state, document) {
         state.typeDocuments = document
     },
-    SET_SUBSIDIARIES(state, subsidiarys) {
-        state.subsidiarys = subsidiarys
+    SET_SUBSIDIARIES(state, subsidiaries) {
+        state.subsidiaries = subsidiaries
     },
     SET_ESPECIALITIES(state, specialitys) {
         state.specialitys = specialitys
@@ -55,6 +56,9 @@ export const mutations = {
     SET_REASONS(state, reasons) {
         state.reasons = reasons
     },
+    SET_SUPPLIES(state, supplies) {
+        state.supplies = supplies
+    },
 }
 
 export const actions = {
@@ -67,7 +71,7 @@ export const actions = {
         commit('SET_TYPE_DOCUMENT', data)
     },
     async GET_SUBSIDIARIES({ commit, state }) {
-        const { data } = await this.$axios.$get('/subsidiarys')
+        const { data } = await this.$axios.$get('/subsidiaries')
         commit('SET_SUBSIDIARIES', data)
     },
     async GET_ESPECIALITIES({ commit, state }) {
@@ -91,7 +95,7 @@ export const actions = {
         commit('SET_INSURANCES', data)
     },
     async GET_REFERREDS({ commit, state }) {
-        const { data } = await this.$axios.$get('/referred')
+        const { data } = await this.$axios.$get('/referreds')
         commit('SET_REFERREDS', data)
     },
     async GET_NACIONALITIES({ commit, state }) {
@@ -106,6 +110,10 @@ export const actions = {
         const { data } = await this.$axios.$get('/reasons')
         commit('SET_REASONS', data)
     },
+    async GET_SUPPLIES({ commit, state }) {
+        const { data } = await this.$axios.$get('/supplies')
+        commit('SET_SUPPLIES', data)
+    },
 }
 
 export const getters = {
@@ -119,12 +127,15 @@ export const getters = {
         return _.orderBy(state.insurances, ['name'], ['asc'])
     },
     getSubsidiaries: (state) => {
-        return _.orderBy(state.subsidiarys, ['name'], ['asc'])
+        return _.orderBy(state.subsidiaries, ['name'], ['asc'])
     },
     getReasons: (state) => {
         return _.orderBy(state.reasons, ['name'], ['asc'])
     },
     getReferreds: (state) => {
         return _.orderBy(state.referreds, ['name'], ['asc'])
+    },
+    getSupplies: (state) => {
+        return _.orderBy(state.supplies, ['name'], ['asc'])
     },
 }

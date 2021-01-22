@@ -16,9 +16,9 @@
                 @change="changeUpload"
                 :disabled="loading"
                 :headers="headers"
-                :data="{ key: 'avatar' }"
+                :data="{ key: 'logo' }"
               >
-                <img v-if="form.avatar" :src="form.avatar.path" alt="avatar" />
+                <img v-if="form.logo" :src="form.logo.path" alt="avatar" />
                 <div v-else>
                   <a-icon :type="loadingAvatar ? 'loading' : 'plus'" />
                   <div class="ant-upload-text">Upload</div>
@@ -138,20 +138,20 @@ export default {
       this.$refs.reason.validate(async (valid) => {
         if (valid) {
           let _self = this
-          //   _self.loading = true
-          //   let response = false
-          //   if (!this.newData) {
-          //     response = await _self.$axios.$put(`/users/${this.form.id}`, _self.form).catch((errors) => {
-          //       _self.loading = false
-          //     })
-          //   } else {
-          //     response = await _self.$axios.$post(`/users`, _self.form).catch((errors) => {
-          //       _self.loading = false
-          //     })
-          //   }
-          //   if (response.success) this.$message.success(response.message)
-          //   _self.loading = false
-          //   this.$store.dispatch('tables/users/GET_USERS_TABLE')
+          _self.loading = true
+          let response = false
+          if (!this.newData) {
+            response = await _self.$axios.$put(`/subsidiaries/${this.form.id}`, _self.form).catch((errors) => {
+              _self.loading = false
+            })
+          } else {
+            response = await _self.$axios.$post(`/subsidiaries`, _self.form).catch((errors) => {
+              _self.loading = false
+            })
+          }
+          if (response.success) this.$message.success(response.message)
+          _self.loading = false
+          this.$store.dispatch('tables/subsidiaries/GET_SUBSIDIARIES_TABLE')
           this.closeDrawer()
         } else {
           console.log('error submit!!')
@@ -160,19 +160,27 @@ export default {
       })
     },
     eventDrag($event) {
+      this.form.lat = $event.latLng.lat()
+      this.form.lng = $event.latLng.lng()
+      this.form.ubication = null
       this.mapMakerCoordinaries = {
         lat: $event.latLng.lat(),
         lng: $event.latLng.lng(),
       }
     },
     mapClick($event) {
-      console.log($event)
+      this.form.lat = $event.latLng.lat()
+      this.form.lng = $event.latLng.lng()
+      this.form.ubication = null
       this.mapMakerCoordinaries = {
         lat: $event.latLng.lat(),
         lng: $event.latLng.lng(),
       }
     },
     setPlace($event) {
+      this.form.lat = $event.geometry.location.lat()
+      this.form.lng = $event.geometry.location.lng()
+      this.form.direction = $event.formatted_address
       this.mapMakerCoordinaries = {
         lat: $event.geometry.location.lat(),
         lng: $event.geometry.location.lng(),
@@ -196,7 +204,7 @@ export default {
     changeUpload(info) {
       const status = info.file.status
       if (status !== 'uploading') {
-        console.log(info)
+        // console.log(info)
       }
       if (status === 'done') {
         this.$message.success(`${info.file.name} file uploaded successfully.`)
@@ -214,6 +222,24 @@ export default {
     },
   },
   computed: {},
+  watch: {
+    form(newValue, oldValue) {
+      if (newValue && newValue.lat && newValue.lng) {
+        this.mapMakerCoordinaries.lat = Number(newValue.lat)
+        this.mapMakerCoordinaries.lng = Number(newValue.lng)
+        //
+        this.mapCoordinaries.lat = Number(newValue.lat)
+        this.mapCoordinaries.lng = Number(newValue.lng)
+      } else {
+        this.mapMakerCoordinaries.lat = -12.0526008
+        this.mapMakerCoordinaries.lng = -77.0449321
+        //
+        this.mapCoordinaries.lat = -12.0526008
+        this.mapCoordinaries.lng = -77.0449321
+      }
+      console.log(newValue)
+    },
+  },
 }
 </script>
 

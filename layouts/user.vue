@@ -12,7 +12,7 @@
         collapsed-width="0"
       >
         <div class="logo">
-          <img src="/assets/logo.svg" alt="" width="auto" height="auto" class="logo-img" />
+          <img src="/assets/images/logo.jpeg" alt="" width="auto" height="auto" class="logo-img" />
         </div>
         <div class="main-menu false">
           <nav class="main-menu-wrap">
@@ -177,7 +177,7 @@ export default {
         },
         {
           type: 'route',
-          name: 'app-admin-referrals',
+          name: 'app-admin-referreds',
           title: 'Referidos',
           ico: 'user-arrows',
         },

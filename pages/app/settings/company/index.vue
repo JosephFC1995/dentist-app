@@ -9,7 +9,6 @@
 
 <script>
 // components
-import TableReferrals from '~/components/table/TableReferrals'
 import FormCompany from '~/components/form/FormCompany'
 
 import { mapState } from 'vuex'

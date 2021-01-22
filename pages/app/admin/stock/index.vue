@@ -5,7 +5,7 @@
     </header>
     <a-form-model-item label="Sucursales">
       <a-select placeholder="Seleccione una sucursal" :allowClear="true" :disabled="loading" @change="changeSelect">
-        <a-select-option v-for="item in subsidiarysArray" :key="item.id" :value="item.id">
+        <a-select-option v-for="item in subsidiariesArray" :key="item.id" :value="item.id">
           {{ item.name }}
         </a-select-option>
       </a-select>
@@ -27,7 +27,8 @@ export default {
   layout: 'user',
   middleware: 'auth',
   asyncData({ redirect, $axios }) {},
-  async fetch({ store }) {
+  fetch({ store }) {
+    store.dispatch('data/general/GET_SUBSIDIARIES')
     // await store.dispatch('tables/users/GET_USERS_TABLE')
     this.loading = false
   },
@@ -58,7 +59,7 @@ export default {
   mounted() {},
   computed: {
     ...mapState({
-      subsidiarysArray: (state) => state.data.general.subsidiarys,
+      subsidiariesArray: (state) => state.data.general.subsidiaries,
     }),
   },
 }

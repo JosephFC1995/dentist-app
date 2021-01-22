@@ -11,10 +11,10 @@ $_list-shadow: $shadow;
     padding: ($_module-rem) 0;
     &-picker {
         display: block;
-        &:hover {
-            .ant-calendar-picker-input:not(.ant-input-disabled) {
-                border-color: $error-color!important;
-            }
-        }
+        // &:hover {
+        //     .ant-calendar-picker-input:not(.ant-input-disabled) {
+        //         border-color: $error-color!important;
+        //     }
+        // }
     }
 }

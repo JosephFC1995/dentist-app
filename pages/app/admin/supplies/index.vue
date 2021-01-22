@@ -2,7 +2,7 @@
   <div class="page--app-users page--default">
     <header class="page-header">
       <h1 class="page-title">Insumos</h1>
-      <a-button class="ant-btn ant-btn-primary p-0 px-3" @click="() => (openDrawerNewSupply = true)">
+      <a-button class="ant-btn ant-btn-primary p-0 px-3" @click="() => (openDrawerSupply = true)">
         <span> <i class="uil uil-plus-circle mr-1"></i> Agregar nuevo insumo </span>
       </a-button>
     </header>
@@ -10,7 +10,7 @@
     <a-drawer
       :width="widthDrawerResponsive"
       :closable="true"
-      :visible="openDrawerNewSupply"
+      :visible="openDrawerSupply"
       :body-style="{ paddingBottom: '80px' }"
       @close="closeDrawerHistory"
       :destroyOnClose="true"
@@ -37,16 +37,17 @@ export default {
   middleware: 'auth',
   asyncData({ redirect, $axios }) {},
   async fetch({ store }) {
-    // await store.dispatch('tables/users/GET_USERS_TABLE')
+    store.dispatch('tables/supplies/CHANGE_LOADING', true)
+    store.dispatch('tables/supplies/GET_SUPPLIES_TABLE')
     this.loading = false
   },
   components: {},
   data() {
     return {
-      title: 'Referidos',
+      title: 'Insumos',
       loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
-      openDrawerNewSupply: false,
+      openDrawerSupply: false,
       suppliesForm: {},
     }
   },
@@ -60,12 +61,9 @@ export default {
   methods: {
     closeDrawerHistory() {
       setTimeout(() => {
-        this.suppliesForm = {
-          firm: null,
-          avatar: null,
-        }
+        this.suppliesForm = {}
       }, 500)
-      this.openDrawerNewSupply = false
+      this.openDrawerSupply = false
     },
   },
   mounted() {

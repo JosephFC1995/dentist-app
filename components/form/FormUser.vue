@@ -166,7 +166,7 @@
                 :disabled="loading"
                 mode="multiple"
               >
-                <a-select-option v-for="item in subsidiarysArray" :key="item.id" :value="item.id">
+                <a-select-option v-for="item in subsidiariesArray" :key="item.id" :value="item.id">
                   {{ item.name }}
                 </a-select-option>
               </a-select>
@@ -302,7 +302,7 @@ export default {
     ...mapState({
       rolesArray: (state) => state.data.general.roles,
       documentsArray: (state) => state.data.general.typeDocuments,
-      subsidiarysArray: (state) => state.data.general.subsidiarys,
+      subsidiariesArray: (state) => state.data.general.subsidiaries,
       specialitys: (state) => state.data.general.specialitys,
     }),
   },

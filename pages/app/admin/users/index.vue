@@ -37,18 +37,17 @@ export default {
   middleware: 'auth',
   asyncData({ redirect, $axios }) {},
   async fetch({ store }) {
-    await store.dispatch('tables/users/GET_USERS_TABLE')
+    store.dispatch('tables/users/CHANGE_LOADING', true)
+    store.dispatch('tables/users/GET_USERS_TABLE')
     store.dispatch('data/general/GET_ROLES')
     store.dispatch('data/general/GET_TYPE_DOCUMENTS')
     store.dispatch('data/general/GET_SUBSIDIARIES')
     store.dispatch('data/general/GET_ESPECIALITIES')
-    this.loading = false
   },
   components: {},
   data() {
     return {
       title: 'Usuarios',
-      loading: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       openDrawerNewUser: false,
       userForm: {
