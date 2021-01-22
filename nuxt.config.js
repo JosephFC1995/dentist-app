@@ -72,10 +72,10 @@ export default {
                 },
                 token: {
                     property: 'access_token',
-                    maxAge: 2 * 60 * 60,
+                    maxAge: 2 * 1 * 60 * 60,
                 },
                 refreshToken: {
-                    maxAge: 2 * 60 * 60,
+                    maxAge: 2 * 1 * 60 * 60,
                 },
             },
         },
