@@ -1,9 +1,9 @@
 <template>
-  <dv class="card-disease">
+  <div class="card-disease">
     <a-card :title="false" :bordered="false">
       <FormDiseasePacient />
     </a-card>
-  </dv>
+  </div>
 </template>
 
 <script>

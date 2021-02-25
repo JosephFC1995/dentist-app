@@ -165,18 +165,6 @@ export default {
         },
         {
           type: 'route',
-          name: 'app-admin-clinicians',
-          title: 'Clinicos',
-          ico: 'user-md',
-        },
-        {
-          type: 'route',
-          name: 'app-admin-recipe-template',
-          title: 'Plantillas de recetas',
-          ico: 'receipt-alt',
-        },
-        {
-          type: 'route',
           name: 'app-admin-referreds',
           title: 'Referidos',
           ico: 'user-arrows',

@@ -16,6 +16,7 @@
       <!-- Formulario -->
       <FormPacientInform />
     </a-card>
+    <a-divider :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }" dashed>Informes</a-divider>
     <TablePacientInforms />
   </div>
 </template>

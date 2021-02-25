@@ -13,24 +13,20 @@
               v-for="item in alter ? arrayCierreSimple : arrayAperturaSimple"
               :key="item.id"
               @click="selectItem(item)"
-              :class="[
-                isEqual(value, item) || (!value && item.id == 0)
-                  ? 'active'
-                  : '',
-              ]"
+              :class="[value == item.id || (value == 0 && item.id == 0) ? 'active' : '']"
             >
               <img :src="item.img" />
             </div>
           </div>
         </a>
-        <img :src="value ? value.imgSelected : defaultValue.imgSelected" />
+        <img :src="value != 0 ? getImageFromId(value) : defaultValue.imgSelected" />
       </a-popover>
     </div>
   </div>
 </template>
 
 <script>
-import { isEqual } from 'lodash'
+import { isEqual, find } from 'lodash'
 
 export default {
   props: {
@@ -43,7 +39,8 @@ export default {
       default: false,
     },
     value: {
-      type: Object,
+      type: Number,
+      default: 0,
     },
   },
   data() {
@@ -125,11 +122,18 @@ export default {
     hide() {
       this.visible = false
     },
+    getImageFromId(id) {
+      let selectArray = this.alter ? this.arrayCierreSimple : this.arrayAperturaSimple
+
+      let finding = find(selectArray, ['id', id])
+
+      return finding ? finding.imgSelected : null
+    },
     selectItem(item) {
       // this.selectedItem = item
       this.visible = false
-      this.$emit('input', item)
       console.log(item)
+      this.$emit('input', item.id)
     },
   },
 }

@@ -222,3 +222,15 @@ html {
     background-color: #fff;
     border-color: #f5222d;
 }
+
+.ant-upload-list {
+    &.ant-upload-list-picture-card {
+        margin-top: 1rem;
+    }
+}
+
+.hidden-arrows {
+    .ant-input-number-handler-wrap {
+        display: none;
+    }
+}

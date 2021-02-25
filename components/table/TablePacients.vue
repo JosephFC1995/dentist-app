@@ -22,7 +22,7 @@
       :columns="columns"
       :data-source="patients"
       :pagination="{
-        defaultPageSize: 5,
+        defaultPageSize: 10,
         hideOnSinglePage: true,
       }"
     >
@@ -41,12 +41,18 @@
             <i class="uil uil-eye"></i>
           </span>
         </nuxt-link>
-
-        <a-button type="danger" size="small" @click="deleteUser(record.id)">
-          <span class="ico">
-            <i class="uil uil-trash-alt"></i>
-          </span>
-        </a-button>
+        <a-popconfirm
+          title="¿Esta seguro que desea eliminar el informe?"
+          ok-text="Si"
+          cancel-text="No"
+          @confirm="deleteUser(record.id)"
+        >
+          <a-button type="danger" size="small">
+            <span class="ico">
+              <i class="uil uil-trash-alt"></i>
+            </span>
+          </a-button>
+        </a-popconfirm>
       </span>
     </a-table>
     <!-- Modal -->

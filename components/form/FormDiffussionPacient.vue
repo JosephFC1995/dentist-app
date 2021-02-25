@@ -2,15 +2,11 @@
   <div class="form-general">
     <a-form-model :model="form" ref="odontogram" class="custom--data">
       <a-divider dashed>
-        <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }">
-          Indicador de dolor
-        </span>
+        <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"> Indicador de dolor </span>
       </a-divider>
       <PlainIndicator />
       <a-divider dashed>
-        <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }">
-          Examen funcional
-        </span>
+        <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"> Examen funcional </span>
       </a-divider>
       <a-row :gutter="24">
         <a-col :span="8">
@@ -18,20 +14,10 @@
             <!-- Columna 1 -->
             <a-col :span="12" class="mb-3"> </a-col>
             <a-col :span="6" class="mb-3">
-              <span
-                class="d-block text-center font-weight-bold"
-                :style="{ color: '#1F2022' }"
-              >
-                Der.
-              </span>
+              <span class="d-block text-center font-weight-bold" :style="{ color: '#1F2022' }"> Der. </span>
             </a-col>
             <a-col :span="6" class="mb-3">
-              <span
-                class="d-block text-center font-weight-bold"
-                :style="{ color: '#1F2022' }"
-              >
-                Izq.
-              </span>
+              <span class="d-block text-center font-weight-bold" :style="{ color: '#1F2022' }"> Izq. </span>
             </a-col>
             <!-- Temporal anterior -->
             <a-col :span="12">
@@ -39,17 +25,25 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.temporalAnteriorRight"
+                <a-input-number
+                  v-model="form.temporal_previous_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.temporalAnteriorLeft"
+                <a-input-number
+                  v-model="form.temporal_previous_left"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
@@ -59,12 +53,26 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input v-model="form.temporalMedioRight" placeholder="Der." />
+                <a-input-number
+                  v-model="form.temporal_middle_right"
+                  placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
+                />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input v-model="form.temporalMedioLeft" placeholder="Izq." />
+                <a-input-number
+                  v-model="form.temporal_middle_left"
+                  placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
+                />
               </a-form-model-item>
             </a-col>
             <!-- Temporal posterior -->
@@ -73,17 +81,25 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.temporalPosteriorRight"
+                <a-input-number
+                  v-model="form.temporal_later_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.temporalPosteriorLeft"
+                <a-input-number
+                  v-model="form.temporal_later_left"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
@@ -93,15 +109,26 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.tensonTemporalRight"
+                <a-input-number
+                  v-model="form.tenson_temporal_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input v-model="form.tensonTemporalLeft" placeholder="Izq." />
+                <a-input-number
+                  v-model="form.tenson_temporal_left"
+                  placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
+                />
               </a-form-model-item>
             </a-col>
           </a-row>
@@ -111,20 +138,10 @@
             <!-- Columna 2 -->
             <a-col :span="12" class="mb-3"> </a-col>
             <a-col :span="6" class="mb-3">
-              <span
-                class="d-block text-center font-weight-bold"
-                :style="{ color: '#1F2022' }"
-              >
-                Der.
-              </span>
+              <span class="d-block text-center font-weight-bold" :style="{ color: '#1F2022' }"> Der. </span>
             </a-col>
             <a-col :span="6" class="mb-3">
-              <span
-                class="d-block text-center font-weight-bold"
-                :style="{ color: '#1F2022' }"
-              >
-                Izq.
-              </span>
+              <span class="d-block text-center font-weight-bold" :style="{ color: '#1F2022' }"> Izq. </span>
             </a-col>
             <!-- Mesetero profundo -->
             <a-col :span="12">
@@ -132,17 +149,25 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.meseteroProfundoRight"
+                <a-input-number
+                  v-model="form.mesetero_deep_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.meseteroProfundoLeft"
+                <a-input-number
+                  v-model="form.mesetero_deep_left"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
@@ -152,17 +177,25 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.mesteroSuperficialRight"
+                <a-input-number
+                  v-model="form.mestero_superficial_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.mesteroSuperficialLeft"
+                <a-input-number
+                  v-model="form.mestero_superficial_left"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
@@ -172,17 +205,25 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.pterigoideMedialRight"
+                <a-input-number
+                  v-model="form.pterigoide_medial_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.pterigoideMedialLeft"
+                <a-input-number
+                  v-model="form.pterigoide_medial_left"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
@@ -192,17 +233,25 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.pterigoideoLateralRight"
+                <a-input-number
+                  v-model="form.pterigoideo_side_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.pterigoideoLateralLeft"
+                <a-input-number
+                  v-model="form.pterigoideo_side_left"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
@@ -213,20 +262,10 @@
             <!-- Columna 3 -->
             <a-col :span="12" class="mb-3"> </a-col>
             <a-col :span="6" class="mb-3">
-              <span
-                class="d-block text-center font-weight-bold"
-                :style="{ color: '#1F2022' }"
-              >
-                Der.
-              </span>
+              <span class="d-block text-center font-weight-bold" :style="{ color: '#1F2022' }"> Der. </span>
             </a-col>
             <a-col :span="6" class="mb-3">
-              <span
-                class="d-block text-center font-weight-bold"
-                :style="{ color: '#1F2022' }"
-              >
-                Izq.
-              </span>
+              <span class="d-block text-center font-weight-bold" :style="{ color: '#1F2022' }"> Izq. </span>
             </a-col>
             <!-- Esternocleidomastoideo -->
             <a-col :span="12">
@@ -234,17 +273,25 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.esternocleidomastoideoRight"
+                <a-input-number
+                  v-model="form.esternocleidomastoideo_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.esternocleidomastoideoLeft"
+                <a-input-number
+                  v-model="form.esternocleidomastoideo_left"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
@@ -254,17 +301,25 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.digastricoPosteriorRight"
+                <a-input-number
+                  v-model="form.digastrico_deep_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.digastricoPosteriorLeft"
+                <a-input-number
+                  v-model="form.digastrico_deep_left"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
@@ -274,15 +329,26 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.poloLateralATMRight"
+                <a-input-number
+                  v-model="form.polo_side_atm_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input v-model="form.poloLateralATMLeft" placeholder="Izq." />
+                <a-input-number
+                  v-model="form.polo_side_atm_left"
+                  placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
+                />
               </a-form-model-item>
             </a-col>
             <!-- 	Polo posterior ATM -->
@@ -291,17 +357,25 @@
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.poloPosteriorATMRight"
+                <a-input-number
+                  v-model="form.polo_later_atm_right"
                   placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
               <a-form-model-item>
-                <a-input
-                  v-model="form.poloPosteriorATMLeft"
+                <a-input-number
+                  v-model="form.polo_later_atm_left"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
               </a-form-model-item>
             </a-col>
@@ -310,9 +384,7 @@
       </a-row>
 
       <a-divider dashed>
-        <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }">
-          Ruidos articulares
-        </span>
+        <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"> Ruidos articulares </span>
       </a-divider>
       <a-row :gutter="24">
         <a-col :span="24">
@@ -333,7 +405,7 @@
                 <a-select
                   placeholder="Seleccione"
                   :options="atmArray"
-                  v-model="form.aperturaATMDerechaSelect"
+                  v-model="form.apertura_atm_right_select"
                   :allowClear="true"
                   :disabled="loading"
                 >
@@ -343,15 +415,14 @@
             <a-col :span="4">
               <a-form-model-item class="with-button">
                 <a-input
-                  v-model="form.aperturaATMDerechaMM"
+                  v-model="form.apertura_atm_right_mm"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <a-col :span="5">
@@ -359,7 +430,7 @@
                 <a-select
                   placeholder="Seleccione"
                   :options="atmArray"
-                  v-model="form.aperturaATIzquierdaSelect"
+                  v-model="form.apertura_atm_left_select"
                   :allowClear="true"
                   :disabled="loading"
                 >
@@ -368,16 +439,15 @@
             </a-col>
             <a-col :span="4">
               <a-form-model-item class="with-button">
-                <a-input
-                  v-model="form.aperturaATIzquierdaMM"
+                <a-input-number
+                  v-model="form.apertura_atm_left_mm"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <!-- Cierre -->
@@ -387,7 +457,7 @@
                 <a-select
                   placeholder="Seleccione"
                   :options="atmArray"
-                  v-model="form.cierreATMDerechaSelect"
+                  v-model="form.cierre_atm_right_select"
                   :allowClear="true"
                   :disabled="loading"
                 >
@@ -396,13 +466,15 @@
             </a-col>
             <a-col :span="4">
               <a-form-model-item class="with-button">
-                <a-input v-model="form.cierreATMDerechaMM" placeholder="Izq." />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <a-input-number
+                  v-model="form.cierre_atm_right_mm"
+                  placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
+                />
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <a-col :span="5">
@@ -410,7 +482,7 @@
                 <a-select
                   placeholder="Seleccione"
                   :options="atmArray"
-                  v-model="form.cierreATIzquierdaSelect"
+                  v-model="form.cierre_atm_left_select"
                   :allowClear="true"
                   :disabled="loading"
                 >
@@ -419,16 +491,15 @@
             </a-col>
             <a-col :span="4">
               <a-form-model-item class="with-button">
-                <a-input
-                  v-model="form.cierreATIzquierdaMM"
+                <a-input-number
+                  v-model="form.cierre_atm_left_mm"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <!-- Lateralidad Derecha	 -->
@@ -440,7 +511,7 @@
                 <a-select
                   placeholder="Seleccione"
                   :options="atmArray"
-                  v-model="form.lateralDerechaATMDerechaSelect"
+                  v-model="form.lateral_right_atm_right_select"
                   :allowClear="true"
                   :disabled="loading"
                 >
@@ -449,16 +520,15 @@
             </a-col>
             <a-col :span="4">
               <a-form-model-item class="with-button">
-                <a-input
-                  v-model="form.lateralDerechaATMDerechaMM"
+                <a-input-number
+                  v-model="form.lateral_right_atm_right_mm"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <a-col :span="5">
@@ -466,7 +536,7 @@
                 <a-select
                   placeholder="Seleccione"
                   :options="atmArray"
-                  v-model="form.lateralDerechaATIzquierdaSelect"
+                  v-model="form.lateral_right_atm_left_select"
                   :allowClear="true"
                   :disabled="loading"
                 >
@@ -475,16 +545,15 @@
             </a-col>
             <a-col :span="4">
               <a-form-model-item class="with-button">
-                <a-input
-                  v-model="form.lateralDerechaATIzquierdaMM"
+                <a-input-number
+                  v-model="form.lateral_right_atm_left_mm"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <!-- Lateralidad Izquierda -->
@@ -496,7 +565,7 @@
                 <a-select
                   placeholder="Seleccione"
                   :options="atmArray"
-                  v-model="form.lateralIzquierdaATMDerechaSelect"
+                  v-model="form.lateral_left_atm_right_select"
                   :allowClear="true"
                   :disabled="loading"
                 >
@@ -505,16 +574,15 @@
             </a-col>
             <a-col :span="4">
               <a-form-model-item class="with-button">
-                <a-input
-                  v-model="form.lateralIzquierdaATMDerechaMM"
+                <a-input-number
+                  v-model="form.lateral_left_atm_right_mm"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <a-col :span="5">
@@ -522,7 +590,7 @@
                 <a-select
                   placeholder="Seleccione"
                   :options="atmArray"
-                  v-model="form.lateralIzquierdaATIzquierdaSelect"
+                  v-model="form.lateral_izquierda_atm_left_select"
                   :allowClear="true"
                   :disabled="loading"
                 >
@@ -531,16 +599,15 @@
             </a-col>
             <a-col :span="4">
               <a-form-model-item class="with-button">
-                <a-input
-                  v-model="form.lateralIzquierdaATIzquierdaMM"
+                <a-input-number
+                  v-model="form.lateral_izquierda_atm_left_mm"
                   placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
                 />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
           </a-row>
@@ -550,27 +617,13 @@
         <!-- Trayectoria de Movimiento	 -->
         <a-col :span="8">
           <a-divider dashed>
-            <span
-              :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"
-            >
-              Trayectoria de Movimiento
-            </span>
+            <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"> Trayectoria de Movimiento </span>
           </a-divider>
           <a-row :gutter="16">
             <a-col :span="24">
-              <div
-                class="content--movement d-flex justify-content-around"
-                :style="{ marginBottom: '34px' }"
-              >
-                <MovementPath
-                  title="Apertura"
-                  v-model="form.movementPathOpening"
-                />
-                <MovementPath
-                  title="Cierre"
-                  :alter="true"
-                  v-model="form.movementPathClosing"
-                />
+              <div class="content--movement d-flex justify-content-around" :style="{ marginBottom: '34px' }">
+                <MovementPath title="Apertura" v-model="form.movement_path_opening" />
+                <MovementPath title="Cierre" :alter="true" v-model="form.movement_path_closing" />
               </div>
             </a-col>
             <!-- Trayectoria de movimiento derecha -->
@@ -579,13 +632,15 @@
             </a-col>
             <a-col :span="8">
               <a-form-model-item class="with-button">
-                <a-input v-model="form.movementPathRight" placeholder="Der." />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <a-input-number
+                  v-model="form.movement_path_right"
+                  placeholder="Der."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
+                />
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <!-- Trayectoria de movimiento Izquierda -->
@@ -594,13 +649,15 @@
             </a-col>
             <a-col :span="8">
               <a-form-model-item class="with-button">
-                <a-input v-model="form.movementPathLeft" placeholder="Izq." />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <a-input-number
+                  v-model="form.movement_path_left"
+                  placeholder="Izq."
+                  v-mask="'##'"
+                  :min="1"
+                  :max="10"
+                  class="hidden-arrows"
+                />
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <!-- Trayectoria de movimiento End Feel -->
@@ -612,7 +669,7 @@
                 <a-select
                   placeholder="Seleccione"
                   :options="endFeelArray"
-                  v-model="form.lateralIzquierdaATMDerechaSelect"
+                  v-model="form.end_feel"
                   :allowClear="true"
                   :disabled="loading"
                 >
@@ -624,11 +681,7 @@
         <!-- Rango de Movimiento -->
         <a-col :span="8">
           <a-divider dashed>
-            <span
-              :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"
-            >
-              Rango de Movimiento
-            </span>
+            <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"> Rango de Movimiento </span>
           </a-divider>
           <a-row :gutter="24">
             <!-- Apertura máx. sin asistencia	 -->
@@ -637,16 +690,15 @@
             </a-col>
             <a-col :span="8">
               <a-form-model-item class="with-button">
-                <a-input
-                  v-model="form.aperturaMaxSinAsistencia"
+                <a-input-number
+                  v-model="form.apertura_max_any_asistent"
                   placeholder="0"
+                  v-mask="'####'"
+                  :min="1"
+                  :max="9999"
+                  class="hidden-arrows"
                 />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <!-- Apertura máx. con asistencia		 -->
@@ -655,16 +707,15 @@
             </a-col>
             <a-col :span="8">
               <a-form-model-item class="with-button">
-                <a-input
-                  v-model="form.aperturaMaxConAsistencia"
+                <a-input-number
+                  v-model="form.apertura_max_with_asistent"
                   placeholder="0"
+                  v-mask="'####'"
+                  :min="1"
+                  :max="9999"
+                  class="hidden-arrows"
                 />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <!-- Protrusión		 -->
@@ -673,13 +724,15 @@
             </a-col>
             <a-col :span="8">
               <a-form-model-item class="with-button">
-                <a-input v-model="form.protrusion" placeholder="0" />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <a-input-number
+                  v-model="form.protrusion"
+                  placeholder="0"
+                  v-mask="'####'"
+                  :min="1"
+                  :max="9999"
+                  class="hidden-arrows"
+                />
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <!-- Overbite		 -->
@@ -688,13 +741,15 @@
             </a-col>
             <a-col :span="8">
               <a-form-model-item class="with-button">
-                <a-input v-model="form.overbite" placeholder="0" />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <a-input-number
+                  v-model="form.overbite"
+                  placeholder="0"
+                  v-mask="'####'"
+                  :min="1"
+                  :max="9999"
+                  class="hidden-arrows"
+                />
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
             <!-- Overjet		 -->
@@ -703,13 +758,15 @@
             </a-col>
             <a-col :span="8">
               <a-form-model-item class="with-button">
-                <a-input v-model="form.overjet" placeholder="0" />
-                <span
-                  class="ml-3"
-                  :style="{ fontSize: '12px', color: '#B9BABA' }"
-                >
-                  mm.
-                </span>
+                <a-input-number
+                  v-model="form.overjet"
+                  placeholder="0"
+                  v-mask="'####'"
+                  :min="1"
+                  :max="9999"
+                  class="hidden-arrows"
+                />
+                <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
             </a-col>
           </a-row>
@@ -717,17 +774,13 @@
         <!-- Dolor Distracción -->
         <a-col :span="8">
           <a-divider dashed>
-            <span
-              :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"
-            >
-              Dolor Distracción
-            </span>
+            <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"> Dolor Distracción </span>
           </a-divider>
           <a-row :gutter="24">
             <!-- Dolor Distracción	 -->
             <a-col :span="24">
               <a-form-model-item class="with-button">
-                <a-radio-group v-model="form.painDistractionValue">
+                <a-radio-group v-model="form.pain_distraction_value">
                   <a-radio :value="1"> Derecha </a-radio>
                   <a-radio :value="2"> Izquierda </a-radio>
                 </a-radio-group>
@@ -736,22 +789,13 @@
             <!-- Compresión directa		 -->
             <a-col :span="24">
               <a-form-model-item class="with-button" label="Compresión directa">
-                <a-input
-                  v-model="form.painDistractionDirectCompression"
-                  placeholder="Ingrese su valor"
-                />
+                <a-input v-model="form.pain_distraction_direct_compression" placeholder="Ingrese su valor" />
               </a-form-model-item>
             </a-col>
             <!-- Compresión indirecta	 -->
             <a-col :span="24">
-              <a-form-model-item
-                class="with-button"
-                label="Compresión indirecta"
-              >
-                <a-input
-                  v-model="form.painDistractionIndirectCompression"
-                  placeholder="Ingrese su valor"
-                />
+              <a-form-model-item class="with-button" label="Compresión indirecta">
+                <a-input v-model="form.pain_distractionIndirect_compression" placeholder="Ingrese su valor" />
               </a-form-model-item>
             </a-col>
           </a-row>
@@ -760,11 +804,7 @@
       <a-row :gutter="16">
         <a-col :span="24">
           <a-divider dashed>
-            <span
-              :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"
-            >
-              Otros
-            </span>
+            <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"> Otros </span>
           </a-divider>
         </a-col>
         <!-- Diagnóstico -->
@@ -776,7 +816,7 @@
         <!-- Examen radiológico -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Examen radiológico">
-            <a-textarea v-model="form.radiologicalExamination" :rows="3" />
+            <a-textarea v-model="form.radiological_examination" :rows="3" />
           </a-form-model-item>
         </a-col>
         <!-- Otros -->
@@ -790,6 +830,9 @@
         </a-col>
       </a-row>
     </a-form-model>
+    <pre>
+      {{ form }}
+    </pre>
   </div>
 </template>
 

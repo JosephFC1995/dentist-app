@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="table-general">
-      <a-space class="mb-3 mt-2 d-flex justify-content-between">
+      <a-space class="mb-3 mt-5 d-flex justify-content-between">
         <div>
           <downloadExcel class="ant-btn ant-btn-sm rounded-full pr-2" :data="data" :fields="json_fields_excel" name="reporte.xls">
             <i class="uil uil-cloud-download mr-2"></i> Archivo excel
@@ -14,36 +14,47 @@
           <a-input placeholder="Buscar" />
         </div>
       </a-space>
-      <a-table
-        :columns="columns"
-        :data-source="data"
-        :pagination="{
-          defaultPageSize: 5,
-          hideOnSinglePage: true,
-        }"
-      >
-        <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="photo">
-          <a-avatar size="small" icon="user" />
-        </span>
-        <span slot="action">
-          <a-button size="small" @click="() => (openModal = true)">
-            <span class="ico">
-              <i class="uil uil-eye"></i>
+      <a-spin :spinning="loading" tip="Cargando información...">
+        <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
+        <a-table
+          :columns="columns"
+          :data-source="informsPatient"
+          :pagination="{
+            defaultPageSize: 10,
+            hideOnSinglePage: true,
+          }"
+        >
+          <span slot="file" slot-scope="file">
+            <span>
+              {{ humanFileSize(file.size) }}
             </span>
-          </a-button>
-          <a-button type="primary" size="small">
-            <span class="ico">
-              <i class="uil uil-import"></i>
-            </span>
-          </a-button>
-          <a-button type="danger" size="small">
-            <span class="ico">
-              <i class="uil uil-trash-alt"></i>
-            </span>
-          </a-button>
-        </span>
-      </a-table>
+          </span>
+          <span slot="action" slot-scope="record">
+            <a-button size="small" @click="openDetailFile(record)">
+              <span class="ico">
+                <i class="uil uil-eye"></i>
+              </span>
+            </a-button>
+            <a-button type="primary" size="small" :href="record.file.url" target="_blank">
+              <span class="ico">
+                <i class="uil uil-import"></i>
+              </span>
+            </a-button>
+            <a-popconfirm
+              title="¿Esta seguro que desea eliminar el informe?"
+              ok-text="Si"
+              cancel-text="No"
+              @confirm="deleteInform(record)"
+            >
+              <a-button type="danger" size="small">
+                <span class="ico">
+                  <i class="uil uil-trash-alt"></i>
+                </span>
+              </a-button>
+            </a-popconfirm>
+          </span>
+        </a-table>
+      </a-spin>
     </div>
     <!-- Modal ver imagen -->
     <a-modal
@@ -53,6 +64,7 @@
       :forceRender="true"
       :dialog-style="{ top: '20px' }"
       :width="widthModalResponsive"
+      :destroyOnClose="true"
     >
       <template slot="title">
         <div class="title-block p-0 m-0">
@@ -61,22 +73,13 @@
       </template>
       <div class="d-flex flex-column">
         <div class="file-detail flex-column mb-0">
-          <iframe
-            src="https://drive.google.com/viewerng/viewer?
-url=https://jurisbackend.sedetc.gob.pe/uploads/archivos/2020/07/5f0f171bbcc6e.pdf?
-pid=explorer&efh=false&a=v&chrome=false&embedded=true"
-            width="100%"
-            height="700px"
-          />
+          <iframe :src="selectFile.file ? selectFile.file.url : ''" width="100%" height="700px" />
         </div>
       </div>
       <template slot="footer">
         <div class="d-flex justify-content-between modal-footer">
-          <button type="button" class="ant-btn ant-btn-dangerous" @click="() => (openModal = false)">
-            <span>Cancelar</span>
-          </button>
-          <button type="button" class="ant-btn ant-btn-danger" @click="okModal">
-            <span>Eliminar</span>
+          <button type="button" class="ant-btn ant-btn-dangerous" @click="okModal">
+            <span>Cerrar</span>
           </button>
         </div>
       </template>
@@ -85,11 +88,13 @@ pid=explorer&efh=false&a=v&chrome=false&embedded=true"
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+
 export default {
   components: {},
   data() {
     return {
-      detailDrawer: {},
+      selectFile: {},
       formDetailHystory: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       widthModalResponsive: window.innerWidth > 900 ? 900 : window.innerWidth - 100,
@@ -106,89 +111,91 @@ export default {
           dataIndex: 'id',
           key: 'id',
           title: 'Nº',
-          width: '10%',
+          width: '5%',
         },
         {
           dataIndex: 'title',
           key: 'title',
           title: 'Título',
-          width: '50%',
+          width: '60%',
         },
         {
-          dataIndex: 'size',
-          key: 'size',
+          dataIndex: 'file.type',
+          key: 'file.type',
+          title: 'Extensión',
+          width: '10%',
+        },
+        {
+          dataIndex: 'file',
+          key: 'file',
+          scopedSlots: { customRender: 'file' },
           title: 'Peso',
-          width: '20%',
+          width: '10%',
         },
 
         {
           title: 'Acciones',
           key: 'action',
           scopedSlots: { customRender: 'action' },
-          width: '20%',
+          width: '15%',
         },
       ],
-      data: [
-        {
-          id: '1',
-          title: 'Archivo PDF',
-          size: '2mb',
-          price: 100.0,
-          descount: 10,
-          total: 90,
-          date: '12/11/2020',
-          doctor: 'John Brown',
-        },
-        {
-          id: '2',
-          title: 'Archivo PDF',
-          size: '2mb',
-          price: 100.0,
-          descount: 10,
-          total: 90,
-          date: '12/11/2020',
-          doctor: 'John Brown',
-        },
-        {
-          id: '3',
-          title: 'Archivo PDF',
-          size: '2mb',
-          price: 100.0,
-          descount: 10,
-          total: 90,
-          date: '12/11/2020',
-          doctor: 'John Brown',
-        },
-        {
-          id: '4',
-          title: 'Archivo PDF',
-          size: '2mb',
-          price: 100.0,
-          descount: 10,
-          total: 90,
-          date: '12/11/2020',
-          doctor: 'John Brown',
-        },
-        {
-          id: '5',
-          title: 'Archivo PDF',
-          size: '2mb',
-          price: 100.0,
-          descount: 10,
-          total: 90,
-          date: '12/11/2020',
-          doctor: 'John Brown',
-        },
-      ],
+      data: [],
     }
   },
   methods: {
+    openDetailFile(record) {
+      console.log(record)
+      this.selectFile = record
+      this.openModal = true
+    },
     okModal(e) {
-      console.log(e)
+      this.selectFile = {}
       this.openModal = false
     },
+    async deleteInform(record) {
+      this.changeLoading(true)
+      let deleteResponse = await this.$store.dispatch('data/informs/DELETE_INFORMS_BY_ID', record.id)
+      if (deleteResponse) this.$message.success(deleteResponse.message)
+      await this.getInformsPatient({ id_patient: this.$route.params.id })
+      // this.loading = false
+      this.changeLoading(false)
+    },
+    humanFileSize(bytes, si = false, dp = 1) {
+      const thresh = si ? 1000 : 1024
+
+      if (Math.abs(bytes) < thresh) {
+        return bytes + ' B'
+      }
+
+      const units = si
+        ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+      let u = -1
+      const r = 10 ** dp
+
+      do {
+        bytes /= thresh
+        ++u
+      } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1)
+
+      return bytes.toFixed(dp) + ' ' + units[u]
+    },
+    ...mapActions({
+      changeLoading: 'data/informs/CHANGE_LOADING',
+      getInformsPatient: 'data/informs/GET_INFORMS_BY_PATIENT',
+    }),
   },
-  mounted() {
+  computed: {
+    ...mapGetters({
+      loading: 'data/informs/getLoading',
+      informsPatient: 'data/informs/getInformsPatient',
+    }),
+  },
+  async mounted() {
+    this.changeLoading(true)
+    await this.getInformsPatient({ id_patient: this.$route.params.id })
+    this.changeLoading(false)
     window.onresize = () => {
       let width = window.innerWidth
       this.widthDrawerResponsive = width > 900 ? 700 : width - 100

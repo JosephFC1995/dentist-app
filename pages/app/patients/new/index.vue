@@ -10,9 +10,9 @@
           <span slot="tab"> <i class="uil uil-user-exclamation mr-2"></i>Datos </span>
           <TabNewPacientInform />
         </a-tab-pane>
-        <!-- Analmesis general -->
+        <!-- Anammesis general -->
         <a-tab-pane key="2" disabled>
-          <span slot="tab"> <i class="uil uil-syringe mr-2"></i>Analmesis general </span>
+          <span slot="tab"> <i class="uil uil-syringe mr-2"></i>Anamnesis general </span>
         </a-tab-pane>
         <!-- Examen odontológico -->
         <a-tab-pane key="3" disabled>

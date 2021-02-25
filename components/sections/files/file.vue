@@ -3,24 +3,21 @@
     <a-card class="ant-card mb-0 bg-color-white p-0 ant-card-bordered">
       <a
         slot="cover"
-        href="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+        :href="file.url"
         target="_blank"
         :style="{ height: '170px' }"
+        :title="file.name_original ? file.name_original : file.name"
       >
-        <img
-          alt="example"
-          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-          :style="{ height: '100%', objectFit: 'cover' }"
-        />
+        <img alt="example" :src="file.url" :style="{ height: '100%', objectFit: 'cover', width: '100%' }" />
       </a>
       <template slot="actions" class="ant-card-actions">
         <a-tooltip placement="top" title="Ver imagen">
-          <a href="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" target="_blank">
+          <a :href="file.url" target="_blank">
             <i class="uil uil-eye" :style="{ fontSize: '18px' }"></i>
           </a>
         </a-tooltip>
-        <a-tooltip placement="top" title="Editar">
-          <i class="uil uil-edit-alt" :style="{ fontSize: '18px' }" @click="() => (openDrawerInfoPicture = true)"></i>
+        <a-tooltip placement="top" title="Mas información">
+          <i class="uil uil-info-circle" :style="{ fontSize: '18px' }" @click="() => (openDrawerInfoPicture = true)"></i>
         </a-tooltip>
         <a-tooltip placement="top" title="Eliminar">
           <i class="uil uil-trash-alt" :style="{ fontSize: '18px' }" @click="() => (openModal = true)"></i>
@@ -28,14 +25,16 @@
       </template>
       <a-card-meta>
         <span slot="title" :style="{ fontWeight: 'bold' }">
-          <a href="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" target="_blank" style="color: #000">
-            {{ title }}
-          </a>
+          <a-tooltip placement="leftTop" :title="file.name_original ? file.name_original : file.name">
+            <a :href="file.url" target="_blank" style="color: #000">
+              {{ file.name_original ? file.name_original : file.name }}
+            </a>
+          </a-tooltip>
         </span>
       </a-card-meta>
     </a-card>
     <!-- Modal eliminar imagen -->
-    <a-modal v-model="openModal" @ok="okModal" :centered="true" :forceRender="true">
+    <a-modal v-model="openModal" @ok="deletePicture" :centered="true" :forceRender="true" :destroyOnClose="true">
       <template slot="title">
         <div class="title-block p-0 m-0">
           <h5 class="modal-title m-0" style="color: #000">Eliminar imagen</h5>
@@ -51,7 +50,7 @@
           <button type="button" class="ant-btn ant-btn-dangerous" @click="() => (openModal = false)">
             <span>Cancelar</span>
           </button>
-          <button type="button" class="ant-btn ant-btn-danger" @click="okModal">
+          <button type="button" class="ant-btn ant-btn-danger" @click="deletePicture">
             <span>Eliminar</span>
           </button>
         </div>
@@ -63,12 +62,13 @@
       :visible="openDrawerInfoPicture"
       :body-style="{ paddingBottom: '80px' }"
       @close="closeDrawerInfoPicture"
+      :destroyOnClose="true"
     >
       <template slot="title">
         <div class="title-block p-0 m-0">
           <h4 class="modal-title m-0" style="color: #336cfb">{{ title }}</h4>
         </div>
-        <CardInfoPicture :name="title" />
+        <CardInfoPicture :file="file" />
       </template>
     </a-drawer>
   </div>
@@ -76,6 +76,7 @@
 
 <script>
 import CardInfoPicture from '~/components/card/CardInfoPicture'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -86,22 +87,41 @@ export default {
       type: String,
       default: 'Archivo',
     },
+    id: {
+      type: Number,
+      default: null,
+    },
+    file: {
+      type: Object,
+      default: {},
+    },
   },
   data() {
     return {
       openModal: false,
       openDrawerInfoPicture: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 500 : window.innerWidth - 100,
+      selectFile: {},
     }
   },
   methods: {
-    okModal(e) {
-      console.log(e)
+    async deletePicture() {
+      this.changeLoading(true)
+      let response = false
       this.openModal = false
+      response = await this.$axios.$delete(`/pictures/${this.id}`).catch((errors) => {
+        this.changeLoading(false)
+      })
+      if (response.success) this.$message.success(response.message)
+      await this.getPicturesPatient({ id_patient: this.$route.params.id })
     },
     closeDrawerInfoPicture() {
       this.openDrawerInfoPicture = false
     },
+    ...mapActions({
+      changeLoading: 'data/pictures/CHANGE_LOADING',
+      getPicturesPatient: 'data/pictures/GET_PICTURES_BY_PATIENT',
+    }),
   },
   mounted() {
     window.onresize = () => {

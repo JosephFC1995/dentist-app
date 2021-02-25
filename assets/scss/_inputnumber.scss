@@ -10,12 +10,18 @@
     &::focus {
         @include input-focused();
     }
-    input {
-        border: none;
-    }
     &::active {
         background-color: #fff !important;
         color: rgba(#000, 0.35);
+    }
+    .ant-input-number-input-wrap {
+        input {
+            border: #ebebeb 1px solid;
+            &:focus {
+                @include input-focused();
+                border: 1px solid;
+            }
+        }
     }
     .ant-input-number-handler-wrap {
         display: flex;

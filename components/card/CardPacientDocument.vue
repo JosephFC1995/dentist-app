@@ -5,6 +5,7 @@
       <!-- Formulario -->
       <FormPacientDocument />
     </a-card>
+    <a-divider :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }" dashed>Documents</a-divider>
     <TablePacientDocument />
   </div>
 </template>

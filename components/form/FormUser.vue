@@ -217,7 +217,7 @@ export default {
         name: [
           {
             required: true,
-            message: 'Por favor seleccione un rol para el usuario',
+            message: 'Por favor agregue un nombre para el usuario',
             trigger: 'blur',
           },
         ],

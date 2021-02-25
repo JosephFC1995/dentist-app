@@ -17,9 +17,9 @@
           <span slot="tab"> <i class="uil uil-user-exclamation mr-2"></i>Datos </span>
           <TabPacientInformation :patient="patient" />
         </a-tab-pane>
-        <!-- Analmesis general -->
+        <!-- Anammesis general -->
         <a-tab-pane key="2">
-          <span slot="tab"> <i class="uil uil-syringe mr-2"></i>Analmesis general </span>
+          <span slot="tab"> <i class="uil uil-syringe mr-2"></i>Anammesis general </span>
           <TabPacientAnamesisGeneral />
         </a-tab-pane>
         <!-- Examen odontológico -->
