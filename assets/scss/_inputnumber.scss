@@ -17,7 +17,7 @@
     .ant-input-number-input-wrap {
         input {
             border: #ebebeb 1px solid;
-            &:focus {
+            &:focus:not(.ant-input-disabled) {
                 @include input-focused();
                 border: 1px solid;
             }

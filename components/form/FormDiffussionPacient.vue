@@ -1,6 +1,6 @@
 <template>
   <div class="form-general">
-    <a-form-model :model="form" ref="odontogram" class="custom--data">
+    <a-form-model :model="form" ref="form" class="custom--data">
       <a-divider dashed>
         <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"> Indicador de dolor </span>
       </a-divider>
@@ -32,6 +32,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -44,6 +45,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -60,6 +62,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -72,6 +75,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -88,6 +92,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -116,6 +121,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -128,6 +134,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -156,6 +163,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -168,6 +176,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -184,6 +193,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -196,6 +206,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -212,6 +223,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -224,6 +236,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -240,6 +253,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -252,6 +266,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -280,6 +295,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -292,6 +308,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -308,6 +325,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -320,6 +338,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -336,6 +355,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -348,6 +368,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -364,6 +385,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -376,6 +398,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
               </a-form-model-item>
             </a-col>
@@ -407,7 +430,7 @@
                   :options="atmArray"
                   v-model="form.apertura_atm_right_select"
                   :allowClear="true"
-                  :disabled="loading"
+                  :disabled="loading || disabledHasDate"
                 >
                 </a-select>
               </a-form-model-item>
@@ -421,6 +444,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -432,7 +456,7 @@
                   :options="atmArray"
                   v-model="form.apertura_atm_left_select"
                   :allowClear="true"
-                  :disabled="loading"
+                  :disabled="loading || disabledHasDate"
                 >
                 </a-select>
               </a-form-model-item>
@@ -446,6 +470,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -459,7 +484,7 @@
                   :options="atmArray"
                   v-model="form.cierre_atm_right_select"
                   :allowClear="true"
-                  :disabled="loading"
+                  :disabled="loading || disabledHasDate"
                 >
                 </a-select>
               </a-form-model-item>
@@ -473,6 +498,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -484,7 +510,7 @@
                   :options="atmArray"
                   v-model="form.cierre_atm_left_select"
                   :allowClear="true"
-                  :disabled="loading"
+                  :disabled="loading || disabledHasDate"
                 >
                 </a-select>
               </a-form-model-item>
@@ -498,6 +524,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -513,7 +540,7 @@
                   :options="atmArray"
                   v-model="form.lateral_right_atm_right_select"
                   :allowClear="true"
-                  :disabled="loading"
+                  :disabled="loading || disabledHasDate"
                 >
                 </a-select>
               </a-form-model-item>
@@ -527,6 +554,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -538,7 +566,7 @@
                   :options="atmArray"
                   v-model="form.lateral_right_atm_left_select"
                   :allowClear="true"
-                  :disabled="loading"
+                  :disabled="loading || disabledHasDate"
                 >
                 </a-select>
               </a-form-model-item>
@@ -552,6 +580,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -567,7 +596,7 @@
                   :options="atmArray"
                   v-model="form.lateral_left_atm_right_select"
                   :allowClear="true"
-                  :disabled="loading"
+                  :disabled="loading || disabledHasDate"
                 >
                 </a-select>
               </a-form-model-item>
@@ -581,6 +610,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -592,7 +622,7 @@
                   :options="atmArray"
                   v-model="form.lateral_izquierda_atm_left_select"
                   :allowClear="true"
-                  :disabled="loading"
+                  :disabled="loading || disabledHasDate"
                 >
                 </a-select>
               </a-form-model-item>
@@ -606,6 +636,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -639,6 +670,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -656,6 +688,7 @@
                   :min="1"
                   :max="10"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -671,7 +704,7 @@
                   :options="endFeelArray"
                   v-model="form.end_feel"
                   :allowClear="true"
-                  :disabled="loading"
+                  :disabled="loading || disabledHasDate"
                 >
                 </a-select>
               </a-form-model-item>
@@ -697,6 +730,7 @@
                   :min="1"
                   :max="9999"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -714,6 +748,7 @@
                   :min="1"
                   :max="9999"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -731,6 +766,7 @@
                   :min="1"
                   :max="9999"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -748,6 +784,7 @@
                   :min="1"
                   :max="9999"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -765,6 +802,7 @@
                   :min="1"
                   :max="9999"
                   class="hidden-arrows"
+                  :disabled="loading || disabledHasDate"
                 />
                 <span class="ml-3" :style="{ fontSize: '12px', color: '#B9BABA' }"> mm. </span>
               </a-form-model-item>
@@ -780,7 +818,7 @@
             <!-- Dolor Distracción	 -->
             <a-col :span="24">
               <a-form-model-item class="with-button">
-                <a-radio-group v-model="form.pain_distraction_value">
+                <a-radio-group v-model="form.pain_distraction_value" :disabled="loading || disabledHasDate">
                   <a-radio :value="1"> Derecha </a-radio>
                   <a-radio :value="2"> Izquierda </a-radio>
                 </a-radio-group>
@@ -789,13 +827,21 @@
             <!-- Compresión directa		 -->
             <a-col :span="24">
               <a-form-model-item class="with-button" label="Compresión directa">
-                <a-input v-model="form.pain_distraction_direct_compression" placeholder="Ingrese su valor" />
+                <a-input
+                  v-model="form.pain_distraction_direct_compression"
+                  placeholder="Ingrese su valor"
+                  :disabled="loading || disabledHasDate"
+                />
               </a-form-model-item>
             </a-col>
             <!-- Compresión indirecta	 -->
             <a-col :span="24">
               <a-form-model-item class="with-button" label="Compresión indirecta">
-                <a-input v-model="form.pain_distractionIndirect_compression" placeholder="Ingrese su valor" />
+                <a-input
+                  v-model="form.pain_distraction_indirect_compression"
+                  placeholder="Ingrese su valor"
+                  :disabled="loading || disabledHasDate"
+                />
               </a-form-model-item>
             </a-col>
           </a-row>
@@ -810,45 +856,54 @@
         <!-- Diagnóstico -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Diagnóstico">
-            <a-textarea v-model="form.diagnosis" :rows="3" />
+            <a-textarea v-model="form.diagnosis" :rows="3" :disabled="loading || disabledHasDate" />
           </a-form-model-item>
         </a-col>
         <!-- Examen radiológico -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Examen radiológico">
-            <a-textarea v-model="form.radiological_examination" :rows="3" />
+            <a-textarea v-model="form.radiological_examination" :rows="3" :disabled="loading || disabledHasDate" />
           </a-form-model-item>
         </a-col>
         <!-- Otros -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Otros">
-            <a-textarea v-model="form.others" :rows="3" />
+            <a-textarea v-model="form.others" :rows="3" :disabled="loading || disabledHasDate" />
           </a-form-model-item>
         </a-col>
         <a-col :span="24" class="d-flex justify-content-end">
-          <a-button type="primary" html-type="submit"> Guardar </a-button>
+          <a-button type="primary" html-type="submit" @click="submit" :loading="loading" :disabled="disabledHasDate">
+            Guardar
+          </a-button>
         </a-col>
       </a-row>
     </a-form-model>
-    <pre>
-      {{ form }}
-    </pre>
   </div>
 </template>
 
 <script>
 import PlainIndicator from '~/components/sections/diffussion/PlainIndicator'
 import MovementPath from '~/components/sections/diffussion/MovementPath'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
     PlainIndicator,
     MovementPath,
   },
+  props: {
+    form: {
+      type: Object,
+      default: {},
+    },
+    disabledHasDate: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       loading: false,
-      form: {},
       atmArray: [
         { value: 1, label: 'Click' },
         { value: 2, label: 'Crepitación' },
@@ -859,6 +914,30 @@ export default {
         { value: 3, label: 'Blando' },
       ],
     }
+  },
+  methods: {
+    submit() {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          this.loading = true
+          this.changeLoading(true)
+          let tempForm = this.form
+          tempForm.id_patient = this.$route.params.id
+          let response = false
+          response = await this.$axios.$put(`/diffusion_patient/${tempForm.id}`, tempForm).catch((errors) => {
+            this.loading = false
+            this.changeLoading(false)
+          })
+          if (response.success) this.$message.success(response.message)
+          this.loading = false
+          this.changeLoading(false)
+        }
+      })
+    },
+    ...mapActions({
+      changeLoading: 'data/diffussion/CHANGE_LOADING',
+      getDiffussionPatient: 'data/diffussion/GET_DIFFUSSION_BY_PATIENT',
+    }),
   },
 }
 </script>

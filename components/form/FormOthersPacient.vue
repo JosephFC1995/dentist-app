@@ -213,7 +213,13 @@ export default {
     async getOtherPatient() {
       this.changeLoading(true)
       let tempForm = await this.getOther({ id_patient: this.$route.params.id })
-      this.form = tempForm ? tempForm : {}
+      this.form = tempForm
+        ? tempForm
+        : {
+            clinical_exams: [],
+            stomatological_clinical_exams: [],
+            auxiliary_exams: [],
+          }
       // this.updateListFilt(this.form.clinical_exams, 'clinical_exams')
       // this.updateListFilt(this.form.stomatological_clinical_exams, 'stomatological_clinical_exams')
       // this.updateListFilt(this.form.auxiliary_exams, 'auxiliary_exams')

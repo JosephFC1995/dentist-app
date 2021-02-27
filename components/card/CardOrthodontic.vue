@@ -20,11 +20,8 @@
 </template>
 
 <script>
-import FormOrthodontic from '~/components/form/FormOrthodontic'
 export default {
-  components: {
-    FormOrthodontic,
-  },
+  components: {},
   data() {
     return {
       odontogram: {

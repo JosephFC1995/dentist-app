@@ -30,7 +30,11 @@ export default {
 
     components: true,
 
-    buildModules: ['@nuxtjs/eslint-module', '@nuxtjs/google-fonts', '@nuxtjs/moment', '@nuxtjs/dotenv'],
+    buildModules: ['@nuxtjs/google-fonts', '@nuxtjs/moment', '@nuxtjs/dotenv', 'nuxt-build-optimisations'],
+
+    buildOptimisations: {
+        profile: 'risky',
+    },
 
     moment: {
         defaultLocale: 'es',
