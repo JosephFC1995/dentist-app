@@ -1,7 +1,7 @@
 <template>
   <div class="card-info-pacient-odontogram">
     <a-card :title="false" :bordered="false">
-      <a-row :gutter="16" type="flex" justify="space-between">
+      <!-- <a-row :gutter="16" type="flex" justify="space-between">
         <a-col :span="24" :md="6" class="with-button">
           <a-form-model-item class="with-button">
             <a-date-picker
@@ -17,7 +17,7 @@
             <span> <i class="uil uil-save mr-1"></i> Guardar </span>
           </a-button>
         </a-col>
-      </a-row>
+      </a-row> -->
       <!-- Formulario Endodoncia -->
       <FormEndodonticsMedicalExam />
     </a-card>

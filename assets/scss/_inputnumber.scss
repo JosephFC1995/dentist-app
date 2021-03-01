@@ -15,6 +15,7 @@
         color: rgba(#000, 0.35);
     }
     .ant-input-number-input-wrap {
+        width: 100%;
         input {
             border: #ebebeb 1px solid;
             &:focus:not(.ant-input-disabled) {

@@ -80,7 +80,16 @@ export default {
         this.changeLoading(false)
       })
       if (response.success) this.$message.success(response.message)
-      this.form = {}
+      this.form = {
+        diagrams_injuries_exams: [],
+        auxiliary_exams: [],
+        rx_exams: [],
+        tomography_exams: [],
+        clinical_analysis_exams: [],
+        biopsies_exisionals_exams: [],
+        biopsies_exofoliativa_exams: [],
+        others_exams: [],
+      }
       this.datesSelect = undefined
       await this.getDatesPathologyPatient({ id_patient: this.$route.params.id })
       this.changeLoading(false)

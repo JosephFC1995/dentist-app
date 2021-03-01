@@ -48,6 +48,11 @@
           <span slot="tab"> Pronóstico </span>
           <CardEndodonticsPronostic />
         </a-tab-pane>
+        <div class="date_in_tab" slot="tabBarExtraContent">
+          <a-form-model-item class="with-button">
+            <a-date-picker placeholder="Seleccione una fecha" :showToday="false" />
+          </a-form-model-item>
+        </div>
       </a-tabs>
     </div>
   </div>

@@ -30,7 +30,7 @@ export default {
 
     components: true,
 
-    buildModules: ['@nuxtjs/google-fonts', '@nuxtjs/moment', '@nuxtjs/dotenv', 'nuxt-build-optimisations'],
+    buildModules: ['@nuxtjs/google-fonts', '@nuxtjs/moment', '@nuxtjs/dotenv'],
 
     buildOptimisations: {
         profile: 'risky',
