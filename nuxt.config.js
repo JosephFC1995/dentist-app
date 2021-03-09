@@ -43,7 +43,7 @@ export default {
     googleFonts: {
         families: { Lato: [100, 300, 400, 600, 800] },
     },
-    modules: ['@nuxtjs/axios', '@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/proxy'],
+    modules: ['@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/proxy'],
 
     axios: {
         proxy: true,
