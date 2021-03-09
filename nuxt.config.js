@@ -1,3 +1,4 @@
+console.log(process.env.BASE_URL_API)
 export default {
     ssr: false,
     target: 'static',
@@ -54,7 +55,7 @@ export default {
         keyGoogleMaps: process.env.KEY_GOOGLE_MAPS,
     },
     proxy: {
-        '/api/': { target: process.env.BASE_URL_API, pathRewrite: { '^/api/': '' } },
+        '/api': { target: process.env.BASE_URL_API, pathRewrite: { '^/api/': '' } },
     },
     auth: {
         resetOnError: true,
