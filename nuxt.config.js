@@ -43,6 +43,8 @@ export default {
 
     axios: {
         baseURL: process.env.BASE_URL_API,
+        // proxy: true,
+        // prefix: '/api/',
     },
     env: {
         apiHost: process.env.BASE_URL_API,
