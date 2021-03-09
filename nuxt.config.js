@@ -33,10 +33,6 @@ export default {
 
     buildModules: ['@nuxtjs/google-fonts', '@nuxtjs/moment', '@nuxtjs/dotenv'],
 
-    buildOptimisations: {
-        profile: 'risky',
-    },
-
     moment: {
         defaultLocale: 'es',
         locales: ['es'],
