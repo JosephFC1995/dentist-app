@@ -56,7 +56,7 @@ export default {
           let response = false
           let tempForm = this.form
           tempForm.id_patient = this.$route.params.id
-          response = await this.$axios.$post(`/endodontics_patient`, tempForm).catch((errors) => {
+          response = await this.$axios.$post(`/endodontic_patient`, tempForm).catch((errors) => {
             this.loading = false
           })
 

@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export const state = () => ({
     dates: [],
+    hasSelectedDate: false,
     endodonticSelect: {},
     endodonticMedicalRecordSelect: {},
     endodonticMedicalExamSelect: {},
@@ -21,8 +22,14 @@ export const mutations = {
     SET_ENDODONTIC_MEDICAL_RECORD_SELECT(state, payload) {
         state.endodonticMedicalRecordSelect = payload
     },
+    SET_ENDODONTIC_MEDICAL_EXAM_SELECT(state, payload) {
+        state.endodonticMedicalExamSelect = payload
+    },
     SET_LOADING(state, payload) {
         state.loading = payload
+    },
+    SET_SELECTED(state, payload) {
+        state.hasSelectedDate = payload
     },
 }
 
@@ -36,10 +43,14 @@ export const actions = {
         const { data } = await this.$axios.$get(`/endodontic_patient/${id}`, { params: options })
         commit('SET_LOADING', false)
         commit('SET_ENDODONTIC_SELECT', data)
-        const { endodontic_medical_record } = data
+        const { endodontic_medical_record, endodontic_clinical_exams } = data
         commit('SET_ENDODONTIC_MEDICAL_RECORD_SELECT', endodontic_medical_record)
+        commit('SET_ENDODONTIC_MEDICAL_EXAM_SELECT', endodontic_clinical_exams)
 
         //return data
+    },
+    CHANGE_SELECTED_DATE({ commit, state }, payload) {
+        commit('SET_SELECTED', payload)
     },
     async CHANGE_LOADING({ commit, state }, loading) {
         commit('SET_LOADING', loading)
@@ -50,11 +61,17 @@ export const getters = {
     getDates: (state) => {
         return _.orderBy(state.dates, ['date'], ['desc'])
     },
+    getSeletedDate: (state) => {
+        return state.hasSelectedDate
+    },
     getEndodonticSelect: (state) => {
         return state.endodonticSelect
     },
     getEndodonticMedicalRecordSelect: (state) => {
         return state.endodonticMedicalRecordSelect
+    },
+    getEndodonticMedicalExamSelect: (state) => {
+        return state.endodonticMedicalExamSelect
     },
     getLoading: (state) => {
         return state.loading

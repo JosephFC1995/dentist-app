@@ -99,11 +99,27 @@ export default {
     async selectDate($event) {
       this.changeLoading(true)
       await this.getEndodonticPatient($event, {})
+      this.setSelectDate(true)
+      this.changeLoading(false)
+    },
+    async deleteForm() {
+      this.changeLoading(true)
+      let response = false
+      response = await this.$axios.$delete(`/endodontic_patient/${this.datesSelect}`).catch((errors) => {
+        this.loading = false
+        this.changeLoading(false)
+      })
+      if (response.success) this.$message.success(response.message)
+      this.form = {}
+      this.datesSelect = undefined
+      await this.getDatesEndodonticPatient({ id_patient: this.$route.params.id })
+      this.setSelectDate(false)
       this.changeLoading(false)
     },
     ...mapActions({
       getQuestions: 'data/questions/GET_QUESTIONS',
       changeLoading: 'data/endodontics/CHANGE_LOADING',
+      setSelectDate: 'data/endodontics/CHANGE_SELECTED_DATE',
       getDatesEndodonticPatient: 'data/endodontics/GET_DATES_ENDODONTICS',
       getEndodonticPatient: 'data/endodontics/GET_ENDODONTICS_BY_PATIENT',
       getOtherDiseases: 'data/other_diseases/GET_OTHER_DISEASES',

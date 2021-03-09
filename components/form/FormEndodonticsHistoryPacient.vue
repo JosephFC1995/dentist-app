@@ -1,11 +1,18 @@
 <template>
   <div class="form-general">
+    <a-alert
+      message="Por favor seleccione una fecha para poder editar este formulario"
+      type="warning"
+      show-icon
+      class="mb-3"
+      v-if="!selectDate"
+    />
     <a-form-model :model="form" ref="form">
       <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Preguntas</h6>
       <a-row :gutter="16">
         <a-col :span="24" :md="24" v-for="(question, index_q) in questions" :key="index_q">
           <a-form-model-item :label="question.question">
-            <a-radio-group v-model="form[question.question_id]" :disabled="loading">
+            <a-radio-group v-model="form[question.question_id]" :disabled="loading || !selectDate">
               <a-radio :value="alternative.id" v-for="alternative in question.alternatives" :key="alternative.id">
                 {{ alternative.name }}
               </a-radio>
@@ -14,12 +21,12 @@
         </a-col>
         <a-col :span="24">
           <a-form-model-item label="Notas">
-            <a-textarea v-model="form.notes" :rows="4" :disabled="loading" />
+            <a-textarea v-model="form.notes" :rows="4" :disabled="loading || !selectDate" />
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item label="Ha padecido alguna de las sigueintes enfermedades">
-            <a-checkbox-group v-model="form.disease" :disabled="loading">
+            <a-checkbox-group v-model="form.disease" :disabled="loading || !selectDate">
               <a-checkbox
                 :value="disease.id"
                 :name="String(disease.id)"
@@ -35,19 +42,24 @@
         <!-- Otras enfermedades -->
         <a-col :span="24">
           <a-form-model-item label="Otras enfermedades" class="with-button">
-            <a-select mode="multiple" placeholder="Otras enfermedades" v-model="form.other_diseases" :disabled="loading">
+            <a-select
+              mode="multiple"
+              placeholder="Otras enfermedades"
+              v-model="form.other_diseases"
+              :disabled="loading || !selectDate"
+            >
               <a-select-option v-for="other in otherDiseases" :key="other.id">
                 {{ other.name }}
               </a-select-option>
             </a-select>
-            <!-- <a-button type="primary" :disabled="loading">
+            <!-- <a-button type="primary" :disabled="loading || !selectDate">
               <i class="uil uil-plus-circle"></i>
             </a-button> -->
           </a-form-model-item>
         </a-col>
         <a-col :span="24">
           <a-form-model-item label="Otros">
-            <a-textarea v-model="form.others" :rows="4" :disabled="loading" />
+            <a-textarea v-model="form.others" :rows="4" :disabled="loading || !selectDate" />
           </a-form-model-item>
         </a-col>
         <a-col :span="24" class="d-flex justify-content-end">
@@ -118,12 +130,16 @@ export default {
   computed: {
     ...mapGetters({
       loading: 'data/endodontics/getLoading',
+      selectDate: 'data/endodontics/getSeletedDate',
       endodonticSelect: 'data/endodontics/getEndodonticSelect',
       endodonticMedicalRecordSelect: 'data/endodontics/getEndodonticMedicalRecordSelect',
       questions: 'data/questions/getQuestions',
       diseases: 'data/diseases/getDiseases',
       otherDiseases: 'data/other_diseases/getOtherDiseases',
     }),
+  },
+  mounted() {
+    this.form = this.endodonticMedicalRecordSelect ? _.cloneDeep(this.endodonticMedicalRecordSelect) : {}
   },
 }
 </script>
