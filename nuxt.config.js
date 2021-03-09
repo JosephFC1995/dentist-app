@@ -1,4 +1,3 @@
-console.log(process.env.BASE_URL_API)
 export default {
     ssr: false,
     target: 'static',
@@ -43,15 +42,14 @@ export default {
     modules: ['@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/proxy'],
 
     axios: {
-        proxy: true,
-        prefix: '/api/',
+        baseURL: process.env.BASE_URL_API,
     },
     env: {
         apiHost: process.env.BASE_URL_API,
         keyGoogleMaps: process.env.KEY_GOOGLE_MAPS,
     },
     proxy: {
-        '/api': { target: process.env.BASE_URL_API, pathRewrite: { '^/api/': '' } },
+        '/api/': { target: process.env.BASE_URL_API, pathRewrite: { '^/api/': '' } },
     },
     auth: {
         resetOnError: true,
