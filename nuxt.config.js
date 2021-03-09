@@ -50,11 +50,11 @@ export default {
         prefix: '/api/',
     },
     env: {
-        apiHost: 'https://app-dent.josephfc.space/api',
+        apiHost: process.env.BASE_URL_API,
         keyGoogleMaps: process.env.KEY_GOOGLE_MAPS,
     },
     proxy: {
-        '/api/': { target: 'https://app-dent.josephfc.space/api', pathRewrite: { '^/api/': '' } },
+        '/api/': { target: process.env.BASE_URL_API, pathRewrite: { '^/api/': '' } },
     },
     auth: {
         resetOnError: true,
@@ -67,7 +67,7 @@ export default {
         strategies: {
             laravelJWT: {
                 provider: 'laravel/jwt',
-                url: 'https://app-dent.josephfc.space/api',
+                url: process.env.BASE_URL_API,
                 endpoints: {
                     login: { url: '/auth/login', method: 'post' },
                     logout: { url: '/auth/logout', method: 'post' },
