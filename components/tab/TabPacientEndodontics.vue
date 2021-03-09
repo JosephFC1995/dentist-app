@@ -49,34 +49,80 @@
           <CardEndodonticsPronostic />
         </a-tab-pane>
         <div class="date_in_tab" slot="tabBarExtraContent">
-          <a-form-model-item class="with-button">
-            <a-date-picker placeholder="Seleccione una fecha" :showToday="false" />
-          </a-form-model-item>
+          <div class="date_in_tab--content">
+            <a-form-model-item class="with-button">
+              <a-select placeholder="Seleccione la fecha" v-model="datesSelect" :loading="loading" @change="selectDate">
+                <a-select-option v-for="item in datesEndodonticPatient" :key="item.id" :value="item.id">
+                  {{ item.date }}
+                </a-select-option>
+              </a-select>
+            </a-form-model-item>
+            <a-popconfirm
+              title="¿Esta seguro que desea eliminar el formulario?"
+              ok-text="Si"
+              cancel-text="No"
+              @confirm="deleteForm()"
+              :disabled="!datesSelect || loading"
+            >
+              <a-button type="danger" :disabled="!datesSelect || loading">
+                <span class="ico">
+                  <i class="uil uil-trash-alt"></i>
+                </span>
+              </a-button>
+            </a-popconfirm>
+            <a-button type="primary" @click="openModalAddNewEndodontic = true" :disabled="loading" class="ml-2">
+              <span> <i class="uil uil-plus-circle"></i> </span>
+            </a-button>
+          </div>
         </div>
       </a-tabs>
     </div>
+    <ModalNewPatientEndodontic
+      modalTitle="Agregar nueva endodoncia"
+      :openModalProp="openModalAddNewEndodontic"
+      @close="openModalAddNewEndodontic = false"
+    />
   </div>
 </template>
 
 <script>
-import CardEndodonticsHistoryMedic from '~/components/card/CardEndodonticsHistoryMedic'
-import CardEndodonticsHistoryDent from '~/components/card/CardEndodonticsHistoryDent'
-import CardEndodonticsMedicalExam from '~/components/card/CardEndodonticsMedicalExam'
-import CardEndodonticsRadiographicExam from '~/components/card/CardEndodonticsRadiographicExam'
-import CardEndodonticsTreatments from '~/components/card/CardEndodonticsTreatments'
-import CardEndodonticsOperationsAccidents from '~/components/card/CardEndodonticsOperationsAccidents'
-import CardEndodonticsPronostic from '~/components/card/CardEndodonticsPronostic'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
-  components: {
-    components: {
-      CardEndodonticsHistoryMedic,
-      CardEndodonticsHistoryDent,
-      CardEndodonticsMedicalExam,
-      CardEndodonticsRadiographicExam,
-      CardEndodonticsTreatments,
-      CardEndodonticsPronostic,
+  data() {
+    return {
+      datesSelect: undefined,
+      openModalAddNewEndodontic: false,
+    }
+  },
+  methods: {
+    async selectDate($event) {
+      this.changeLoading(true)
+      await this.getEndodonticPatient($event, {})
+      this.changeLoading(false)
     },
+    ...mapActions({
+      getQuestions: 'data/questions/GET_QUESTIONS',
+      changeLoading: 'data/endodontics/CHANGE_LOADING',
+      getDatesEndodonticPatient: 'data/endodontics/GET_DATES_ENDODONTICS',
+      getEndodonticPatient: 'data/endodontics/GET_ENDODONTICS_BY_PATIENT',
+      getOtherDiseases: 'data/other_diseases/GET_OTHER_DISEASES',
+      getDiseases: 'data/diseases/GET_DISEASES',
+    }),
+  },
+  computed: {
+    ...mapGetters({
+      loading: 'data/endodontics/getLoading',
+      datesEndodonticPatient: 'data/endodontics/getDates',
+    }),
+  },
+  async mounted() {
+    this.changeLoading(true)
+    this.getQuestions()
+    await this.getDatesEndodonticPatient({ id_patient: this.$route.params.id })
+    await this.getOtherDiseases()
+    await this.getDiseases()
+    this.changeLoading(false)
   },
 }
 </script>
@@ -86,5 +132,18 @@ export default {
   .ant-tabs-content {
     padding-top: 1rem;
   }
+}
+.date_in_tab {
+  &--content {
+    display: flex;
+    width: 320px;
+    .with-button {
+      flex: 1;
+      margin-right: 5px;
+    }
+  }
+}
+.ant-tabs-extra-content {
+  line-height: initial !important;
 }
 </style>

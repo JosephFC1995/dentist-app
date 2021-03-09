@@ -4,7 +4,7 @@
       <a-row :gutter="16">
         <a-col :span="24" :md="24">
           <a-form-model-item label="Tratamientos indicatos">
-            <a-checkbox-group v-model="form.indicativeTreatments" :style="{ width: '100%' }">
+            <a-checkbox-group v-model="form.indicative_treatments" :style="{ width: '100%' }">
               <a-row :gutter="16">
                 <a-col :span="24" :md="12">
                   <a-checkbox :value="1" :disabled="loading" :style="vertical"> Acceso inadecuado </a-checkbox>
@@ -73,7 +73,7 @@
         <a-col :span="24" :md="24">
           <a-form-model-item>
             <a-input
-              v-model="form.indicativeTreatmentsOther"
+              v-model="form.indicative_treatments_other"
               placeholder="Otro"
               :disabled="loading || form.indicativeTreatments != -1"
             />

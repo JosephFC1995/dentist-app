@@ -23,6 +23,7 @@
             ok-text="Si"
             cancel-text="No"
             @confirm="deleteForm()"
+            :disabled="!datesSelect || loading"
           >
             <a-button type="danger" :disabled="!datesSelect || loading">
               <span class="ico">

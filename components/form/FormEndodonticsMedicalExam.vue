@@ -6,7 +6,7 @@
         <!-- Corona anatómica -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Corona anatómica">
-            <a-checkbox-group v-model="form.anatomicalCrown">
+            <a-checkbox-group v-model="form.anatomical_crown">
               <a-checkbox :value="1" name="Caries" :disabled="loading"> Caries </a-checkbox>
               <a-checkbox :value="2" name="Restauración" :disabled="loading"> Restauración </a-checkbox>
               <a-checkbox :value="3" name="Bruximo" :disabled="loading"> Bruximo </a-checkbox>
@@ -20,7 +20,7 @@
         <!-- Inflamación presente -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Inflamación presente">
-            <a-radio-group v-model="form.inflammationPresent_radio">
+            <a-radio-group v-model="form.inflammation_present_radio">
               <a-radio :value="1" :disabled="loading"> Si </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
             </a-radio-group>
@@ -28,7 +28,7 @@
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item>
-            <a-checkbox-group v-model="form.inflammationPresent_check">
+            <a-checkbox-group v-model="form.inflammation_present_check">
               <a-checkbox :value="1" name="Ensía vestibular" :disabled="loading || form.inflammationPresent_radio != 1">
                 Ensía vestibular
               </a-checkbox>
@@ -80,7 +80,7 @@
         <!-- Dolor presente -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Dolor presente">
-            <a-radio-group v-model="form.painPresent_radio">
+            <a-radio-group v-model="form.pain_present_radio">
               <a-radio :value="1" :disabled="loading"> Si </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
             </a-radio-group>
@@ -88,7 +88,7 @@
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item>
-            <a-checkbox-group v-model="form.painPresent_check">
+            <a-checkbox-group v-model="form.pain_present_check">
               <a-checkbox
                 :value="pain.id"
                 :name="pain.name"
@@ -105,7 +105,7 @@
         <!-- Dolor a la percusión -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Dolor a la percusión">
-            <a-checkbox-group v-model="form.painOnPercussion">
+            <a-checkbox-group v-model="form.pain_on_percussion">
               <a-checkbox :value="1" name="Vertical" :disabled="loading"> Vertical </a-checkbox>
               <a-checkbox :value="2" name="Horizontal" :disabled="loading"> Horizontal </a-checkbox>
             </a-checkbox-group>
@@ -114,7 +114,7 @@
         <!-- Dolor a la palpitación -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Dolor a la palpitación">
-            <a-radio-group v-model="form.throbbingPain">
+            <a-radio-group v-model="form.throbbing_pain">
               <a-radio :value="1" :disabled="loading"> Vesticular </a-radio>
               <a-radio :value="2" :disabled="loading"> Lingual / Palatino </a-radio>
             </a-radio-group>
@@ -154,25 +154,25 @@
           <a-row :gutter="24">
             <a-col :span="24" :md="12">
               <a-form-model-item>
-                <a-checkbox-group v-model="form.vitalityTests_check">
+                <a-checkbox-group v-model="form.vitality_tests_check">
                   <a-checkbox :value="1" name="Frio" :disabled="loading"> Frio </a-checkbox>
                 </a-checkbox-group>
               </a-form-model-item>
               <a-form-model-item label="Responde">
-                <a-radio-group v-model="form.vitalityTests_cold_response" :disabled="form.vitalityTests_check != 1">
+                <a-radio-group v-model="form.vitality_tests_cold_response" :disabled="form.vitalityTests_check != 1">
                   <a-radio :value="1" :disabled="loading"> Si </a-radio>
                   <a-radio :value="2" :disabled="loading"> No </a-radio>
                 </a-radio-group>
               </a-form-model-item>
               <a-form-model-item label="Duración">
-                <a-radio-group v-model="form.vitalityTests_cold_duration" :disabled="form.vitalityTests_check != 1">
+                <a-radio-group v-model="form.vitality_tests_cold_duration" :disabled="form.vitalityTests_check != 1">
                   <a-radio :value="1" :disabled="loading"> Corta </a-radio>
                   <a-radio :value="2" :disabled="loading"> Mediana </a-radio>
                   <a-radio :value="3" :disabled="loading"> Larga </a-radio>
                 </a-radio-group>
               </a-form-model-item>
               <a-form-model-item label="Intensidad">
-                <a-radio-group v-model="form.vitalityTests_cold_intensity" :disabled="form.vitalityTests_check != 1">
+                <a-radio-group v-model="form.vitality_tests_cold_intensity" :disabled="form.vitalityTests_check != 1">
                   <a-radio :value="1" :disabled="loading"> Leve 0 -3 </a-radio>
                   <a-radio :value="2" :disabled="loading"> Moderada 4 - 7 </a-radio>
                   <a-radio :value="3" :disabled="loading"> Severa 8 - 10 </a-radio>
@@ -181,18 +181,18 @@
             </a-col>
             <a-col :span="24" :md="12">
               <a-form-model-item>
-                <a-checkbox-group v-model="form.vitalityTests_check">
+                <a-checkbox-group v-model="form.vitality_tests_check">
                   <a-checkbox :value="2" name="Calor" :disabled="loading"> Calor </a-checkbox>
                 </a-checkbox-group>
               </a-form-model-item>
               <a-form-model-item label="Responde">
-                <a-radio-group v-model="form.vitalityTests_hot_response" :disabled="form.vitalityTests_check != 2">
+                <a-radio-group v-model="form.vitality_tests_hot_response" :disabled="form.vitalityTests_check != 2">
                   <a-radio :value="1" :disabled="loading"> Si </a-radio>
                   <a-radio :value="2" :disabled="loading"> No </a-radio>
                 </a-radio-group>
               </a-form-model-item>
               <a-form-model-item label="Duración">
-                <a-radio-group v-model="form.vitalityTests_hot_duration" :disabled="form.vitalityTests_check != 2">
+                <a-radio-group v-model="form.vitality_tests_hot_duration" :disabled="form.vitalityTests_check != 2">
                   <a-radio :value="1" :disabled="loading"> Corta </a-radio>
                   <a-radio :value="2" :disabled="loading"> Mediana </a-radio>
                   <a-radio :value="3" :disabled="loading"> Larga </a-radio>

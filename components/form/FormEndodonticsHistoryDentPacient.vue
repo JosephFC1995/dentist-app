@@ -17,7 +17,7 @@
         </a-col>
         <a-col :span="24" :md="24" v-for="(question, index_q) in questions" :key="index_q">
           <a-form-model-item :label="question.question">
-            <a-radio-group v-model="form[question.key]">
+            <a-radio-group v-model="form[question.value]">
               <a-radio
                 :value="alternative.id"
                 v-for="alternative in question.alternatives"
@@ -93,7 +93,8 @@ export default {
       questions: [
         {
           question: 'Tratamiento dental previo',
-          key: 'question_1',
+          key: 'previous_dental_treatment',
+          value: 'previous_dental_treatment',
           alternatives: [
             {
               id: 1,
@@ -107,7 +108,8 @@ export default {
         },
         {
           question: 'Tratamiento endodóntico previo',
-          key: 'question_2',
+          key: 'previous_endodontic_treatment',
+          value: 'previous_endodontic_treatment',
           alternatives: [
             {
               id: 1,
@@ -121,7 +123,8 @@ export default {
         },
         {
           question: 'Trauma dental',
-          key: 'question_3',
+          key: 'dental_trauma',
+          value: 'dental_trauma',
           alternatives: [
             {
               id: 1,

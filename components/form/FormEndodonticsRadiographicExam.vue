@@ -25,7 +25,7 @@
         <!-- Cámara pulpar -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Cámara pulpar">
-            <a-radio-group v-model="form.pulparCamera">
+            <a-radio-group v-model="form.pulpar_camera">
               <a-radio :value="1" :disabled="loading"> Abierta </a-radio>
               <a-radio :value="2" :disabled="loading"> Cerrada </a-radio>
               <a-radio :value="3" :disabled="loading"> Amplia </a-radio>
@@ -56,7 +56,7 @@
         <!-- Ápice abierto -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Ápice abierto">
-            <a-radio-group v-model="form.apexOpen">
+            <a-radio-group v-model="form.apex_open">
               <a-radio :value="1" :disabled="loading"> Si </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
             </a-radio-group>
@@ -65,7 +65,7 @@
         <!-- Lesión abierto -->
         <a-col :span="24" :md="8">
           <a-form-model-item label="Lesión abierto">
-            <a-radio-group v-model="form.injuryFurca">
+            <a-radio-group v-model="form.injury_furca">
               <a-radio :value="1" :disabled="loading"> Si </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
             </a-radio-group>
@@ -74,7 +74,7 @@
         <!-- Lesión aplica -->
         <a-col :span="24" :md="8">
           <a-form-model-item label="Lesión aplica">
-            <a-radio-group v-model="form.injuryApical">
+            <a-radio-group v-model="form.injury_apical">
               <a-radio :value="1" :disabled="loading"> Si </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
             </a-radio-group>
@@ -83,7 +83,7 @@
         <!-- Lesión lateral -->
         <a-col :span="24" :md="8">
           <a-form-model-item label="Lesión lateral">
-            <a-radio-group v-model="form.injuryLateral">
+            <a-radio-group v-model="form.injury_lateral">
               <a-radio :value="1" :disabled="loading"> Si </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
             </a-radio-group>
@@ -92,7 +92,7 @@
         <!-- Lesión endo-perio -->
         <a-col :span="24" :md="8">
           <a-form-model-item label="Lesión endo-perio">
-            <a-radio-group v-model="form.injuryEndoperio">
+            <a-radio-group v-model="form.injury_endoperio">
               <a-radio :value="1" :disabled="loading"> Si </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
             </a-radio-group>
@@ -101,7 +101,7 @@
         <!-- Raíces enanas -->
         <a-col :span="24" :md="8">
           <a-form-model-item label="Raíces enanas">
-            <a-radio-group v-model="form.rootsDwarf">
+            <a-radio-group v-model="form.roots_dwarf">
               <a-radio :value="1" :disabled="loading"> Si </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
             </a-radio-group>
@@ -119,7 +119,7 @@
         <!-- Fractura radicular -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Fractura radicular">
-            <a-radio-group v-model="form.rootFracture_radio">
+            <a-radio-group v-model="form.root_fracture_radio">
               <a-radio :value="1" :disabled="loading"> Si </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
             </a-radio-group>
@@ -127,7 +127,7 @@
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item>
-            <a-checkbox-group v-model="form.rootFracture_check">
+            <a-checkbox-group v-model="form.root_fracture_check">
               <a-checkbox :value="1" name="Vertical" :disabled="loading || form.rootFracture_radio != 1"> Vertical </a-checkbox>
               <a-checkbox :value="2" name="Horizontal" :disabled="loading || form.rootFracture_radio != 1">
                 Horizontal

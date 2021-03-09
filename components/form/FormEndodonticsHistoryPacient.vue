@@ -1,27 +1,33 @@
 <template>
   <div class="form-general">
-    <a-form-model :model="form" ref="newPacient">
+    <a-form-model :model="form" ref="form">
       <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Preguntas</h6>
       <a-row :gutter="16">
         <a-col :span="24" :md="24" v-for="(question, index_q) in questions" :key="index_q">
           <a-form-model-item :label="question.question">
-            <a-radio-group v-model="form[question.key]">
+            <a-radio-group v-model="form[question.question_id]" :disabled="loading">
               <a-radio :value="alternative.id" v-for="alternative in question.alternatives" :key="alternative.id">
-                {{ alternative.label }}
+                {{ alternative.name }}
               </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
         <a-col :span="24">
           <a-form-model-item label="Notas">
-            <a-textarea v-model="form.notesQuestions1" :rows="4" />
+            <a-textarea v-model="form.notes" :rows="4" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item label="Ha padecido alguna de las sigueintes enfermedades">
-            <a-checkbox-group v-model="form.disease">
-              <a-checkbox :value="disease.value" :name="disease.value" :style="vertical" v-for="disease in diseases" :key="disease.value">
-                {{ disease.label }}
+            <a-checkbox-group v-model="form.disease" :disabled="loading">
+              <a-checkbox
+                :value="disease.id"
+                :name="String(disease.id)"
+                :style="vertical"
+                v-for="disease in diseases"
+                :key="disease.id"
+              >
+                {{ disease.name }}
               </a-checkbox>
             </a-checkbox-group>
           </a-form-model-item>
@@ -29,220 +35,42 @@
         <!-- Otras enfermedades -->
         <a-col :span="24">
           <a-form-model-item label="Otras enfermedades" class="with-button">
-            <a-select mode="multiple" placeholder="Otras enfermedades">
-              <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
-                {{ (i + 9).toString(36) + i }}
+            <a-select mode="multiple" placeholder="Otras enfermedades" v-model="form.other_diseases" :disabled="loading">
+              <a-select-option v-for="other in otherDiseases" :key="other.id">
+                {{ other.name }}
               </a-select-option>
             </a-select>
-            <a-button type="primary" :disabled="loading">
+            <!-- <a-button type="primary" :disabled="loading">
               <i class="uil uil-plus-circle"></i>
-            </a-button>
+            </a-button> -->
           </a-form-model-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="24">
           <a-form-model-item label="Otros">
-            <a-textarea v-model="form.others" :rows="4" />
-          </a-form-model-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-model-item label="Notas">
-            <a-textarea v-model="form.notesQuestions2" :rows="4" />
+            <a-textarea v-model="form.others" :rows="4" :disabled="loading" />
           </a-form-model-item>
         </a-col>
         <a-col :span="24" class="d-flex justify-content-end">
-          <a-button type="primary" html-type="submit" @click="() => $emit('close')">
-            <span> <i class="uil uil-save mr-1"></i> Guardar </span>
+          <a-button type="primary" html-type="submit" @click="submit" :loading="loading">
+            <span> Guardar </span>
           </a-button>
         </a-col>
       </a-row>
     </a-form-model>
+    <!-- <pre>
+      {{ form }}
+    </pre> -->
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+import _ from 'lodash'
+
 export default {
   data() {
     return {
-      loading: false,
       form: {},
-      questions: [
-        {
-          question: '¿Se encuentra usted en buen estado de salud?',
-          key: 'question_1',
-          alternatives: [
-            {
-              id: 1,
-              label: 'Si',
-            },
-            {
-              id: 2,
-              label: 'No',
-            },
-          ],
-        },
-        {
-          question: '¿Esta usted recibiendo tratamiento médico actualmente?',
-          key: 'question_2',
-          alternatives: [
-            {
-              id: 1,
-              label: 'Si',
-            },
-            {
-              id: 2,
-              label: 'No',
-            },
-          ],
-        },
-        {
-          question: '¿Ha notado algún cambio en su salud general en el último mes?',
-          key: 'question_3',
-          alternatives: [
-            {
-              id: 1,
-              label: 'Si',
-            },
-            {
-              id: 2,
-              label: 'No',
-            },
-          ],
-        },
-        {
-          question: '¿Ha estado usted seriamente enfermo alguna vez?',
-          key: 'question_4',
-          alternatives: [
-            {
-              id: 1,
-              label: 'Si',
-            },
-            {
-              id: 2,
-              label: 'No',
-            },
-          ],
-        },
-        {
-          question: '¿Ha estado usted hopitalizado?',
-          key: 'question_5',
-          alternatives: [
-            {
-              id: 1,
-              label: 'Si',
-            },
-            {
-              id: 2,
-              label: 'No',
-            },
-          ],
-        },
-        {
-          question: '¿Conoce udted algún problema relacionado con su presión alterial?',
-          key: 'question_6',
-          alternatives: [
-            {
-              id: 1,
-              label: 'Si',
-            },
-            {
-              id: 2,
-              label: 'No',
-            },
-          ],
-        },
-        {
-          question: '¿Padece udted problemas del corazón, problemas respiratorios o digestivos?',
-          key: 'question_7',
-          alternatives: [
-            {
-              id: 1,
-              label: 'Si',
-            },
-            {
-              id: 2,
-              label: 'No',
-            },
-          ],
-        },
-        {
-          question: '¿Padece udted ataques de desmayos o convulsiones?',
-          key: 'question_8',
-          alternatives: [
-            {
-              id: 1,
-              label: 'Si',
-            },
-            {
-              id: 2,
-              label: 'No',
-            },
-          ],
-        },
-        {
-          question: 'Señor(a), ¿está usted embarazada?',
-          key: 'question_8',
-          alternatives: [
-            {
-              id: 1,
-              label: 'Si',
-            },
-            {
-              id: 2,
-              label: 'No',
-            },
-          ],
-        },
-      ],
-      diseases: [
-        {
-          label: 'Alergias',
-          value: 1,
-        },
-        {
-          label: 'Infarto',
-          value: 2,
-        },
-        {
-          label: 'Alta presión',
-          value: 3,
-        },
-        {
-          label: 'Baja presión',
-          value: 4,
-        },
-        {
-          label: 'Diabetes',
-          value: 5,
-        },
-        {
-          label: 'Tuberculosis',
-          value: 6,
-        },
-        {
-          label: 'Úlceras gástricas',
-          value: 7,
-        },
-        {
-          label: 'Sinusitis',
-          value: 8,
-        },
-        {
-          label: 'Cáncer',
-          value: 9,
-        },
-        {
-          label: 'Problemas sde coagilación',
-          value: 10,
-        },
-        {
-          label: 'Hepatitis',
-          value: 11,
-        },
-        {
-          label: 'VIH+/SIDA',
-          value: 12,
-        },
-      ],
       vertical: {
         display: 'block',
         height: '30px',
@@ -251,6 +79,51 @@ export default {
         marginBottom: '10px',
       },
     }
+  },
+  methods: {
+    submit() {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          let _self = this
+          this.changeLoading(true)
+          let response = false
+          let tempQuestion = this.form
+          let tempForm = {
+            ...this.form,
+            questions: Object.keys(tempQuestion).map((key) => {
+              if (key != 'notes') return { key, value: tempQuestion[key] }
+            }),
+          }
+          tempForm.date = this.form.date
+          response = await _self.$axios.$put(`/endodontic_medical_record/${this.form.id}`, tempForm).catch((errors) => {
+            this.changeLoading(false)
+          })
+          if (response.success) this.$message.success(response.message)
+          this.changeLoading(false)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    ...mapActions({
+      changeLoading: 'data/endodontics/CHANGE_LOADING',
+    }),
+  },
+  watch: {
+    endodonticMedicalRecordSelect(newValue, oldValue) {
+      this.form = _.cloneDeep(newValue)
+    },
+  },
+  computed: {
+    ...mapGetters({
+      loading: 'data/endodontics/getLoading',
+      endodonticSelect: 'data/endodontics/getEndodonticSelect',
+      endodonticMedicalRecordSelect: 'data/endodontics/getEndodonticMedicalRecordSelect',
+      questions: 'data/questions/getQuestions',
+      diseases: 'data/diseases/getDiseases',
+      otherDiseases: 'data/other_diseases/getOtherDiseases',
+    }),
   },
 }
 </script>

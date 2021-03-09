@@ -2,9 +2,9 @@
   <div class="form-general custom--data">
     <a-form-model :model="form" ref="newPacient">
       <a-row :gutter="16">
-        <!-- Cámara pulpar -->
+        <!-- Indicador de tratamiento -->
         <a-col :span="24" :md="24">
-          <a-form-model-item label="Cámara pulpar">
+          <a-form-model-item label="Indicador de tratamiento">
             <a-checkbox-group v-model="form.indicatedTreatment">
               <a-checkbox :value="1" :disabled="loading"> Biopulpectomía </a-checkbox>
               <a-checkbox :value="2" :disabled="loading"> Necropulpectomía </a-checkbox>
@@ -71,7 +71,7 @@
         <!-- Téc. de instrumentación -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Téc. de instrumentación">
-            <a-radio-group v-model="form.textInst_radio">
+            <a-radio-group v-model="form.text_inst_radio">
               <a-radio :value="1" :disabled="loading"> Convencional </a-radio>
               <a-radio :value="2" :disabled="loading"> Fuerza balanceadas </a-radio>
               <a-radio :value="3" :disabled="loading"> Criwn Down </a-radio>
