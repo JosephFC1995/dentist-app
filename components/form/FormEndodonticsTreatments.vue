@@ -13,14 +13,14 @@
         <a-col :span="24" :md="24">
           <a-form-model-item label="Indicador de tratamiento">
             <a-checkbox-group v-model="form.indicated_treatment">
-              <a-checkbox :value="1" :disabled="loading"> Biopulpectomía </a-checkbox>
-              <a-checkbox :value="2" :disabled="loading"> Necropulpectomía </a-checkbox>
-              <a-checkbox :value="3" :disabled="loading"> Retratamiento </a-checkbox>
-              <a-checkbox :value="4" :disabled="loading"> Blanqueamiento </a-checkbox>
-              <a-checkbox :value="5" :disabled="loading"> Apicectomía </a-checkbox>
-              <a-checkbox :value="6" :disabled="loading"> Hemisección </a-checkbox>
-              <a-checkbox :value="7" :disabled="loading"> Radicectomía </a-checkbox>
-              <a-checkbox :value="8" :disabled="loading"> Extracción </a-checkbox>
+              <a-checkbox :value="1" :disabled="loading || !selectDate"> Biopulpectomía </a-checkbox>
+              <a-checkbox :value="2" :disabled="loading || !selectDate"> Necropulpectomía </a-checkbox>
+              <a-checkbox :value="3" :disabled="loading || !selectDate"> Retratamiento </a-checkbox>
+              <a-checkbox :value="4" :disabled="loading || !selectDate"> Blanqueamiento </a-checkbox>
+              <a-checkbox :value="5" :disabled="loading || !selectDate"> Apicectomía </a-checkbox>
+              <a-checkbox :value="6" :disabled="loading || !selectDate"> Hemisección </a-checkbox>
+              <a-checkbox :value="7" :disabled="loading || !selectDate"> Radicectomía </a-checkbox>
+              <a-checkbox :value="8" :disabled="loading || !selectDate"> Extracción </a-checkbox>
             </a-checkbox-group>
           </a-form-model-item>
         </a-col>
@@ -53,22 +53,22 @@
               <span class="label"> {{ data.label }} </span>
             </a-col>
             <a-col :span="24" :md="4">
-              <a-input v-model="form[data.inputLength]" placeholder="Longitud" :disabled="loading" />
+              <a-input v-model="form[data.inputLength]" placeholder="Longitud" :disabled="loading || !selectDate" />
             </a-col>
             <a-col :span="24" :md="4">
-              <a-input v-model="form[data.inputPoint]" placeholder="Punto" :disabled="loading" />
+              <a-input v-model="form[data.inputPoint]" placeholder="Punto" :disabled="loading || !selectDate" />
             </a-col>
             <a-col :span="24" :md="3">
-              <a-input v-model="form[data.inputFile]" placeholder="Lima inicial" :disabled="loading" />
+              <a-input v-model="form[data.inputFile]" placeholder="Lima inicial" :disabled="loading || !selectDate" />
             </a-col>
             <a-col :span="24" :md="3">
-              <a-input v-model="form[data.inputLastFile]" placeholder="Ultima lima" :disabled="loading" />
+              <a-input v-model="form[data.inputLastFile]" placeholder="Ultima lima" :disabled="loading || !selectDate" />
             </a-col>
             <a-col :span="24" :md="2">
-              <a-input v-model="form[data.inputGates]" placeholder="Gates" :disabled="loading" />
+              <a-input v-model="form[data.inputGates]" placeholder="Gates" :disabled="loading || !selectDate" />
             </a-col>
             <a-col :span="24" :md="4">
-              <a-input v-model="form[data.inputCones]" placeholder="Cono" :disabled="loading" />
+              <a-input v-model="form[data.inputCones]" placeholder="Cono" :disabled="loading || !selectDate" />
             </a-col>
           </a-row>
         </a-col>
@@ -79,27 +79,31 @@
         <a-col :span="24" :md="24">
           <a-form-model-item label="Téc. de instrumentación">
             <a-radio-group v-model="form.text_inst_radio">
-              <a-radio :value="1" :disabled="loading"> Convencional </a-radio>
-              <a-radio :value="2" :disabled="loading"> Fuerza balanceadas </a-radio>
-              <a-radio :value="3" :disabled="loading"> Criwn Down </a-radio>
-              <a-radio :value="4" :disabled="loading"> Step back </a-radio>
-              <a-radio :value="0" :disabled="loading"> Otra </a-radio>
+              <a-radio :value="1" :disabled="loading || !selectDate"> Convencional </a-radio>
+              <a-radio :value="2" :disabled="loading || !selectDate"> Fuerza balanceadas </a-radio>
+              <a-radio :value="3" :disabled="loading || !selectDate"> Criwn Down </a-radio>
+              <a-radio :value="4" :disabled="loading || !selectDate"> Step back </a-radio>
+              <a-radio :value="0" :disabled="loading || !selectDate"> Otra </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item>
-            <a-input v-model="form.text_inst_input_other" placeholder="Otra" :disabled="loading || form.text_inst_radio != 0" />
+            <a-input
+              v-model="form.text_inst_input_other"
+              placeholder="Otra"
+              :disabled="loading || !selectDate || form.text_inst_radio != 0"
+            />
           </a-form-model-item>
         </a-col>
         <!-- Agente irrigante -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Agente irrigante">
             <a-radio-group v-model="form.irrigant_agent_radio">
-              <a-radio :value="1" :disabled="loading"> NaOCI 1% </a-radio>
-              <a-radio :value="2" :disabled="loading"> NaOCI 2.5% </a-radio>
-              <a-radio :value="3" :disabled="loading"> NaOCI 5.25% </a-radio>
-              <a-radio :value="0" :disabled="loading"> Otra </a-radio>
+              <a-radio :value="1" :disabled="loading || !selectDate"> NaOCI 1% </a-radio>
+              <a-radio :value="2" :disabled="loading || !selectDate"> NaOCI 2.5% </a-radio>
+              <a-radio :value="3" :disabled="loading || !selectDate"> NaOCI 5.25% </a-radio>
+              <a-radio :value="0" :disabled="loading || !selectDate"> Otra </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
@@ -108,7 +112,7 @@
             <a-input
               v-model="form.irrigant_agent_input_other"
               placeholder="Otra"
-              :disabled="loading || form.irrigant_agent_radio != 0"
+              :disabled="loading || !selectDate || form.irrigant_agent_radio != 0"
             />
           </a-form-model-item>
         </a-col>
@@ -116,10 +120,10 @@
         <a-col :span="24" :md="24">
           <a-form-model-item label="Curativo de demora">
             <a-radio-group v-model="form.delay_healing_radio">
-              <a-radio :value="1" :disabled="loading"> So </a-radio>
-              <a-radio :value="2" :disabled="loading"> No </a-radio>
-              <a-radio :value="3" :disabled="loading"> Ca(OG)2 </a-radio>
-              <a-radio :value="0" :disabled="loading"> Otra </a-radio>
+              <a-radio :value="1" :disabled="loading || !selectDate"> So </a-radio>
+              <a-radio :value="2" :disabled="loading || !selectDate"> No </a-radio>
+              <a-radio :value="3" :disabled="loading || !selectDate"> Ca(OG)2 </a-radio>
+              <a-radio :value="0" :disabled="loading || !selectDate"> Otra </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
@@ -128,7 +132,7 @@
             <a-input
               v-model="form.delay_healing_input_other"
               placeholder="Otra"
-              :disabled="loading || form.delay_healing_radio != 0"
+              :disabled="loading || !selectDate || form.delay_healing_radio != 0"
             />
           </a-form-model-item>
         </a-col>
@@ -136,7 +140,7 @@
         <a-col :span="24" :md="24">
           <a-form-model-item label="Obsturación">
             <a-checkbox-group v-model="form.obsturation">
-              <a-checkbox :value="1" :disabled="loading"> Lateral </a-checkbox>
+              <a-checkbox :value="1" :disabled="loading || !selectDate"> Lateral </a-checkbox>
             </a-checkbox-group>
           </a-form-model-item>
         </a-col>
@@ -144,15 +148,19 @@
         <a-col :span="24" :md="24">
           <a-form-model-item label="Cemento">
             <a-radio-group v-model="form.cement_radio">
-              <a-radio :value="1" :disabled="loading"> Sealapex </a-radio>
-              <a-radio :value="2" :disabled="loading"> Tubli Seal </a-radio>
-              <a-radio :value="0" :disabled="loading"> Otra </a-radio>
+              <a-radio :value="1" :disabled="loading || !selectDate"> Sealapex </a-radio>
+              <a-radio :value="2" :disabled="loading || !selectDate"> Tubli Seal </a-radio>
+              <a-radio :value="0" :disabled="loading || !selectDate"> Otra </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item>
-            <a-input v-model="form.cement_input_other" placeholder="Otra" :disabled="loading || form.cement_radio != 0" />
+            <a-input
+              v-model="form.cement_input_other"
+              placeholder="Otra"
+              :disabled="loading || !selectDate || form.cement_radio != 0"
+            />
           </a-form-model-item>
         </a-col>
         <a-col :span="24" class="d-flex justify-content-end">
