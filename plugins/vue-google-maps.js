@@ -6,7 +6,7 @@ console.log(process.env.BASE_GOOGLE_MAPS)
 console.log(process.env.keyGoogleMaps)
 Vue.use(VueGoogleMaps, {
     load: {
-        key: process.env.BASE_GOOGLE_MAPS,
+        key: process.env.keyGoogleMaps,
         libraries: 'places',
     },
 })
