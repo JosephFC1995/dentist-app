@@ -63,7 +63,7 @@
           </a-form-model-item>
         </a-col>
         <a-col :span="24" class="d-flex justify-content-end">
-          <a-button type="primary" html-type="submit" @click="submit" :loading="loading">
+          <a-button type="primary" html-type="submit" @click="submit" :loading="loading" :disabled="!selectDate">
             <span> Guardar </span>
           </a-button>
         </a-col>

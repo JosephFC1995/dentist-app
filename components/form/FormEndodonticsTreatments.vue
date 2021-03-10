@@ -1,11 +1,18 @@
 <template>
   <div class="form-general custom--data">
-    <a-form-model :model="form" ref="newPacient">
+    <a-alert
+      message="Por favor seleccione una fecha para poder editar este formulario"
+      type="warning"
+      show-icon
+      class="mb-3"
+      v-if="!selectDate"
+    />
+    <a-form-model :model="form" ref="form">
       <a-row :gutter="16">
         <!-- Indicador de tratamiento -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Indicador de tratamiento">
-            <a-checkbox-group v-model="form.indicatedTreatment">
+            <a-checkbox-group v-model="form.indicated_treatment">
               <a-checkbox :value="1" :disabled="loading"> Biopulpectomía </a-checkbox>
               <a-checkbox :value="2" :disabled="loading"> Necropulpectomía </a-checkbox>
               <a-checkbox :value="3" :disabled="loading"> Retratamiento </a-checkbox>
@@ -76,49 +83,53 @@
               <a-radio :value="2" :disabled="loading"> Fuerza balanceadas </a-radio>
               <a-radio :value="3" :disabled="loading"> Criwn Down </a-radio>
               <a-radio :value="4" :disabled="loading"> Step back </a-radio>
-              <a-radio :value="-1" :disabled="loading"> Otra </a-radio>
+              <a-radio :value="0" :disabled="loading"> Otra </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item>
-            <a-input v-model="form.textInst_input" placeholder="Otra" :disabled="loading || form.textInst_radio != -1" />
+            <a-input v-model="form.text_inst_input_other" placeholder="Otra" :disabled="loading || form.text_inst_radio != 0" />
           </a-form-model-item>
         </a-col>
         <!-- Agente irrigante -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Agente irrigante">
-            <a-radio-group v-model="form.irrigantAgent_radio">
+            <a-radio-group v-model="form.irrigant_agent_radio">
               <a-radio :value="1" :disabled="loading"> NaOCI 1% </a-radio>
               <a-radio :value="2" :disabled="loading"> NaOCI 2.5% </a-radio>
               <a-radio :value="3" :disabled="loading"> NaOCI 5.25% </a-radio>
-              <a-radio :value="-1" :disabled="loading"> Otra </a-radio>
+              <a-radio :value="0" :disabled="loading"> Otra </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item>
             <a-input
-              v-model="form.irrigantAgent_input"
+              v-model="form.irrigant_agent_input_other"
               placeholder="Otra"
-              :disabled="loading || form.irrigantAgent_radio != -1"
+              :disabled="loading || form.irrigant_agent_radio != 0"
             />
           </a-form-model-item>
         </a-col>
         <!-- Curativo de demora -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Curativo de demora">
-            <a-radio-group v-model="form.delayHealing_radio">
+            <a-radio-group v-model="form.delay_healing_radio">
               <a-radio :value="1" :disabled="loading"> So </a-radio>
               <a-radio :value="2" :disabled="loading"> No </a-radio>
               <a-radio :value="3" :disabled="loading"> Ca(OG)2 </a-radio>
-              <a-radio :value="-1" :disabled="loading"> Otra </a-radio>
+              <a-radio :value="0" :disabled="loading"> Otra </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item>
-            <a-input v-model="form.delayHealing_input" placeholder="Otra" :disabled="loading || form.delayHealing_radio != -1" />
+            <a-input
+              v-model="form.delay_healing_input_other"
+              placeholder="Otra"
+              :disabled="loading || form.delay_healing_radio != 0"
+            />
           </a-form-model-item>
         </a-col>
         <!-- Obsturación -->
@@ -135,111 +146,115 @@
             <a-radio-group v-model="form.cement_radio">
               <a-radio :value="1" :disabled="loading"> Sealapex </a-radio>
               <a-radio :value="2" :disabled="loading"> Tubli Seal </a-radio>
-              <a-radio :value="-1" :disabled="loading"> Otra </a-radio>
+              <a-radio :value="0" :disabled="loading"> Otra </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item>
-            <a-input v-model="form.cement_input" placeholder="Otra" :disabled="loading || form.cement_radio != -1" />
+            <a-input v-model="form.cement_input_other" placeholder="Otra" :disabled="loading || form.cement_radio != 0" />
           </a-form-model-item>
         </a-col>
         <a-col :span="24" class="d-flex justify-content-end">
-          <a-button type="primary" html-type="submit">
-            <span> <i class="uil uil-save mr-1"></i> Guardar </span>
+          <a-button type="primary" html-type="submit" @click="submit" :loading="loading" :disabled="!selectDate">
+            <span> Guardar </span>
           </a-button>
         </a-col>
       </a-row>
     </a-form-model>
+    <pre>
+      {{ form }}
+    </pre>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
-      loading: false,
       form: {},
       arrayData: [
         {
           id: 1,
           label: 'Unicos',
-          inputLength: 'keyLengthInputUnique',
-          inputPoint: 'keyPointInputUnique',
-          inputFile: 'keyFileInputUnique',
-          inputLastFile: 'keyLastFileInputUnique',
-          inputGates: 'keyGatesInputUnique',
-          inputCones: 'keyConesInputUnique',
+          inputLength: 'key_length_input_unique',
+          inputPoint: 'key_point_input_unique',
+          inputFile: 'key_file_input_unique',
+          inputLastFile: 'key_last_file_input_unique',
+          inputGates: 'key_gates_input_unique',
+          inputCones: 'key_cones_input_unique',
         },
         {
           id: 2,
           label: 'Vesticular',
-          inputLength: 'keyLengthInputVesticular',
-          inputPoint: 'keyPointInputVesticular',
-          inputFile: 'keyFileInputVesticular',
-          inputLastFile: 'keyLastFileInputVesticular',
-          inputGates: 'keyGatesInputVesticular',
-          inputCones: 'keyConesInputVesticular',
+          inputLength: 'key_length_input_vesticular',
+          inputPoint: 'key_point_input_vesticular',
+          inputFile: 'key_file_input_vesticular',
+          inputLastFile: 'key_last_file_input_vesticular',
+          inputGates: 'key_gates_input_vesticular',
+          inputCones: 'key_cones_input_vesticular',
         },
         {
           id: 3,
           label: 'Palatino / Lingual',
-          inputLength: 'keyLengthInputPalatine',
-          inputPoint: 'keyPointInputPalatine',
-          inputFile: 'keyFileInputPalatine',
-          inputLastFile: 'keyLastFileInputPalatine',
-          inputGates: 'keyGatesInputPalatine',
-          inputCones: 'keyConesInputPalatine',
+          inputLength: 'key_length_input_palatine',
+          inputPoint: 'key_point_input_palatine',
+          inputFile: 'key_file_input_palatine',
+          inputLastFile: 'key_last_file_input_palatine',
+          inputGates: 'key_gates_input_palatine',
+          inputCones: 'key_cones_input_palatine',
         },
         {
           id: 4,
           label: 'Mesio bucal',
-          inputLength: 'keyLengthInputMesioBucal',
-          inputPoint: 'keyPointInputMesioBucal',
-          inputFile: 'keyFileInputMesioBucal',
-          inputLastFile: 'keyLastFileInputMesioBucal',
-          inputGates: 'keyGatesInputMesioBucal',
-          inputCones: 'keyConesInputMesioBucal',
+          inputLength: 'key_length_input_mesio_bucal',
+          inputPoint: 'key_point_input_mesio_bucal',
+          inputFile: 'key_file_input_mesio_bucal',
+          inputLastFile: 'key_last_file_input_mesio_bucal',
+          inputGates: 'key_gates_input_mesio_bucal',
+          inputCones: 'key_cones_input_mesio_bucal',
         },
         {
           id: 5,
           label: 'Mesio lingual',
-          inputLength: 'keyLengthInputMesioLingual',
-          inputPoint: 'keyPointInputMesioLingual',
-          inputFile: 'keyFileInputMesioLingual',
-          inputLastFile: 'keyLastFileInputMesioLingual',
-          inputGates: 'keyGatesInputMesioLingual',
-          inputCones: 'keyConesInputMesioLingual',
+          inputLength: 'key_length_input_mesio_lingual',
+          inputPoint: 'key_point_input_mesioLingual',
+          inputFile: 'key_file_input_mesio_lingual',
+          inputLastFile: 'key_last_file_input_mesio_lingual',
+          inputGates: 'key_gates_input_mesio_lingual',
+          inputCones: 'key_cones_input_mesio_lingual',
         },
         {
           id: 6,
           label: 'Distal',
-          inputLength: 'keyLengthInputDistal',
-          inputPoint: 'keyPointInputDistal',
-          inputFile: 'keyFileInputDistal',
-          inputLastFile: 'keyLastFileInputDistal',
-          inputGates: 'keyGatesInputDistal',
-          inputCones: 'keyConesInputDistal',
+          inputLength: 'key_length_input_distal',
+          inputPoint: 'key_point_input_distal',
+          inputFile: 'key_file_input_distal',
+          inputLastFile: 'key_last_file_input_distal',
+          inputGates: 'key_gates_input_distal',
+          inputCones: 'key_cones_input_distal',
         },
         {
           id: 7,
           label: 'Disto bucal',
-          inputLength: 'keyLengthInputDistoBucal',
-          inputPoint: 'keyPointInputDistoBucal',
-          inputFile: 'keyFileInputDistoBucal',
-          inputLastFile: 'keyLastFileInputDistoBucal',
-          inputGates: 'keyGatesInputDistoBucal',
-          inputCones: 'keyConesInputDistoBucal',
+          inputLength: 'key_length_input_disto_bucal',
+          inputPoint: 'key_point_input_disto_bucal',
+          inputFile: 'key_file_input_disto_bucal',
+          inputLastFile: 'key_last_file_input_disto_bucal',
+          inputGates: 'key_gates_input_disto_bucal',
+          inputCones: 'key_cones_input_disto_bucal',
         },
         {
           id: 8,
           label: 'Disto lingual',
-          inputLength: 'keyLengthInputDistoLingual',
-          inputPoint: 'keyPointInputDistoLingual',
-          inputFile: 'keyFileInputDistoLingual',
-          inputLastFile: 'keyLastFileInputDistoLingual',
-          inputGates: 'keyGatesInputDistoLingual',
-          inputCones: 'keyConesInputDistoLingual',
+          inputLength: 'key_length_input_disto_lingual',
+          inputPoint: 'key_point_input_disto_lingual',
+          inputFile: 'key_file_input_disto_lingual',
+          inputLastFile: 'key_last_file_input_disto_lingual',
+          inputGates: 'key_gates_input_disto_lingual',
+          inputCones: 'key_cones_input_disto_lingual',
         },
       ],
       vertical: {
@@ -266,30 +281,46 @@ export default {
     }
   },
   methods: {
-    changeUpload(info) {
-      const status = info.file.status
-
-      if (status !== 'uploading') {
-        // console.log(info.file, info.fileList)
-      }
-      if (status === 'done') {
-        this.$message.success(`${info.file.name} file uploaded successfully.`)
-        let fileList = [...info.fileList]
-
-        fileList = fileList.map((file) => {
-          if (file.response) {
-            file.url = file.response.url
-          }
-          return file
-        })
-
-        this.defaultListFiles = fileList
-      } else if (status === 'error') {
-        this.$message.error(`${info.file.name} file upload failed.`)
-      }
+    submit() {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          let _self = this
+          this.changeLoading(true)
+          let response = false
+          response = await _self.$axios.$put(`/endodontic_treatment/${this.form.id}`, this.form).catch((errors) => {
+            this.changeLoading(false)
+          })
+          if (response.success) this.$message.success(response.message)
+          this.changeLoading(false)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    ...mapActions({
+      changeLoading: 'data/endodontics/CHANGE_LOADING',
+    }),
+  },
+  watch: {
+    endodonticTreatmentSelect(newValue, oldValue) {
+      this.form = _.cloneDeep(newValue)
     },
   },
-  watch: {},
+  computed: {
+    ...mapGetters({
+      loading: 'data/endodontics/getLoading',
+      selectDate: 'data/endodontics/getSeletedDate',
+      endodonticSelect: 'data/endodontics/getEndodonticSelect',
+      endodonticTreatmentSelect: 'data/endodontics/getEndodonticTreatmentSelect',
+      questions: 'data/questions/getQuestions',
+      diseases: 'data/diseases/getDiseases',
+      otherDiseases: 'data/other_diseases/getOtherDiseases',
+    }),
+  },
+  mounted() {
+    this.form = this.endodonticTreatmentSelect ? _.cloneDeep(this.endodonticTreatmentSelect) : { indicative_treatments: [] }
+  },
 }
 </script>
 

@@ -230,7 +230,9 @@
               </a-form-model-item>
             </a-col>
             <a-col :span="24" :md="24" class="d-flex justify-content-end">
-              <a-button type="primary" html-type="submit" @click="submit" :loading="loading"> Guardar </a-button>
+              <a-button type="primary" html-type="submit" @click="submit" :loading="loading" :disabled="!selectDate">
+                Guardar
+              </a-button>
             </a-col>
           </a-row>
         </a-col>
@@ -239,9 +241,6 @@
     <!-- <pre>
       {{ form }}
     </pre> -->
-    <pre>
-      {{ 'hola' + selectDate }}
-    </pre>
   </div>
 </template>
 

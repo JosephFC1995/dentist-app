@@ -79,7 +79,7 @@ import TabPacientTreatment from '~/components/tab/TabPacientTreatment'
 import TabPacientPictures from '~/components/tab/TabPacientPictures'
 import TabPacientInform from '~/components/tab/TabPacientInform'
 import TabPacientDocument from '~/components/tab/TabPacientDocument'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import _ from 'lodash'
 
 export default {
@@ -132,6 +132,9 @@ export default {
     closeDrawerInfoPacient() {
       this.openDrawerInfoPacient = false
     },
+    ...mapActions({
+      clearEndodontic: 'data/endodontics/CLEAR_ALL',
+    }),
   },
   computed: {
     storePatient() {
@@ -142,6 +145,9 @@ export default {
     storePatient(newValue) {
       this.patient = newValue
     },
+  },
+  destroyed() {
+    this.clearEndodontic()
   },
 }
 </script>
