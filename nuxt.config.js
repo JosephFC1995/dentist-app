@@ -48,7 +48,7 @@ export default {
     },
     env: {
         apiHost: process.env.BASE_URL_API,
-        keyGoogleMaps: process.env.KEY_GOOGLE_MAPS,
+        keyGoogleMaps: process.env.BASE_GOOGLE_MAPS,
     },
     proxy: {
         '/api/': { target: process.env.BASE_URL_API, pathRewrite: { '^/api/': '' } },

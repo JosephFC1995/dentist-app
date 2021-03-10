@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps'
 require('dotenv').config()
-console.log(process.env.KEY_GOOGLE_MAPS)
+console.log('LOGSSSS')
+console.log(process.env.BASE_GOOGLE_MAPS)
+console.log(process.env.keyGoogleMaps)
 Vue.use(VueGoogleMaps, {
     load: {
-        key: process.env.KEY_GOOGLE_MAPS,
+        key: process.env.BASE_GOOGLE_MAPS,
         libraries: 'places',
     },
 })
