@@ -162,9 +162,6 @@
         </a-col>
       </a-row>
     </a-form-model>
-    <pre>
-      {{ form }}
-    </pre>
   </div>
 </template>
 
