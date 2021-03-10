@@ -24,6 +24,8 @@
     "bootstrap-4-grid": "^3.4.0",
     "core-js": "^3.6.5",
     "css.gg": "^2.0.0",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security",
     "lodash": "^4.17.20",
     "nuxt": "^2.14.6",
     "v-mask": "^2.2.3",

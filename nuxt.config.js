@@ -91,5 +91,10 @@ export default {
                 },
             },
         },
+        extend(config, { isDev, isClient }) {
+            config.node = {
+                fs: 'empty',
+            }
+        },
     },
 }
