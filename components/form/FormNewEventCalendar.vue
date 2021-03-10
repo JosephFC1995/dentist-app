@@ -154,15 +154,16 @@
         </a-col>
       </a-row>
     </a-form-model>
-    <pre>
+    <!-- <pre>
       {{ selectDate }}
       {{ form }}
-    </pre>
+    </pre> -->
     <a-drawer
       :width="widthDrawerResponsive"
       :closable="false"
       :visible="openDrawerNewUser"
       :body-style="{ paddingBottom: '80px' }"
+      :destroyOnClose="true"
     >
       <template slot="title">
         <div class="title-block p-0 m-0">

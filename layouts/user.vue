@@ -46,7 +46,9 @@
           </div>
           <div class="container">
             <div class="content-navbar d-flex justify-content-between">
-              <div class="left-navtop">a</div>
+              <div class="left-navtop">
+                <!-- Izquierda -->
+              </div>
               <div class="right-navtop">
                 <a-dropdown :trigger="['click']" placement="topRight">
                   <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
