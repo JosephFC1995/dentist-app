@@ -137,7 +137,7 @@ export default {
   computed: {
     ...mapGetters({
       loading: 'data/endodontics/getLoading',
-      selectDate: 'data/endodontics/getSeletedDate',
+      hasSelectDate: 'data/endodontics/getSeletedDate',
       datesEndodonticPatient: 'data/endodontics/getDates',
       idEndodontic: 'data/endodontics/getIDSelectEndodontic',
     }),

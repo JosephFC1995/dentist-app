@@ -8,7 +8,7 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="proporcionesParcialesArray"
-              v-model="form.partialProportion"
+              v-model="form.partial_proportion"
               :allowClear="true"
               :disabled="loading"
             >
@@ -21,7 +21,7 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="contornoArray"
-              v-model="form.relationCorone"
+              v-model="form.relation_corone"
               :allowClear="true"
               :disabled="loading"
             >
