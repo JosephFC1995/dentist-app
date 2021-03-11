@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export const state = () => ({
     dates: [],
+    idEndodontic: null,
     hasSelectedDate: false,
     endodonticSelect: {},
     endodonticMedicalRecordSelect: {},
@@ -13,6 +14,7 @@ export const state = () => ({
     endodonticOperativeAccidentSelect: {},
     endodonticForecastSelect: {},
     endodonticTreatmentSelect: {},
+    endodonticDentalHistories: [],
     loading: false,
 })
 
@@ -41,11 +43,17 @@ export const mutations = {
     SET_ENDODONTIC_TREATMENT_SELECT(state, payload) {
         state.endodonticTreatmentSelect = payload
     },
+    SET_ENDODONTIC_DENTAL_HISTORIES_SELECT(state, payload) {
+        state.endodonticDentalHistories = payload
+    },
     SET_LOADING(state, payload) {
         state.loading = payload
     },
     SET_SELECTED(state, payload) {
         state.hasSelectedDate = payload
+    },
+    SET_ID_ENDODONTIC(state, payload) {
+        state.idEndodontic = payload
     },
     SET_CLEAR(state) {
         state.endodonticMedicalRecordSelect = {}
@@ -54,6 +62,7 @@ export const mutations = {
         state.endodonticOperativeAccidentSelect = {}
         state.endodonticForecastSelect = {}
         state.endodonticTreatmentSelect = {}
+        state.endodonticDentalHistories = []
         state.endodonticSelect = {}
         state.hasSelectedDate = false
     },
@@ -76,6 +85,7 @@ export const actions = {
             endodontics_operative_accidents,
             endodontics_forecast,
             endodontics_treatments,
+            endodontics_dental_histories,
         } = data
         commit('SET_ENDODONTIC_MEDICAL_RECORD_SELECT', endodontic_medical_record)
         commit('SET_ENDODONTIC_MEDICAL_EXAM_SELECT', endodontic_clinical_exams)
@@ -83,8 +93,12 @@ export const actions = {
         commit('SET_ENDODONTIC_OPERATIVE_ACCIDENT_SELECT', endodontics_operative_accidents)
         commit('SET_ENDODONTIC_FORECAST_SELECT', endodontics_forecast)
         commit('SET_ENDODONTIC_TREATMENT_SELECT', endodontics_treatments)
+        commit('SET_ENDODONTIC_DENTAL_HISTORIES_SELECT', endodontics_dental_histories)
 
         //return data
+    },
+    SET_ID_SELECT_ENDODONTIC({ commit, state }, id) {
+        commit('SET_ID_ENDODONTIC', id)
     },
     CHANGE_SELECTED_DATE({ commit, state }, payload) {
         commit('SET_SELECTED', payload)
@@ -124,6 +138,12 @@ export const getters = {
     },
     getEndodonticTreatmentSelect: (state) => {
         return state.endodonticTreatmentSelect
+    },
+    getEndodonticDentalHistoriesSelect: (state) => {
+        return state.endodonticDentalHistories
+    },
+    getIDSelectEndodontic: (state) => {
+        return state.idEndodontic
     },
     getLoading: (state) => {
         return state.loading

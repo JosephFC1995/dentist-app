@@ -2,7 +2,7 @@
   <div class="card-info-pacient-odontogram">
     <a-card :title="false" :bordered="false">
       <!-- Formulario Endodoncia historia -->
-      <TablePacientEndodonticsHistoryMedic />
+      <TablePacientEndodonticsHistoryMedic @reload="$emit('reload')" />
     </a-card>
   </div>
 </template>
