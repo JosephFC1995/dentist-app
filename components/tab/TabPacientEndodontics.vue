@@ -11,7 +11,7 @@
         <!-- Historia dental -->
         <a-tab-pane key="endodontics_2">
           <span slot="tab"> Historia dental </span>
-          <CardEndodonticsHistoryDent />
+          <CardEndodonticsHistoryDent @reload="reloadEndodonticHistory" />
         </a-tab-pane>
         <!-- Examen clínico -->
         <a-tab-pane key="endodontics_3">
@@ -99,6 +99,7 @@ export default {
     async selectDate($event) {
       this.changeLoading(true)
       await this.getEndodonticPatient($event, {})
+      this.setIdEndodonticPatient($event)
       this.setSelectDate(true)
       this.changeLoading(false)
     },
@@ -116,12 +117,19 @@ export default {
       this.setSelectDate(false)
       this.changeLoading(false)
     },
+    async reloadEndodonticHistory() {
+      this.changeLoading(true)
+      await this.getEndodonticPatient(this.idEndodontic, {})
+      this.changeLoading(false)
+    },
     ...mapActions({
       getQuestions: 'data/questions/GET_QUESTIONS',
+      getDents: 'data/dents/GET_DENTS',
       changeLoading: 'data/endodontics/CHANGE_LOADING',
       setSelectDate: 'data/endodontics/CHANGE_SELECTED_DATE',
       getDatesEndodonticPatient: 'data/endodontics/GET_DATES_ENDODONTICS',
       getEndodonticPatient: 'data/endodontics/GET_ENDODONTICS_BY_PATIENT',
+      setIdEndodonticPatient: 'data/endodontics/SET_ID_SELECT_ENDODONTIC',
       getOtherDiseases: 'data/other_diseases/GET_OTHER_DISEASES',
       getDiseases: 'data/diseases/GET_DISEASES',
     }),
@@ -129,7 +137,9 @@ export default {
   computed: {
     ...mapGetters({
       loading: 'data/endodontics/getLoading',
+      selectDate: 'data/endodontics/getSeletedDate',
       datesEndodonticPatient: 'data/endodontics/getDates',
+      idEndodontic: 'data/endodontics/getIDSelectEndodontic',
     }),
   },
   async mounted() {
@@ -138,6 +148,7 @@ export default {
     await this.getDatesEndodonticPatient({ id_patient: this.$route.params.id })
     await this.getOtherDiseases()
     await this.getDiseases()
+    await this.getDents()
     this.changeLoading(false)
   },
 }
