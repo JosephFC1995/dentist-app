@@ -1,18 +1,14 @@
 <template>
   <div class="card-info-pacient-odontogram">
     <a-card :title="false" :bordered="false">
-      <FormRehabilitationOralExam />
+      <FormRehabilitationTabThree />
     </a-card>
   </div>
 </template>
 
 <script>
-import FormRehabilitationOralExam from '~/components/form/FormRehabilitationOralExam'
-
 export default {
-  components: {
-    FormRehabilitationOralExam,
-  },
+  components: {},
   data() {
     return {
       odontogram: {

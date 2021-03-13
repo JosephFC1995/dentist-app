@@ -51,11 +51,15 @@
         <div class="event-desc flex-column mb-4" v-if="eventSelect.appointment">
           <h5 class="event-title m-0">Doctor</h5>
           <span>
-            {{ eventSelect.appointment.doctor.last_name + ' ' + eventSelect.appointment.doctor.name }}
+            {{
+              eventSelect.appointment.doctor.last_name
+                ? eventSelect.appointment.doctor.last_name
+                : '' + ' ' + eventSelect.appointment.doctor.name
+            }}
           </span>
         </div>
         <div class="event-accept">
-          <a-button type="dashed" class="w-100">
+          <a-button type="dashed" class="w-100" @click="goToPatient(eventSelect)" :loading="goPatient">
             <span>Atender cita</span>
           </a-button>
         </div>
@@ -76,7 +80,7 @@
     <a-drawer
       :width="widthDrawerResponsive"
       :visible="openDrawerNewEvent"
-      :body-style="{ paddingBottom: '80px' }"
+      :body-style="{ paddingBottom: '20px' }"
       @close="closeDrawerCreate"
       :destroyOnClose="true"
     >
@@ -133,6 +137,7 @@ export default {
       dateSelectFromCalendar: null,
       openDrawerNewEvent: false,
       openModal: false,
+      goPatient: false,
       openModalCreate: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 700 : window.innerWidth - 100,
       title: 'Agenda de citas',
@@ -265,6 +270,13 @@ export default {
       this.eventSelect.appointment = info.event.extendedProps.appointment
       this.eventSelect.start = this.$moment.utc(info.event.start).format('ddd DD [de] MMM [del] YYYY [a las] hh:mm a')
       this.openModal = true
+    },
+    goToPatient($event) {
+      this.goPatient = true
+      this.$router.push({
+        name: 'app-patients-id',
+        params: { id: $event.appointment.id_patient },
+      })
     },
     okModal(e) {
       this.openModal = false

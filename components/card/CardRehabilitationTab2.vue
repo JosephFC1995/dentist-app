@@ -2,18 +2,14 @@
   <div class="card-info-pacient-odontogram">
     <a-card :title="false" :bordered="false">
       <h6 class="mt-0 mb-1" :style="{ color: '#B9BABA' }">Prótesis parcial removible</h6>
-      <FormRemovablePartialDenture />
+      <FormRehabilitationTabOne />
     </a-card>
   </div>
 </template>
 
 <script>
-import FormRemovablePartialDenture from '~/components/form/FormRemovablePartialDenture'
-
 export default {
-  components: {
-    FormRemovablePartialDenture,
-  },
+  components: {},
   data() {
     return {
       odontogram: {

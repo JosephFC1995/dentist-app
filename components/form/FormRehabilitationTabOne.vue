@@ -1,6 +1,13 @@
 <template>
   <div class="form-general">
-    <a-form-model :model="form" ref="newPacient">
+    <a-alert
+      message="Por favor seleccione una fecha para poder editar este formulario"
+      type="warning"
+      show-icon
+      class="mb-3"
+      v-if="!selectDate"
+    />
+    <a-form-model :model="form" ref="form">
       <a-row :gutter="16">
         <!-- Proporciones faciales -->
         <a-col :span="24" :md="8">
@@ -10,7 +17,7 @@
               :options="proporcionesParcialesArray"
               v-model="form.partial_proportion"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -23,7 +30,7 @@
               :options="contornoArray"
               v-model="form.relation_corone"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -36,7 +43,7 @@
               :options="rebordesArray"
               v-model="form.edentulo"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -47,9 +54,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="mucosoRebordesArray"
-              v-model="form.mucousEdentulo"
+              v-model="form.mucous_edentulo"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -62,7 +69,7 @@
               :options="frenillosArray"
               v-model="form.braces"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -75,7 +82,7 @@
               :options="salivaArray"
               v-model="form.saliva"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -88,7 +95,7 @@
               :options="exostosisArray"
               v-model="form.exostosis"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -106,7 +113,7 @@
               :options="maxilarArray"
               v-model="form.maxillary"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -119,7 +126,7 @@
               :options="modificationArray"
               v-model="form.modification"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -132,14 +139,16 @@
               :options="mandibulaArray"
               v-model="form.mandible"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
         </a-col>
 
         <a-col :span="24">
-          <a-button type="primary" html-type="submit" @click="() => $emit('close')"> Guardar </a-button>
+          <a-button type="primary" html-type="submit" @click="submit" :loading="loading" :disabled="!selectDate">
+            Guardar
+          </a-button>
         </a-col>
       </a-row>
     </a-form-model>
@@ -147,10 +156,11 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
-      loading: false,
       form: {},
       proporcionesParcialesArray: [
         { value: 1, label: 'Simetría' },
@@ -206,6 +216,44 @@ export default {
         { value: 4, label: 'Clase IV' },
       ],
     }
+  },
+  methods: {
+    submit() {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          let _self = this
+          this.changeLoading(true)
+          let response = false
+          response = await _self.$axios.$put(`/rehabilitation_tab_one/${this.form.id}`, this.form).catch((errors) => {
+            this.changeLoading(false)
+          })
+          if (response.success) this.$message.success(response.message)
+          this.changeLoading(false)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    ...mapActions({
+      changeLoading: 'data/rehabilitation/CHANGE_LOADING',
+    }),
+  },
+  watch: {
+    rehabilitationRehabilitationTab1Select(newValue, oldValue) {
+      this.form = _.cloneDeep(newValue)
+    },
+  },
+  computed: {
+    ...mapGetters({
+      loading: 'data/rehabilitation/getLoading',
+      selectDate: 'data/rehabilitation/getSeletedDate',
+      rehabilitationSelect: 'data/rehabilitation/getRehabilitationSelect',
+      rehabilitationRehabilitationTab1Select: 'data/rehabilitation/getRehabilitationRehabilitationTab1Select',
+    }),
+  },
+  mounted() {
+    this.form = this.rehabilitationRehabilitationTab1Select ? _.cloneDeep(this.rehabilitationRehabilitationTab1Select) : {}
   },
 }
 </script>

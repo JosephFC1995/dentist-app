@@ -181,7 +181,7 @@
         </a-row>
       </a-form-model>
     </div>
-    <Loading v-else width="350px" />
+    <GeneralLoading v-else width="350px" />
   </div>
 </template>
 
@@ -189,6 +189,7 @@
 import { mapState } from 'vuex'
 
 export default {
+  components: {},
   props: {
     form: {
       type: Object,

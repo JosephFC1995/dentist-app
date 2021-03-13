@@ -1,18 +1,14 @@
 <template>
   <div class="card-info-pacient-odontogram">
     <a-card :title="false" :bordered="false">
-      <FormRemovableTotalDenture />
+      <FormRehabilitationTabTwo />
     </a-card>
   </div>
 </template>
 
 <script>
-import FormRemovableTotalDenture from '~/components/form/FormRemovableTotalDenture'
-
 export default {
-  components: {
-    FormRemovableTotalDenture,
-  },
+  components: {},
   data() {
     return {
       odontogram: {

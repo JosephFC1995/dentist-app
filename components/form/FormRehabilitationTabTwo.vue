@@ -1,6 +1,13 @@
 <template>
   <div class="form-general">
-    <a-form-model :model="form" ref="newPacient">
+    <a-alert
+      message="Por favor seleccione una fecha para poder editar este formulario"
+      type="warning"
+      show-icon
+      class="mb-3"
+      v-if="!selectDate"
+    />
+    <a-form-model :model="form" ref="form">
       <a-row :gutter="16">
         <a-divider dashed :style="{ marginTop: 0 }">
           <span :style="{ color: '#B9BABA', fontWeight: 600, fontSize: '14px' }"> Protesis total removible </span>
@@ -14,9 +21,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="proporcionesParcialesArray"
-              v-model="form.partialProportion"
+              v-model="form.partial_proportion"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -27,9 +34,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="dimensionesVerticalesArray"
-              v-model="form.verticalDimension"
+              v-model="form.vertical_dimension"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -40,9 +47,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="perfilFacialArray"
-              v-model="form.facialProfile"
+              v-model="form.facial_profile"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -53,9 +60,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="contornoPerioralArray"
-              v-model="form.contourPerioral"
+              v-model="form.contour_perioral"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -66,9 +73,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="aperturaBocalArray"
-              v-model="form.openingOral"
+              v-model="form.opening_oral"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -81,7 +88,7 @@
               :options="labiosArray"
               v-model="form.lips"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -95,9 +102,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="formaArcosArray"
-              v-model="form.archesShape"
+              v-model="form.arches_shape"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -110,7 +117,7 @@
               :options="tuberosidadesArray"
               v-model="form.pipes"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -121,9 +128,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="simetriArcosArray"
-              v-model="form.archesSymmetry"
+              v-model="form.arches_symmetry"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -134,9 +141,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="papilaArray"
-              v-model="form.retromolarPapila"
+              v-model="form.retromolar_papila"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -147,9 +154,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="rebordesArray"
-              v-model="form.flageShape"
+              v-model="form.flage_shape"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -160,9 +167,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="surcoHamularArray"
-              v-model="form.grooveGrind"
+              v-model="form.groove_grind"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -173,9 +180,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="alturaRebordesArray"
-              v-model="form.flangeHeight"
+              v-model="form.flange_height"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -186,9 +193,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="dammnigsArray"
-              v-model="form.postDamming"
+              v-model="form.post_damming"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -199,9 +206,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="mucosaRebordeArray"
-              v-model="form.mucousOverRidges"
+              v-model="form.mucous_over_ridges"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -214,7 +221,7 @@
               :options="lenguaArray"
               v-model="form.tongue"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -225,9 +232,9 @@
             <a-select
               placeholder="Seleccione una opción"
               :options="relacionBordesArray"
-              v-model="form.relationshipFlanges"
+              v-model="form.relationship_flanges"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -240,7 +247,7 @@
               :options="spitArray"
               v-model="form.spit"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -253,7 +260,7 @@
               :options="frenillosArray"
               v-model="form.braces"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -266,7 +273,7 @@
               :options="pronosticoArray"
               v-model="form.forecast"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -279,7 +286,7 @@
               :options="exostosisArray"
               v-model="form.exostoses"
               :allowClear="true"
-              :disabled="loading"
+              :disabled="loading || !selectDate"
             >
             </a-select>
           </a-form-model-item>
@@ -291,10 +298,12 @@
         <a-col :span="24" :md="24">
           <a-form-model-item label="Radiografías">
             <a-upload-dragger
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              :disabled="loading || !selectDate"
+              :action="apiHost + '/file/upload'"
               :multiple="true"
-              :default-file-list="defaultListFiles"
-              @change="changeUpload"
+              :headers="headers"
+              :file-list="form.ray_x"
+              @change="changeUpload($event, 'ray_x')"
             >
               <p class="ant-upload-drag-icon">
                 <i class="uil uil-cloud-upload"></i>
@@ -311,10 +320,12 @@
         <a-col :span="24" :md="24">
           <a-form-model-item label="Fotografías">
             <a-upload-dragger
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              :disabled="loading || !selectDate"
+              :action="apiHost + '/file/upload'"
               :multiple="true"
-              :default-file-list="defaultListFiles"
-              @change="changeUpload"
+              :headers="headers"
+              :file-list="form.photos"
+              @change="changeUpload($event, 'photos')"
             >
               <p class="ant-upload-drag-icon">
                 <i class="uil uil-cloud-upload"></i>
@@ -331,10 +342,12 @@
         <a-col :span="24" :md="24">
           <a-form-model-item label="Modelos de estudio">
             <a-upload-dragger
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              :disabled="loading || !selectDate"
+              :action="apiHost + '/file/upload'"
               :multiple="true"
-              :default-file-list="defaultListFiles"
-              @change="changeUpload"
+              :headers="headers"
+              :file-list="form.models"
+              @change="changeUpload($event, 'models')"
             >
               <p class="ant-upload-drag-icon">
                 <i class="uil uil-cloud-upload"></i>
@@ -351,21 +364,23 @@
         <a-col :span="24" :md="24">
           <a-form-model-item label="Corona anatómica">
             <a-checkbox-group v-model="form.articulate">
-              <a-checkbox :value="1" name="RFA" :disabled="loading"> RFA </a-checkbox>
-              <a-checkbox :value="2" name="RC" :disabled="loading"> RC </a-checkbox>
-              <a-checkbox :value="3" name="MIC" :disabled="loading"> MIC </a-checkbox>
+              <a-checkbox :value="1" name="RFA" :disabled="loading || !selectDate"> RFA </a-checkbox>
+              <a-checkbox :value="2" name="RC" :disabled="loading || !selectDate"> RC </a-checkbox>
+              <a-checkbox :value="3" name="MIC" :disabled="loading || !selectDate"> MIC </a-checkbox>
             </a-checkbox-group>
           </a-form-model-item>
         </a-col>
         <!--  Encerado de planificación -->
         <a-col :span="24" :md="24">
           <a-form-model-item label="Encerado de planificación">
-            <a-input v-model="form.planningWaxing" :disabled="loading" />
+            <a-input v-model="form.planning_waxing" :disabled="loading || !selectDate" />
           </a-form-model-item>
         </a-col>
 
         <a-col :span="24">
-          <a-button type="primary" html-type="submit" @click="() => $emit('close')"> Guardar </a-button>
+          <a-button type="primary" html-type="submit" @click="submit" :loading="loading" :disabled="!selectDate">
+            Guardar
+          </a-button>
         </a-col>
       </a-row>
     </a-form-model>
@@ -373,34 +388,16 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
-      loading: false,
       form: {},
-      defaultListFiles: [
-        {
-          uid: 'vc-upload-1606273782891-22',
-          lastModified: 1606273943549,
-          lastModifiedDate: '2020-11-25T03:12:23.549Z',
-          name: 'Screenshot_3.png',
-          size: 1307,
-          type: 'image/png',
-          percent: 100,
-          originFileObj: {
-            uid: 'vc-upload-1606273782891-22',
-          },
-          status: 'done',
-          response: {
-            name: 'xxx.png',
-            status: 'done',
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-          },
-          xhr: {},
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-      ],
+      apiHost: process.env.apiHost,
+      headers: {
+        Authorization: this.$auth.strategy.token.get(),
+      },
       proporcionesParcialesArray: [
         { value: 1, label: 'Simetría' },
         { value: 2, label: 'Asimetría' },
@@ -493,28 +490,58 @@ export default {
     }
   },
   methods: {
-    changeUpload(info) {
+    changeUpload(info, hook) {
       const status = info.file.status
+      let fileList = [...info.fileList]
+      fileList = fileList.map((file) => {
+        if (file.response) {
+          file.url = file.response.file.url
+        }
+        return file
+      })
 
-      if (status !== 'uploading') {
-        // console.log(info.file, info.fileList)
-      }
+      this.form[hook] = fileList
+
       if (status === 'done') {
-        this.$message.success(`${info.file.name} file uploaded successfully.`)
-        let fileList = [...info.fileList]
-
-        fileList = fileList.map((file) => {
-          if (file.response) {
-            file.url = file.response.url
-          }
-          return file
-        })
-
-        this.defaultListFiles = fileList
-      } else if (status === 'error') {
-        this.$message.error(`${info.file.name} file upload failed.`)
+        this.$message.success(`${info.file.name} ha sudo subido correctamente.`)
       }
     },
+    submit() {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          let _self = this
+          this.changeLoading(true)
+          let response = false
+          response = await _self.$axios.$put(`/rehabilitation_tab_two/${this.form.id}`, this.form).catch((errors) => {
+            this.changeLoading(false)
+          })
+          if (response.success) this.$message.success(response.message)
+          this.changeLoading(false)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    ...mapActions({
+      changeLoading: 'data/rehabilitation/CHANGE_LOADING',
+    }),
+  },
+  watch: {
+    rehabilitationRehabilitationTab2Select(newValue, oldValue) {
+      this.form = _.cloneDeep(newValue)
+    },
+  },
+  computed: {
+    ...mapGetters({
+      loading: 'data/rehabilitation/getLoading',
+      selectDate: 'data/rehabilitation/getSeletedDate',
+      rehabilitationSelect: 'data/rehabilitation/getRehabilitationSelect',
+      rehabilitationRehabilitationTab2Select: 'data/rehabilitation/getRehabilitationRehabilitationTab2Select',
+    }),
+  },
+  mounted() {
+    this.form = this.rehabilitationRehabilitationTab2Select ? _.cloneDeep(this.rehabilitationRehabilitationTab2Select) : {}
   },
 }
 </script>

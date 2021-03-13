@@ -27,7 +27,7 @@
         <a-tab-pane key="endodontics_5">
           <span slot="tab"> Diagnóstico pulpar de persunción </span>
           <!-- A la espera -->
-          <div class="section-odontogram px-5 mt-4">
+          <div class="section-odontogram px-5 pb-5 mt-4">
             <a-card :title="false" :bordered="false" class="ant-card-bordered with-shadow">
               <h6 class="my-3 mx-3 text-center">Aqui ya se el Diagnóstico pulpar de persunción.</h6>
             </a-card>
@@ -116,6 +116,7 @@ export default {
       await this.getDatesEndodonticPatient({ id_patient: this.$route.params.id })
       this.setSelectDate(false)
       this.changeLoading(false)
+      this.clear()
     },
     async reloadEndodonticHistory() {
       this.changeLoading(true)
@@ -132,6 +133,7 @@ export default {
       setIdEndodonticPatient: 'data/endodontics/SET_ID_SELECT_ENDODONTIC',
       getOtherDiseases: 'data/other_diseases/GET_OTHER_DISEASES',
       getDiseases: 'data/diseases/GET_DISEASES',
+      clear: 'data/endodontics/CLEAR_ALL',
     }),
   },
   computed: {

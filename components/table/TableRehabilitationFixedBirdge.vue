@@ -1,65 +1,81 @@
 <template>
   <div>
     <header class="page-header justify-content-end pb-3">
-      <a-button type="primary" @click="methodOpenDrawerDetail(false, false)">
+      <a-button type="primary" @click="methodOpenDrawerDetail(false, false)" :disabled="!selectDate" :loading="loading">
         <span> <i class="uil uil-plus-circle mr-1"></i> Nuevo </span>
       </a-button>
     </header>
     <div class="table-general">
       <a-space class="mb-3 mt-2 d-flex justify-content-between">
         <div>
-          <downloadExcel class="ant-btn ant-btn-sm rounded-full pr-2" :data="data" :fields="json_fields_excel" name="reporte.xls">
+          <!-- <downloadExcel
+            class="ant-btn ant-btn-sm rounded-full pr-2"
+            :data="data"
+            :fields="json_fields_excel"
+            name="reporte.xls"
+            :class="{ disabled: !selectDate }"
+          >
             <i class="uil uil-cloud-download mr-2"></i> Archivo excel
           </downloadExcel>
-          <a-button shape="round" class="rounded-full" size="small">
+          <a-button shape="round" class="rounded-full" size="small" :disabled="!selectDate">
             <i class="uil uil-cloud-download mr-2"></i> Archivo PDF
-          </a-button>
+          </a-button> -->
         </div>
         <div>
-          <a-input placeholder="Buscar" />
+          <a-input placeholder="Buscar" :disabled="!selectDate" />
         </div>
       </a-space>
-      <a-table
-        :columns="columns"
-        :data-source="data"
-        :pagination="{
-          defaultPageSize: 5,
-          hideOnSinglePage: true,
-        }"
-      >
-        <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="photo">
-          <a-avatar size="small" icon="user" />
-        </span>
-        <span slot="action" slot-scope="record">
-          <a-button type="primary" size="small" @click="methodOpenDrawerDetail(true, record)">
-            <span class="ico">
-              <i class="uil uil-eye"></i>
-            </span>
-          </a-button>
-
-          <a-button type="danger" size="small">
-            <span class="ico">
-              <i class="uil uil-trash-alt"></i>
-            </span>
-          </a-button>
-        </span>
-      </a-table>
+      <a-spin :spinning="loading">
+        <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
+        <a-table
+          :columns="columns"
+          :data-source="data"
+          :pagination="{
+            defaultPageSize: 5,
+            hideOnSinglePage: true,
+          }"
+        >
+          <a slot="name" slot-scope="text">{{ text }}</a>
+          <span slot="photo">
+            <a-avatar size="small" icon="user" />
+          </span>
+          <span slot="action" slot-scope="record">
+            <a-button type="primary" size="small" @click="methodOpenDrawerDetail(true, record)">
+              <span class="ico">
+                <i class="uil uil-eye"></i>
+              </span>
+            </a-button>
+            <a-popconfirm
+              title="¿Esta seguro que desea eliminar este historial?"
+              ok-text="Si"
+              cancel-text="No"
+              :disabled="!selectDate || loading"
+              @confirm="deleteRow(record)"
+            >
+              <a-button type="danger" size="small">
+                <span class="ico">
+                  <i class="uil uil-trash-alt"></i>
+                </span>
+              </a-button>
+            </a-popconfirm>
+          </span>
+        </a-table>
+      </a-spin>
       <a-drawer
         :width="widthDrawerResponsive"
         :closable="true"
         :visible="openDrawerDetail"
         :body-style="{ paddingBottom: '80px' }"
-        @close="closeDrawerHistory"
+        @close="closeDrawer"
       >
         <template slot="title">
           <div class="title-block p-0 m-0">
             <h4 class="modal-title m-0" style="color: #336cfb">
-              {{ formDetailHystory ? 'Pieza Nº1' : 'Agregar pieza' }}
+              {{ formRehabilitation ? 'Pieza Nº1' : 'Agregar pieza' }}
             </h4>
           </div>
         </template>
-        <FormRehabilitationFixedBirdge @close="() => (openDrawerDetail = false)" />
+        <FormRehabilitationFixedBirdge @close="closeDrawer" :newData="newForm" :form="form" @reload="reload" />
       </a-drawer>
     </div>
   </div>
@@ -67,6 +83,7 @@
 
 <script>
 import FormRehabilitationFixedBirdge from '~/components/form/FormRehabilitationFixedBirdge'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -75,7 +92,9 @@ export default {
   data() {
     return {
       detailDrawer: {},
-      formDetailHystory: false,
+      form: {},
+      newForm: false,
+      formRehabilitation: false,
       openDrawerDetail: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       json_fields_excel: {
@@ -87,10 +106,16 @@ export default {
       },
       columns: [
         {
-          dataIndex: 'piece',
-          key: 'piece',
-          title: 'Pieza',
-          width: '90%',
+          dataIndex: 'dental_piece',
+          key: 'dental_piece',
+          title: 'Pieza dental',
+          width: '40%',
+        },
+        {
+          dataIndex: 'mobility',
+          key: 'mobility',
+          title: 'Mobilidad',
+          width: '40%',
         },
         {
           title: 'Acciones',
@@ -99,79 +124,73 @@ export default {
           width: '10%',
         },
       ],
-      data: [
-        {
-          id: '1',
-          piece: 1.3,
-          date: '12/11/2020',
-          doctor: 'John Brown',
-        },
-        {
-          id: '2',
-          piece: 1.3,
-          date: '12/11/2020',
-          doctor: 'Jim Green',
-          name: 'Jim',
-        },
-        {
-          id: '3',
-          piece: 1.3,
-          date: '12/11/2020',
-          doctor: 'John Brown',
-        },
-        {
-          id: '4',
-          piece: 1.3,
-          date: '12/11/2020',
-          doctor: 'Jim Green',
-          name: 'Jim',
-        },
-        {
-          id: '5',
-          piece: 1.3,
-          date: '12/11/2020',
-          doctor: 'John Brown',
-        },
-        {
-          id: '6',
-          dent: 1.3,
-          date: '12/11/2020',
-          doctor: 'Jim Green',
-          name: 'Jim',
-        },
-        {
-          id: '7',
-          dent: 1.3,
-          date: '12/11/2020',
-          doctor: 'John Brown',
-        },
-        {
-          id: '8',
-          dent: 1.3,
-          date: '12/11/2020',
-          doctor: 'Jim Green',
-          name: 'Jim',
-        },
-      ],
+      data: [],
     }
   },
   methods: {
-    methodOpenDrawerDetail(detailDrawer, detail) {
-      this.formDetailHystory = detailDrawer ? true : false
-      this.detailDrawer = detail ? detail : false
+    methodOpenDrawerDetail(edit, record) {
+      this.newForm = true
       this.openDrawerDetail = true
+      if (edit) {
+        this.newForm = false
+        this.form = record
+        this.loaderData = false
+      } else {
+        this.form.id_rehabilitation = this.id_rehabilitation
+      }
     },
-    closeDrawerHistory() {
-      this.detailDrawer = {}
-      this.formDetailHystory = false
+    closeDrawer() {
+      setTimeout(() => {
+        this.form = {
+          id_rehabilitation: this.id_rehabilitation,
+        }
+        this.loaderData = true
+      }, 500)
       this.openDrawerDetail = false
     },
+    async deleteRow($event) {
+      this.changeLoading(true)
+      let response = false
+      response = await this.$axios.$delete(`/rehabilitation_table_fixed/${$event.id}`).catch((errors) => {
+        this.changeLoading(false)
+      })
+      if (response.success) this.$message.success(response.message)
+      this.changeLoading(false)
+      this.$emit('reload')
+    },
+    reload() {
+      this.openDrawerDetail = false
+      this.$emit('reload')
+    },
+    ...mapActions({
+      changeLoading: 'data/rehabilitation/CHANGE_LOADING',
+    }),
   },
   mounted() {
     window.onresize = () => {
       let width = window.innerWidth
       this.widthDrawerResponsive = width > 900 ? 700 : width - 100
     }
+  },
+  watch: {
+    rehabilitationRehabilitationTableFixedSelect(newValue, oldValue) {
+      this.data = _.cloneDeep(newValue)
+    },
+  },
+  computed: {
+    ...mapGetters({
+      loading: 'data/rehabilitation/getLoading',
+      id_rehabilitation: 'data/rehabilitation/getIDSelectRehabilitation',
+      selectDate: 'data/rehabilitation/getSeletedDate',
+      rehabilitationSelect: 'data/rehabilitation/getRehabilitationSelect',
+      rehabilitationRehabilitationTableFixedSelect: 'data/rehabilitation/getRehabilitationRehabilitationTableFixed',
+    }),
+  },
+  mounted() {
+    this.data =
+      this.rehabilitationRehabilitationTableFixedSelect.length > 0
+        ? _.cloneDeep(this.rehabilitationRehabilitationTableFixedSelect)
+        : []
   },
 }
 </script>

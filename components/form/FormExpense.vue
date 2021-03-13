@@ -110,7 +110,7 @@
         </a-row>
       </a-form-model>
     </div>
-    <Loading v-else width="350px" />
+    <GeneralLoading v-else width="350px" />
   </div>
 </template>
 

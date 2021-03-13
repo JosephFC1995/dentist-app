@@ -134,6 +134,7 @@ export default {
     },
     ...mapActions({
       clearEndodontic: 'data/endodontics/CLEAR_ALL',
+      clearRehabilitation: 'data/rehabilitation/CLEAR_ALL',
     }),
   },
   computed: {
@@ -148,6 +149,7 @@ export default {
   },
   destroyed() {
     this.clearEndodontic()
+    this.clearRehabilitation()
   },
 }
 </script>

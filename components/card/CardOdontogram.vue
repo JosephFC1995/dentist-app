@@ -1,11 +1,17 @@
 <template>
   <div class="card-info-pacient-odontogram">
     <a-card :title="false" :bordered="false">
-      <a-row :gutter="16" type="flex" justify="space-between">
+      <a-row :gutter="16" type="flex">
         <a-col :span="24" :md="6" class="with-button">
           <a-form-model-item class="with-button">
-            <a-select placeholder="Seleccione la fecha" v-model="datesSelect" :loading="loading" @change="selectDate">
-              <a-select-option v-for="item in datesOrthodonticPatient" :key="item.id" :value="item.id">
+            <a-select
+              placeholder="Seleccione la fecha"
+              v-model="datesSelect"
+              :loading="loading"
+              @change="selectDate"
+              :disabled="true"
+            >
+              <a-select-option v-for="item in datesArray" :key="item.id" :value="item.id">
                 {{ item.date }}
               </a-select-option>
             </a-select>
@@ -24,7 +30,7 @@
               </span>
             </a-button>
           </a-popconfirm>
-          <a-button type="primary" @click="openModalAddNewOrthodontic = true" :disabled="loading" class="ml-2">
+          <a-button type="primary" @click="openModalAddNewOrthodontic = true" :disabled="true" class="ml-2">
             <span> <i class="uil uil-plus-circle mr-1"></i> Agregar nueva ortodoncia </span>
           </a-button>
         </a-col>

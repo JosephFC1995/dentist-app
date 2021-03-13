@@ -601,7 +601,6 @@ export default {
       })
     },
     changeUpload(info, hook) {
-      console.log({ info, hook })
       const status = info.file.status
       let fileList = [...info.fileList]
       fileList = fileList.map((file) => {
