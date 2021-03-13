@@ -13,10 +13,11 @@
             :data="dentalHistoriesArray"
             :fields="json_fields_excel"
             name="reporte.xls"
+            :class="{ disabled: !selectDate }"
           >
             <i class="uil uil-cloud-download mr-2"></i> Archivo excel
           </downloadExcel>
-          <a-button shape="round" class="rounded-full" size="small">
+          <a-button shape="round" class="rounded-full" size="small" :disabled="!selectDate">
             <i class="uil uil-cloud-download mr-2"></i> Archivo PDF
           </a-button>
         </div>
@@ -149,7 +150,6 @@ export default {
       }
     },
     closeDrawer() {
-      console.log('cerrado')
       setTimeout(() => {
         this.form = {
           id_endodontic: this.id_endodontic,
