@@ -1,12 +1,18 @@
 <template>
   <div
     class="content--page--picture public-layout login background--cover"
-    style="background-image: url(/assets/images/wallpaper.jpeg)"
+    :style="{ backgroundImage: `url(${company.portada ? company.portada.url : +''})` }"
   >
     <div class="content--box">
       <div class="content--header">
         <div class="logo">
-          <img src="/assets/images/logo.jpeg" alt="" width="auto" height="auto" class="logo-img" />
+          <img
+            :src="company.avatar ? company.avatar.url : +'/assets/images/logo.jpeg'"
+            alt=""
+            width="auto"
+            height="auto"
+            class="logo-img"
+          />
         </div>
       </div>
       <div class="content--body">
@@ -21,7 +27,7 @@
             </a-col>
             <a-col :span="24">
               <a-form-model-item prop="password">
-                <a-input type="password" v-model="form.password" placeholder="Contraseña" :disabled="loading" />
+                <a-input-password type="password" v-model="form.password" placeholder="Contraseña" :disabled="loading" />
               </a-form-model-item>
             </a-col>
             <!-- <a-col :span="24">
@@ -45,6 +51,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+
 export default {
   middleware: 'auth',
   data() {
@@ -98,6 +106,7 @@ export default {
               },
             })
             .catch((err) => {
+              this.$message.error('Al parecer el correo o contraseña no son válidas.')
               this.loading = false
             })
         } else {
@@ -106,6 +115,11 @@ export default {
         }
       })
     },
+  },
+  computed: {
+    ...mapGetters({
+      company: 'data/company/getCompany',
+    }),
   },
 }
 </script>

@@ -26,6 +26,7 @@ export default {
         { src: '@/plugins/vue-loading', ssr: false },
         { src: '@/plugins/vue-mask', ssr: false },
         { src: '@/plugins/vue-google-maps', ssr: false },
+        { src: '@/plugins/init', ssr: false },
     ],
 
     components: true,
@@ -73,10 +74,10 @@ export default {
                 },
                 token: {
                     property: 'access_token',
-                    maxAge: 2 * 1 * 60 * 60,
+                    maxAge: 24 * 1 * 60 * 60,
                 },
                 refreshToken: {
-                    maxAge: 2 * 1 * 60 * 60,
+                    maxAge: 24 * 1 * 60 * 60,
                 },
             },
         },

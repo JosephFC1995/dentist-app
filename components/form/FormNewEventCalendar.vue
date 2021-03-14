@@ -16,7 +16,7 @@
                 {{ item.last_name_father + ' ' + item.last_name_mother + ' ' + item.name + ' (' + item.number_documento + ')' }}
               </a-select-option>
             </a-select>
-            <a-button type="primary" @click="() => (openDrawerNewUser = true)">
+            <a-button type="primary" @click="() => (openDrawerNewUser = true)" :disabled="loading">
               <i class="uil uil-plus-circle"></i>
               Agregar nuevo paciente
             </a-button>
@@ -38,7 +38,12 @@
 
         <a-col :span="24" :md="12">
           <a-form-model-item label="Doctor" prop="id_doctor_user">
-            <a-select placeholder="Seleccione un doctor" v-model="form.id_doctor_user" :allowClear="true" :disabled="loading">
+            <a-select
+              placeholder="Seleccione un doctor"
+              v-model="form.id_doctor_user"
+              :allowClear="true"
+              :disabled="loading || disableSelectDoctor"
+            >
               <a-select-option v-for="item in doctorsArray" :key="item.id" :value="item.id">
                 {{ (item.last_name ? item.last_name : '') + ' ' + item.name }}
               </a-select-option>
@@ -143,7 +148,7 @@
         </a-col>
         <a-col :span="24" :md="24">
           <a-form-model-item class="mb-2">
-            <a-switch v-model="form.send_whatsapp" size="small" :disabled="loading" />
+            <a-switch v-model="form.send_whatsapp" size="small" :disabled="true" />
             <span class="ml-2">Informar por whatsapp</span>
           </a-form-model-item>
         </a-col>
@@ -155,8 +160,7 @@
       </a-row>
     </a-form-model>
     <!-- <pre>
-      {{ selectDate }}
-      {{ form }}
+      {{ $auth.user }}
     </pre> -->
     <a-drawer
       :width="widthDrawerResponsive"
@@ -196,10 +200,12 @@ export default {
     return {
       loading: false,
       openDrawerNewUser: false,
+      disableSelectDoctor: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 450 : window.innerWidth - 100,
       form: {
         send_mail: true,
         id_appointment_status: 1,
+        id_doctor_user: undefined,
         duration: 15,
         date_start: null,
         time_start: null,
@@ -335,6 +341,11 @@ export default {
     window.onresize = () => {
       let width = window.innerWidth
       this.widthDrawerResponsive = width > 900 ? 700 : width - 100
+    }
+    if (this.$auth.hasScope('doctor')) {
+      console.log(this.$auth.user.id)
+      this.form.id_doctor_user = this.$auth.user.id
+      this.disableSelectDoctor = true
     }
   },
   watch: {

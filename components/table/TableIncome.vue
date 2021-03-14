@@ -10,9 +10,6 @@
         >
           <i class="uil uil-cloud-download mr-2"></i> Archivo excel
         </downloadExcel>
-        <a-button shape="round" class="rounded-full" size="small">
-          <i class="uil uil-cloud-download mr-2"></i> Archivo PDF
-        </a-button>
       </div>
       <div>
         <a-input placeholder="Buscar" />
@@ -78,10 +75,8 @@ export default {
       reasons: null,
       json_fields_excel: {
         ID: 'id',
-        Nombre: 'name',
-        Apellido: 'last_name',
-        Teléfono: 'phone',
-        Correo: 'email',
+        Sucursal: 'subsidiary.name',
+        Fecha: 'date',
       },
       columns: [
         {

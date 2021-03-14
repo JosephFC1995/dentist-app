@@ -3,7 +3,7 @@
     <header class="page-header">
       <h1 class="page-title">Mi empresa</h1>
     </header>
-    <FormCompany :form="companyForm" />
+    <FormCompany />
   </div>
 </template>
 

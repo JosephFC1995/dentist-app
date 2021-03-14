@@ -101,9 +101,9 @@ export default {
       openModal: false,
       json_fields_excel: {
         ID: 'id',
-        Nombre: 'name',
-        'Apellido paterno': 'lastNameFather',
-        Teléfono: 'phone',
+        Título: 'title',
+        Extension: 'file.type',
+        Peso: 'file.size',
         Correo: 'email',
       },
       columns: [

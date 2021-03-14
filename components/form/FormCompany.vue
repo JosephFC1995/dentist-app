@@ -20,7 +20,31 @@
               >
                 <img v-if="form.avatar" :src="form.avatar.path" alt="avatar" />
                 <div v-else>
-                  <a-icon :type="loadingAvatar ? 'loading' : 'plus'" />
+                  <a-icon :type="loadingFile ? 'loading' : 'plus'" />
+                  <div class="ant-upload-text">Upload</div>
+                </div>
+              </a-upload>
+            </a-form-model-item>
+          </a-col>
+
+          <!-- Logo -->
+          <a-col :span="24" :md="24">
+            <a-form-model-item label="Imagen de portada">
+              <a-upload
+                name="file"
+                list-type="picture-card"
+                class="avatar-uploader"
+                :show-upload-list="false"
+                :action="apiHost + '/file/upload'"
+                :before-upload="beforeUpload"
+                @change="changeUpload"
+                :disabled="loading"
+                :headers="headers"
+                :data="{ key: 'portada' }"
+              >
+                <img v-if="form.portada" :src="form.portada.path" alt="avatar" />
+                <div v-else>
+                  <a-icon :type="loadingFile ? 'loading' : 'plus'" />
                   <div class="ant-upload-text">Upload</div>
                 </div>
               </a-upload>
@@ -30,7 +54,7 @@
           <!-- RUC -->
           <a-col :span="24" :md="12">
             <a-form-model-item label="RUC" prop="name">
-              <a-input v-model="form.name" :disabled="loading" />
+              <a-input v-model="form.ruc" :disabled="loading" v-mask="'############'" />
             </a-form-model-item>
           </a-col>
           <!-- Nombre -->
@@ -50,7 +74,7 @@
           <!-- Correo -->
           <a-col :span="24" :md="12" v-show="form.id_role != 1">
             <a-form-model-item label="Correo">
-              <a-input v-model="form.direction" :disabled="loading" />
+              <a-input v-model="form.email" :disabled="loading" />
             </a-form-model-item>
           </a-col>
 
@@ -66,7 +90,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 function getBase64(img, callback) {
   const reader = new FileReader()
@@ -75,45 +99,35 @@ function getBase64(img, callback) {
 }
 
 export default {
-  props: {
-    form: {
-      type: Object,
-      default: null,
-    },
-  },
+  props: {},
   data() {
     return {
-      loading: false,
-      loadingAvatar: false,
+      loadingFile: false,
+      form: {
+        avatar: null,
+        portada: null,
+      },
       apiHost: process.env.apiHost,
       headers: {
         Authorization: this.$auth.strategy.token.get(),
       },
       imageUrl: '',
-      rules: {
-        name: [
-          {
-            required: true,
-            message: 'Por favor seleccione un rol para el usuario',
-            trigger: 'blur',
-          },
-        ],
-      },
+      rules: {},
     }
   },
   methods: {
     submitLogin() {
       this.$refs.company.validate(async (valid) => {
         if (valid) {
-          let _self = this
-          //   _self.loading = true
-          //   let response = false
-          //     response = await _self.$axios.$put(`/users/${this.form.id}`, _self.form).catch((errors) => {
-          //       _self.loading = false
-          //     })
+          this.changeLoading(true)
 
-          //   if (response.success) this.$message.success(response.message)
-          //   _self.loading = false
+          let response = false
+          response = await this.$axios.$put(`/company`, this.form).catch((errors) => {
+            this.changeLoading(false)
+          })
+
+          if (response.success) this.$message.success(response.message)
+          this.changeLoading(false)
         } else {
           console.log('error submit!!')
           return false
@@ -138,6 +152,7 @@ export default {
       this.$emit('close')
     },
     changeUpload(info) {
+      this.loadingFile = true
       const status = info.file.status
       if (status !== 'uploading') {
         console.log(info)
@@ -145,15 +160,35 @@ export default {
       if (status === 'done') {
         this.$message.success(`${info.file.name} file uploaded successfully.`)
         let _key = info.file.response.key ? info.file.response.key : null
-
+        this.loadingFile = false
         this.form[_key] = info.file.response.file
         this.form['id_' + _key + '_file'] = info.file.response.file.id
       } else if (status === 'error') {
         this.$message.error(`${info.file.name} file upload failed.`)
       }
     },
+    ...mapActions({
+      getDataCompany: 'data/company/GET_DATA_COMPANY',
+      changeLoading: 'data/company/CHANGE_LOADING',
+    }),
   },
-  computed: {},
+  watch: {
+    company(newValue, oldValue) {
+      this.form = _.cloneDeep(newValue)
+    },
+  },
+  computed: {
+    ...mapGetters({
+      company: 'data/company/getCompany',
+      loading: 'data/company/getLoading',
+    }),
+  },
+  async mounted() {
+    this.changeLoading(true)
+    await this.getDataCompany()
+    this.changeLoading(false)
+    this.form = this.company ? _.cloneDeep(this.company) : {}
+  },
 }
 </script>
 

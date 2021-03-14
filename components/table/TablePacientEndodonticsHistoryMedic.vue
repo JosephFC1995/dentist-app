@@ -103,10 +103,9 @@ export default {
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       json_fields_excel: {
         ID: 'id',
-        Nombre: 'name',
+        Diente: 'dent.name',
         'Apellido paterno': 'lastNameFather',
-        Teléfono: 'phone',
-        Correo: 'email',
+        Doctor: 'doctor.name',
       },
       columns: [
         {

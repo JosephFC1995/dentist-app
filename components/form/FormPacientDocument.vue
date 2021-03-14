@@ -106,7 +106,6 @@ export default {
           this.$refs.form.resetFields()
           await this.getDocumentsPatient({ id_patient: this.$route.params.id })
           this.loading = false
-          console.log('Enviando')
         }
       })
     },

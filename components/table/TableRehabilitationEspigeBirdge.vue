@@ -8,15 +8,15 @@
     <div class="table-general">
       <a-space class="mb-3 mt-2 d-flex justify-content-between">
         <div>
-          <!-- <downloadExcel
+          <downloadExcel
             class="ant-btn ant-btn-sm rounded-full pr-2"
             :data="data"
             :fields="json_fields_excel"
             name="reporte.xls"
             :class="{ disabled: !selectDate }"
           >
-            <i class="uil uil-cloud-download mr-2"></i> Archivo excel
-          </downloadExcel>
+            <i class="uil uil-cloud-download mr-2"></i> Archivo excel </downloadExcel
+          ><!-- 
           <a-button shape="round" class="rounded-full" size="small" :disabled="!selectDate">
             <i class="uil uil-cloud-download mr-2"></i> Archivo PDF
           </a-button> -->
@@ -99,10 +99,8 @@ export default {
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       json_fields_excel: {
         ID: 'id',
-        Nombre: 'name',
-        'Apellido paterno': 'lastNameFather',
-        Teléfono: 'phone',
-        Correo: 'email',
+        'Pieza dental': 'dental_piece',
+        Mobilidad: 'mobility',
       },
       columns: [
         {

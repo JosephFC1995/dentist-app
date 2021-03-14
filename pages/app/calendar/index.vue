@@ -3,12 +3,25 @@
     <header class="page-header">
       <h1 class="page-title">Agenda de citas</h1>
     </header>
-    <a-row class="mb-3" :gutter="16">
+    <a-row class="mb-3" :gutter="16" v-if="$auth.hasScope('administrator')">
       <a-col :span="12" :md="6">
-        <a-select placeholder="Seleccione una sucursal" :options="sucursalesArray" :allowClear="true"> </a-select>
+        <a-select
+          placeholder="Seleccione una sucursal"
+          :allowClear="true"
+          v-model="selectedSubsidiary"
+          @change="calendarRefresh()"
+        >
+          <a-select-option v-for="item in subsidiaries" :key="item.id" :value="item.id">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
       </a-col>
       <a-col :span="12" :md="6">
-        <a-select placeholder="Seleccione un doctor" :options="doctoresArray" :allowClear="true"> </a-select>
+        <a-select placeholder="Seleccione un doctor" :allowClear="true" v-model="selectedDoctor" @change="calendarRefresh()">
+          <a-select-option v-for="item in doctors" :key="item.id" :value="item.id">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
       </a-col>
     </a-row>
     <a-spin tip="Cargando citas..." :spinning="loadingAppoinments">
@@ -42,6 +55,31 @@
             {{ eventSelect.appointment.reason.name }}
           </span>
         </div>
+        <div class="event-reason flex-column mb-4" v-if="eventSelect.appointment">
+          <h5 class="event-title m-0">Estado de la cita</h5>
+          <span>
+            <a-badge
+              status="warning"
+              :text="eventSelect.appointment.status ? eventSelect.appointment.status.name : ''"
+              v-if="eventSelect.appointment.id_appointment_status == 1"
+            />
+            <a-badge
+              status="processing"
+              :text="eventSelect.appointment.status ? eventSelect.appointment.status.name : ''"
+              v-else-if="eventSelect.appointment.id_appointment_status == 2"
+            />
+            <a-badge
+              status="success"
+              :text="eventSelect.appointment.status ? eventSelect.appointment.status.name : ''"
+              v-else-if="eventSelect.appointment.id_appointment_status == 3"
+            />
+            <a-badge
+              status="error"
+              :text="eventSelect.appointment.status ? eventSelect.appointment.status.name : ''"
+              v-else-if="eventSelect.appointment.id_appointment_status == 4"
+            />
+          </span>
+        </div>
         <div class="event-desc flex-column mb-4">
           <h5 class="event-title m-0">Descripción de la cita</h5>
           <span>
@@ -62,19 +100,23 @@
           <a-button type="dashed" class="w-100" @click="goToPatient(eventSelect)" :loading="goPatient">
             <span>Atender cita</span>
           </a-button>
+          <a-button type="danger" class="w-100 mt-3" @click="deleteAppointment(eventSelect)" :loading="loadingDeleteAppointment">
+            <span>Eliminar cita</span>
+          </a-button>
         </div>
       </div>
       <template slot="footer">
         <div class="d-flex justify-content-between modal-footer">
-          <a-button type="danger" @click="() => (openModal = false)">
+          <a-button type="danger" @click="cancelModalAppointment()">
             <span>Cancelar</span>
           </a-button>
-          <button type="button" class="ant-btn ant-btn-primary" @click="okModal">
+          <button type="button" class="ant-btn ant-btn-primary" @click="cancelModalAppointment()">
             <span>Aceptar</span>
           </button>
         </div>
       </template>
     </a-modal>
+
     <!-- !Modal vista de las citas -->
     <!-- !Drawer nueva cita -->
     <a-drawer
@@ -123,6 +165,7 @@ export default {
     store.dispatch('data/general/GET_TYPE_DOCUMENTS')
     store.dispatch('data/general/GET_REASONS')
     store.dispatch('data/appointment/GET_APPOINTMENT_STATUS')
+    store.dispatch('tables/users/GET_USERS_BY_ROLE_DOCTOR')
     this.loading = false
   },
   components: {
@@ -136,11 +179,14 @@ export default {
       date_end: null,
       dateSelectFromCalendar: null,
       openDrawerNewEvent: false,
+      loadingDeleteAppointment: false,
       openModal: false,
       goPatient: false,
       openModalCreate: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 700 : window.innerWidth - 100,
       title: 'Agenda de citas',
+      selectedSubsidiary: undefined,
+      selectedDoctor: undefined,
       sucursalesArray: [
         { value: 1, label: 'Los Olivos' },
         { value: 2, label: 'Jesus María' },
@@ -220,6 +266,8 @@ export default {
         var params = {
           date_start: date_s,
           date_end: date_e,
+          subsidiary: this.selectedSubsidiary,
+          doctor: this.selectedDoctor,
         }
         this.getAppointmens(params)
         this.date_start = date_s
@@ -227,6 +275,10 @@ export default {
       }
 
       // this.changeLoading(true)
+    },
+    cancelModalAppointment() {
+      this.openModal = false
+      this.eventSelect = { title: '', description: '', start: '', appointment: null }
     },
     async dragEvent(e) {
       this.changeLoading(true)
@@ -271,6 +323,17 @@ export default {
       this.eventSelect.start = this.$moment.utc(info.event.start).format('ddd DD [de] MMM [del] YYYY [a las] hh:mm a')
       this.openModal = true
     },
+    async deleteAppointment($event) {
+      this.loadingDeleteAppointment = true
+      let response = false
+      response = await this.$axios.$delete(`/appointment/${$event.appointment.id}`).catch((errors) => {
+        this.loadingDeleteAppointment = false
+      })
+      if (response.success) this.$message.success(response.message)
+      this.loadingDeleteAppointment = false
+      this.calendarRefresh()
+      this.openModal = false
+    },
     goToPatient($event) {
       this.goPatient = true
       this.$router.push({
@@ -286,6 +349,8 @@ export default {
       var params = {
         date_start: this.date_start,
         date_end: this.date_end,
+        subsidiary: this.selectedSubsidiary,
+        doctor: this.selectedDoctor,
       }
       this.getAppointmens(params)
     },
@@ -294,6 +359,8 @@ export default {
       var params = {
         date_start: this.date_start,
         date_end: this.date_end,
+        subsidiary: this.selectedSubsidiary,
+        doctor: this.selectedDoctor,
       }
       this.getAppointmens(params)
       this.openDrawerNewEvent = false
@@ -318,6 +385,8 @@ export default {
     ...mapGetters({
       appoinments: 'data/appointment/getAppointments',
       loadingAppoinments: 'data/appointment/getLoading',
+      subsidiaries: 'data/general/getSubsidiaries',
+      doctors: 'tables/users/getDoctors',
     }),
   },
   mounted() {

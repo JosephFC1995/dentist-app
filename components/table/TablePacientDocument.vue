@@ -36,7 +36,7 @@
               </span>
             </a-button>
 
-            <a-button type="primary" size="small">
+            <a-button type="primary" size="small" @click="openSendFileFile(record)">
               <span class="ico">
                 <i class="uil uil-envelope" :style="{ fontSize: '18px' }"></i>
               </span>
@@ -58,6 +58,12 @@
         </a-table>
       </a-spin>
     </div>
+    <ModalSendDocument
+      modalTitle="Enviar documento"
+      :openModalProp="openModalSendDocument"
+      @close="onCloseModalSenDocument()"
+      :documentSelect="selectDocumentSend"
+    />
     <!-- Modal ver imagen -->
     <a-modal
       v-model="openModal"
@@ -102,15 +108,17 @@ export default {
       detailDrawer: {},
       selectFile: {},
       formDetailHystory: false,
+      openModalSendDocument: false,
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       widthModalResponsive: window.innerWidth > 900 ? 900 : window.innerWidth - 100,
       openModal: false,
+      selectDocumentSend: null,
       json_fields_excel: {
         ID: 'id',
-        Nombre: 'name',
-        'Apellido paterno': 'lastNameFather',
-        Teléfono: 'phone',
-        Correo: 'email',
+        Archivo: 'file.name_original',
+        Documento: 'document.name',
+        Extension: 'file.type',
+        Peso: 'file.size',
       },
       columns: [
         {
@@ -172,6 +180,21 @@ export default {
       await this.getDocumentsPatient({ id_patient: this.$route.params.id })
       // this.loading = false
       this.changeLoading(false)
+    },
+    async openSendFileFile(record) {
+      this.changeLoading(true)
+      this.openModalSendDocument = true
+      this.selectDocumentSend = record
+      console.log(record)
+      // let deleteResponse = await this.$store.dispatch('data/documents/DELETE_DOCUMENTS_BY_ID', record.id)
+      // if (deleteResponse) this.$message.success(deleteResponse.message)
+      // await this.getDocumentsPatient({ id_patient: this.$route.params.id })
+      // this.loading = false
+      this.changeLoading(false)
+    },
+    onCloseModalSenDocument() {
+      this.openModalSendDocument = false
+      this.selectDocumentSend = null
     },
     humanFileSize(bytes, si = false, dp = 1) {
       const thresh = si ? 1000 : 1024

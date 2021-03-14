@@ -49,10 +49,10 @@ export default {
       widthDrawerResponsive: window.innerWidth > 900 ? 650 : window.innerWidth - 100,
       json_fields_excel: {
         ID: 'id',
-        Nombre: 'name',
-        'Apellido paterno': 'lastNameFather',
-        Teléfono: 'phone',
-        Correo: 'email',
+        Area: 'area',
+        Servicio: 'services',
+        'Descuento %': 'descount',
+        Total: 'total',
       },
       columns: [
         {

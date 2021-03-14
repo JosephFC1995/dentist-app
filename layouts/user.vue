@@ -12,14 +12,20 @@
         collapsed-width="0"
       >
         <div class="logo">
-          <img src="/assets/images/logo.jpeg" alt="" width="auto" height="auto" class="logo-img" />
+          <img
+            :src="company.avatar ? company.avatar.url : +'/assets/images/logo.jpeg'"
+            alt=""
+            width="auto"
+            height="auto"
+            class="logo-img"
+          />
         </div>
         <div class="main-menu false">
           <nav class="main-menu-wrap">
             <a-menu theme="light" mode="inline" :default-selected-keys="['1']" class="menu-ul">
               <a-menu-item
                 class="menu-item"
-                v-for="(route, index) in routes"
+                v-for="(route, index) in $auth.hasScope('doctor') ? routesDoctor : routes"
                 :key="index"
                 :class="[route.type == 'title' ? 'group' : '']"
               >
@@ -47,38 +53,44 @@
           <div class="container">
             <div class="content-navbar d-flex justify-content-between">
               <div class="left-navtop">
+                <span> Bienvenido {{ this.$auth.user.name }} </span>
                 <!-- Izquierda -->
               </div>
-              <div class="right-navtop">
-                <a-dropdown :trigger="['click']" placement="topRight">
-                  <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
-                    <a-avatar
-                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                      :style="{ width: '40px', height: '40px', lineHeight: '40px', fontSize: '18px' }"
-                    />
-                    <i class="uil uil-angle-down"></i>
-                  </a>
-                  <a-menu slot="overlay" :style="{ top: '10px' }">
-                    <a-menu-item class="action-item">
-                      <a class="d-flex w-100" href="#" :style="{ margin: 0, padding: '0px 0px' }">
-                        <i class="uil uil-user"></i>
-                        <span class="text">Editar perfil</span>
-                      </a>
-                    </a-menu-item>
-                    <a-menu-item class="action-item">
-                      <a class="d-flex w-100" href="#" :style="{ margin: 0, padding: '0px 0px' }">
-                        <i class="uil uil-calender"></i>
-                        <span class="text">Calendario</span>
-                      </a>
-                    </a-menu-item>
-                    <a-menu-item class="action-item">
-                      <a class="d-flex w-100" @click="logout()" :style="{ margin: 0, padding: '0px 0px' }">
-                        <i class="uil uil-sign-out-alt"></i>
-                        <span class="text">Cerrar sesión</span>
-                      </a>
-                    </a-menu-item>
-                  </a-menu>
-                </a-dropdown>
+              <div class="right-navtop d-flex">
+                <div class="">
+                  <a-dropdown :trigger="['click']" placement="bottomRight">
+                    <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+                      <a-avatar
+                        size="small"
+                        icon="user"
+                        :src="this.$auth.user.avatar ? this.$auth.user.avatar.path : null"
+                        :style="{ width: '40px', height: '40px', lineHeight: '40px', fontSize: '18px' }"
+                      />
+
+                      <i class="uil uil-angle-down"></i>
+                    </a>
+                    <a-menu slot="overlay" :style="{ top: '10px' }">
+                      <a-menu-item class="action-item">
+                        <a class="d-flex w-100" href="#" :style="{ margin: 0, padding: '0px 0px' }">
+                          <i class="uil uil-user"></i>
+                          <span class="text">Editar perfil</span>
+                        </a>
+                      </a-menu-item>
+                      <a-menu-item class="action-item">
+                        <nuxt-link class="d-flex w-100" :to="{ name: 'app-calendar' }" :style="{ margin: 0, padding: '0px 0px' }">
+                          <i class="uil uil-calender"></i>
+                          <span class="text">Calendario</span>
+                        </nuxt-link>
+                      </a-menu-item>
+                      <a-menu-item class="action-item">
+                        <a class="d-flex w-100" @click="logout()" :style="{ margin: 0, padding: '0px 0px' }">
+                          <i class="uil uil-sign-out-alt"></i>
+                          <span class="text">Cerrar sesión</span>
+                        </a>
+                      </a-menu-item>
+                    </a-menu>
+                  </a-dropdown>
+                </div>
               </div>
             </div>
           </div>
@@ -94,6 +106,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -122,24 +136,28 @@ export default {
           name: 'app-patients',
           title: 'Pacientes',
           ico: 'users-alt',
+          scope: 'administrator',
         },
         {
           type: 'title',
           name: null,
           title: 'Administración',
           ico: null,
+          scope: 'administrator',
         },
         {
           type: 'route',
           name: 'app-admin-users',
           title: 'Usuarios',
           ico: 'users-alt',
+          scope: 'administrator',
         },
         {
           type: 'route',
           name: 'app-admin-reasons',
           title: 'Motivos',
           ico: 'comment-lines',
+          scope: 'administrator',
         },
         // {
         //   type: 'route',
@@ -164,42 +182,49 @@ export default {
           name: 'app-admin-documents',
           title: 'Documentos',
           ico: 'files-landscapes',
+          scope: 'administrator',
         },
         {
           type: 'route',
           name: 'app-admin-referreds',
           title: 'Referidos',
           ico: 'user-arrows',
+          scope: 'administrator',
         },
         {
           type: 'route',
           name: 'app-admin-subsidiaries',
           title: 'Sucursales',
           ico: 'building',
+          scope: 'administrator',
         },
         {
           type: 'route',
           name: 'app-admin-supplies',
           title: 'Insumos',
           ico: 'tablets',
+          scope: 'administrator',
         },
         {
           type: 'route',
           name: 'app-admin-income',
           title: 'Ingresos',
           ico: 'money-withdraw',
+          scope: 'administrator',
         },
         {
           type: 'route',
           name: 'app-admin-expenses',
           title: 'Salidas',
           ico: 'money-insert',
+          scope: 'administrator',
         },
         {
           type: 'route',
           name: 'app-admin-stock',
           title: 'Stock de insumos',
           ico: 'box',
+          scope: 'administrator',
         },
         {
           type: 'title',
@@ -215,10 +240,16 @@ export default {
         },
         {
           type: 'route',
-          name: 'app-settings-calendar',
-          title: 'Calendario',
-          ico: 'schedule',
+          name: 'app-settings-profile',
+          title: 'Mi perfil',
+          ico: 'user',
         },
+        // {
+        //   type: 'route',
+        //   name: 'app-settings-calendar',
+        //   title: 'Calendario',
+        //   ico: 'schedule',
+        // },
         // {
         //   type: 'route',
         //   name: 'app-settings-holiday',
@@ -238,6 +269,46 @@ export default {
         //   ico: null,
         // },
       ],
+      routesDoctor: [
+        {
+          type: 'title',
+          name: null,
+          title: 'General',
+          ico: null,
+        },
+        {
+          type: 'route',
+          name: 'app-dashboard',
+          title: 'Dashboard',
+          ico: 'dashboard',
+        },
+        {
+          type: 'route',
+          name: 'app-calendar',
+          title: 'Agenda de citas',
+          ico: 'schedule',
+        },
+        {
+          type: 'route',
+          name: 'app-patients',
+          title: 'Pacientes',
+          ico: 'users-alt',
+          scope: 'administrator',
+        },
+        {
+          type: 'title',
+          name: null,
+          title: 'Configuraciones',
+          ico: null,
+        },
+
+        {
+          type: 'route',
+          name: 'app-settings-profile',
+          title: 'Mi perfil',
+          ico: 'user',
+        },
+      ],
       breakpoint: {
         xs: '480px',
         sm: '576px',
@@ -256,7 +327,11 @@ export default {
       })
     },
   },
-  mounted() {},
+  computed: {
+    ...mapGetters({
+      company: 'data/company/getCompany',
+    }),
+  },
 }
 </script>
 
@@ -276,5 +351,23 @@ export default {
     height: 32px;
     margin: 16px;
   }
+}
+</style>
+
+<style lang="scss" scoped>
+// .right-navtop {
+//   height: 64px;
+//   .ant-dropdown-link {
+//     display: flex;
+//     align-items: center;
+//     margin-right: 11px;
+//   }
+// }
+.left-navtop {
+  color: #1f2022;
+  display: block;
+  opacity: 0.3;
+  font-size: 16px;
+  font-weight: 600;
 }
 </style>

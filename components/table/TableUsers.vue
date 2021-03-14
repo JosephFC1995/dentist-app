@@ -5,9 +5,6 @@
         <downloadExcel class="ant-btn ant-btn-sm rounded-full pr-2" :data="users" :fields="json_fields_excel" name="reporte.xls">
           <i class="uil uil-cloud-download mr-2"></i> Archivo excel
         </downloadExcel>
-        <a-button shape="round" class="rounded-full" size="small">
-          <i class="uil uil-cloud-download mr-2"></i> Archivo PDF
-        </a-button>
       </div>
       <div>
         <a-input placeholder="Buscar" />
@@ -81,10 +78,12 @@ export default {
       userForm: null,
       json_fields_excel: {
         ID: 'id',
+        Foto: 'avatar.path',
         Nombre: 'name',
         Apellido: 'last_name',
-        Teléfono: 'phone',
+        Telefono: 'phone',
         Correo: 'email',
+        Rol: 'role.name',
       },
       columns: [
         {

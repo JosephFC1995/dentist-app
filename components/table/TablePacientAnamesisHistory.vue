@@ -95,10 +95,8 @@ export default {
       },
       json_fields_excel: {
         ID: 'id',
-        Nombre: 'name',
-        'Apellido paterno': 'lastNameFather',
-        Teléfono: 'phone',
-        Correo: 'email',
+        Fecha: 'date',
+        Doctor: doctor.name,
       },
       columns: [
         {

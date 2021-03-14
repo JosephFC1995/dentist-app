@@ -126,18 +126,18 @@ $_sub-separator: main-palette(300);
                         }
                     }
                 }
-                &.ant-menu-item-selected {
-                    &:after {
-                        transform: translateX(4px);
-                        transition: 0.2s transform 0.2s $_animation;
-                    }
-                    >.item-link {
-                        color: $_item-active-color;
-                        .link-caret {
-                            transform: rotate(90deg);
-                        }
-                    }
-                }
+                // &.ant-menu-item-selected {
+                //     &:after {
+                //         transform: translateX(4px);
+                //         transition: 0.2s transform 0.2s $_animation;
+                //     }
+                //     >.item-link {
+                //         color: $_item-active-color;
+                //         .link-caret {
+                //             transform: rotate(90deg);
+                //         }
+                //     }
+                // }
                 .nuxt-link-active {
                     color: $_item-active-color;
                     .link-caret {
