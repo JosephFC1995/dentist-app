@@ -71,7 +71,7 @@
                     </a>
                     <a-menu slot="overlay" :style="{ top: '10px' }">
                       <a-menu-item class="action-item">
-                        <a class="d-flex w-100" href="#" :style="{ margin: 0, padding: '0px 0px' }">
+                        <a class="d-flex w-100" :to="{ name: 'app-settings-profile' }" :style="{ margin: 0, padding: '0px 0px' }">
                           <i class="uil uil-user"></i>
                           <span class="text">Editar perfil</span>
                         </a>
